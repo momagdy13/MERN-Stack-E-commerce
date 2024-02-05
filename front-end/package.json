@@ -15,6 +15,7 @@
     "@mui/icons-material": "^5.15.7",
     "@mui/material": "^5.15.7",
     "@mui/styled-engine-sc": "^6.0.0-alpha.14",
+    "axios": "^1.6.7",
     "json-server": "^1.0.0-alpha.23",
     "react": "^17.0.0 || ^18.0.0",
     "react-dom": "^17.0.0 || ^18.0.0",

@@ -7,7 +7,7 @@ export default function ListProduct() {
 
   const req = async () => {
     await axios
-      .get("http://localhost:4000/allproduct")
+      .get(`${import.meta.env.VITE_BASE_URL}/allproduct`)
       .then((response) => {
         console.log(response.data);
         setProducts(response.data);
@@ -18,7 +18,7 @@ export default function ListProduct() {
   };
   const deleteProduct = async (id) => {
     await axios
-      .delete("http://localhost:4000/deleteproduct", { id: id })
+      .delete(`${import.meta.env.VITE_BASE_URL}/deleteproduct`, { id: id })
       .then((response) => {
         alert("Deleted Success!");
         console.log(response);
@@ -37,11 +37,12 @@ export default function ListProduct() {
     <div className="list-product" key={"list"}>
       <h1>All Products List</h1>
       <div className="listproduct-main">
-        <p >Product</p>
+        <p>Product</p>
         <p>Title</p>
-        <p>Old Price</p>
-        <p>New Price</p>
+        <p>Price</p>
+        <p>rate</p>
         <p>Ctegory</p>
+        <p>descripe</p>
         <p>Remove</p>
       </div>
       <div className="all-products">
@@ -53,9 +54,10 @@ export default function ListProduct() {
               <div key={index} className="listproduct-Main">
                 <img src={product.image} alt="" className="product-icon" />
                 <p>{product.name}</p>
-                <p>${product.old_price}</p>
-                <p>${product.new_price}</p>
+                <p>${product.price}</p>
+                <p>${product.rate}</p>
                 <p>{product.category}</p>
+                <p>{product.descripe}</p>
                 <img
                   onClick={() => {
                     deleteProduct(product.id, product.name);

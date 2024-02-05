@@ -1,10 +1,10 @@
 import { AddShoppingCartOutlined } from "@mui/icons-material";
 import { Box, Button, Stack, Typography } from "@mui/material";
-import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
-import { useState } from "react";
+import {  useState } from "react";
 
 const ProductDetails = ({ clickedProduct }) => {
+ 
   const [selectedImg, setselectedImg] = useState(0);
   return (
     <Box

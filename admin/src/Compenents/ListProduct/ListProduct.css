@@ -1,7 +1,7 @@
 .list-product {
   display: flex;
   flex-direction: column;
-  width: 60%;
+  width: 90%;
   align-items: center;
   background: #eee9e9;
   height: 800px;
@@ -13,9 +13,9 @@
 }
 .listproduct-main {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
   gap: 90px;
-  width: 90%;
+  width: 100%;
   padding: 20px 0px;
   color: #454545;
   font-size: 18px;
@@ -23,9 +23,9 @@
 }
 .listproduct-Main {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
   gap: 100px;
-  width: 110%;
+  width: 100%;
   padding: 20px 0px;
   color: #454545;
   font-size: 15px;
@@ -34,7 +34,6 @@
 .remove-icon {
   margin-top: 18px;
 }
-.product-icon{
-    width: 60px;
+.product-icon {
+  width: 60px;
 }
-

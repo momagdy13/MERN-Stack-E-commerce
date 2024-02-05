@@ -18,85 +18,37 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import ima from "../Assest/02-lestrange.webp";
+import axios from "axios";
 import { Close } from "@mui/icons-material";
 import ProductDetails from "../ProductDetails/ProductDetails";
 
 export default function ShopCategory() {
+  const [all_product, setAllProduct] = useState([]);
+  useEffect(() => {
+    axios
+      .get(`${import.meta.env.VITE_BASE_URL}/allproduct`)
+      .then((response) => {
+        setAllProduct(response.data);
+        console.log(all_product);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
   const theme = useTheme();
   const [alignment, setAlignment] = useState(null);
 
-  const all_product = [
-    {
-      title: "T-shirt",
-      price: "20$",
-      descripe: `It's so good`,
-      image: ima,
-      rate: "4",
-    },
-    {
-      title: "T-shirt",
-      price: "20$",
-      descripe: `It's so good`,
-      image: ima,
-      rate: "4",
-    },
-    {
-      title: "T-shirt",
-      price: "20$",
-      descripe: `It's so good`,
-      image: ima,
-      rate: "4",
-    },
-    {
-      title: "T-shirt",
-      price: "20$",
-      descripe: `It's so good`,
-      image: ima,
-      rate: "4",
-    },
-    {
-      title: "T-shirt",
-      price: "20$",
-      descripe: `It's so good`,
-      image: ima,
-      rate: "4",
-    },
-    {
-      title: "T-shirt",
-      price: "20$",
-      descripe: `It's so good`,
-      image: ima,
-      rate: "4.6",
-    },
-    ,
-    {
-      title: "T-shirt",
-      price: "20$",
-      descripe: `It's so good`,
-      image: ima,
-      rate: "4.5",
-    },
-    ,
-    {
-      title: "T-shirt",
-      price: "20$",
-      descripe: `It's so good`,
-      image: ima,
-      rate: "4.5",
-    },
-  ];
   const handleClickOpen = () => {
     setOpen(true);
   };
   const [open, setOpen] = React.useState(false);
 
-  const handleAlignment = (event, newAlignment) => {
-    setAlignment(newAlignment);
+  const handleAlignment = (event, value) => {
+    setAlignment(value);
   };
 
   const handleClose = () => {
@@ -130,7 +82,7 @@ export default function ShopCategory() {
             sx={{ ".Mui-selected": { background: "initial !important" } }}
           >
             <ToggleButton
-              value="left"
+              value="allproduct"
               aria-label="left aligned"
               sx={{ width: "200px" }}
             >
@@ -138,14 +90,14 @@ export default function ShopCategory() {
             </ToggleButton>
             <ToggleButton
               sx={{ width: "200px" }}
-              value="center"
+              value="men"
               aria-label="centered"
             >
               Men Category
             </ToggleButton>
             <ToggleButton
               sx={{ width: "200px" }}
-              value="right"
+              value="women"
               aria-label="right aligned"
             >
               Women Category
@@ -158,64 +110,66 @@ export default function ShopCategory() {
       {/* item */}
       <Box sx={{ flexGrow: 1 }} flexWrap={"wrap"}>
         <Grid container>
-          {all_product.map((item) => (
-            <Grid xs={2} sm={4} md={4} key={item}>
-              <Card
-                variant="outlined"
-                sx={{
-                  maxWidth: 350,
-                  my: 5,
-                  ":hover .MuiCardMedia-root ": {
-                    transition: "2s",
-                    scale: "1.1",
-                  },
-                }}
-              >
-                <CardMedia sx={{ height: 350 }} image={item.image} />
+          {all_product.map((item) => {
+            return (
+              <Grid xs={2} sm={4} md={4} key={item}>
+                <Card
+                  variant="outlined"
+                  sx={{
+                    maxWidth: 350,
+                    my: 5,
+                    ":hover .MuiCardMedia-root ": {
+                      transition: "2s",
+                      scale: "1.1",
+                    },
+                  }}
+                >
+                  <CardMedia sx={{ height: 350 }} image={item.image} />
 
-                <Box sx={{ p: 2 }}>
-                  <Stack
-                    direction="row"
-                    justifyContent="space-between"
-                    alignItems="center"
-                  >
-                    <Typography gutterBottom variant="h5" component="div">
-                      {item.title}
-                    </Typography>
-                    <Typography gutterBottom variant="h6" component="div">
-                      {item.price}
-                    </Typography>
-                  </Stack>
-                  <Typography color="text.secondary" variant="body2">
-                    {item.descripe}
-                  </Typography>
-                </Box>
-                <Divider />
-                <Box sx={{ p: 2 }}>
-                  <CardActions>
-                    <Button
-                      sx={{
-                        border: "1px  solid black",
-                        boxShadow: ".5px .2px 1px .3px #ff1412",
-                        color: theme.palette.text.secondary,
-                        textTransform: "capitalize",
-                      }}
-                      onClick={handleClickOpen}
+                  <Box sx={{ p: 2 }}>
+                    <Stack
+                      direction="row"
+                      justifyContent="space-between"
+                      alignItems="center"
                     >
-                      <ShoppingCartIcon />
-                      Add To Card
-                    </Button>
-                    <Rating
-                      name="read-only"
-                      value={item.rate}
-                      readOnly
-                      sx={{ left: "60px" }}
-                    />
-                  </CardActions>
-                </Box>
-              </Card>
-            </Grid>
-          ))}
+                      <Typography gutterBottom variant="h5" component="div">
+                        {item.name}
+                      </Typography>
+                      <Typography gutterBottom variant="h6" component="div">
+                        ${item.price}
+                      </Typography>
+                    </Stack>
+                    <Typography color="text.secondary" variant="body2">
+                      {item.descripe}
+                    </Typography>
+                  </Box>
+                  <Divider />
+                  <Box sx={{ p: 2 }}>
+                    <CardActions>
+                      <Button
+                        sx={{
+                          border: "1px  solid black",
+                          boxShadow: ".5px .2px 1px .3px #ff1412",
+                          color: theme.palette.text.secondary,
+                          textTransform: "capitalize",
+                        }}
+                        onClick={handleClickOpen}
+                      >
+                        <ShoppingCartIcon />
+                        Add To Card
+                      </Button>
+                      <Rating
+                        name="half-rating-read"
+                        value={item.rate}
+                        precision={0.5}
+                        readOnly
+                      />
+                    </CardActions>
+                  </Box>
+                </Card>
+              </Grid>
+            );
+          })}
         </Grid>
       </Box>
       {/* Item */}

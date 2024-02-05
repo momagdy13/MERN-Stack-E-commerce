@@ -2,14 +2,16 @@ import React, { useState } from "react";
 import "./AddProduct.css";
 import upload_area from "../../assets/upload_area.svg";
 import axios from "axios";
+
 export default function AddProduct() {
   const [image, setImage] = useState(false);
   const [product_details, setProduct_details] = useState({
     name: "",
     image: "",
     category: "Women",
-    new_price: "",
-    old_price: "",
+    price: "",
+    rate: "",
+    descripe: "",
   });
   const changeHandler = (e) => {
     setProduct_details({ ...product_details, [e.target.name]: e.target.value });
@@ -20,24 +22,25 @@ export default function AddProduct() {
     let formData = new FormData();
     formData.append("product", image);
     await axios
-      .post("http://localhost:4000/upload", formData)
+      .post(`${import.meta.env.VITE_BASE_URL}/upload`, formData)
       .then((response) => {
         product.image = response.data.img_url;
-        responseData = response.data.sucsses1;
-        console.log(product);
+        responseData = response.data.sucsses;
+        console.log(responseData);
       })
       .catch((error) => {
         console.log(error);
+        alert("Fill out Fields");
       });
     if (responseData) {
       await axios
-        .post("http://localhost:4000/addproduct", product)
+        .post(`${import.meta.env.VITE_BASE_URL}/addproduct`, product)
         .then((response) => {
           console.log(response);
           alert("success");
         })
         .catch((error) => {
-          alert(error);
+          console.log(error);
           alert("Failed");
         });
     }
@@ -45,6 +48,7 @@ export default function AddProduct() {
   const imageHandler = (e) => {
     setImage(e.target.files[0]);
   };
+
   return (
     <div className="add-product">
       <div className="addproduct-itemfield">
@@ -57,29 +61,38 @@ export default function AddProduct() {
           placeholder="Type Here"
         />
       </div>
+      <div className="addproduct-itemfield">
+        <p>Descripe</p>
+        <input
+          value={product_details.descripe}
+          onChange={changeHandler}
+          type="text"
+          name="descripe"
+          placeholder="Type Here"
+        />
+      </div>
       <div className="price-fields">
         <div className="addproduct-itemfield">
           <p>Price</p>
           <input
-            value={product_details.old_price}
+            value={product_details.price}
             onChange={changeHandler}
             type="text"
-            name="old_price"
+            name="price"
             placeholder="Type Here"
           />
         </div>
         <div className="addproduct-itemfield">
-          <p>Offer Price</p>
+          <p>Rate</p>
           <input
-            value={product_details.new_price}
+            value={product_details.rate}
             onChange={changeHandler}
             type="text"
-            name="new_price"
+            name="rate"
             placeholder="Type Here"
           />
         </div>
       </div>
-
       <div className="addproduct-itemfield">
         <p>Proudct Category</p>
         <select
@@ -90,7 +103,6 @@ export default function AddProduct() {
         >
           <option value="women">Women</option>
           <option value="men">Men</option>
-          <option value="kid">Kid</option>
         </select>
       </div>
       <div className="addproduct-itemfield">
