@@ -6,14 +6,10 @@ import {
   CardMedia,
   Container,
   Dialog,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
   Divider,
   Grid,
   IconButton,
   Rating,
-  Slide,
   Stack,
   Typography,
   useTheme,
@@ -25,12 +21,33 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import axios from "axios";
 import { Close } from "@mui/icons-material";
 import ProductDetails from "../ProductDetails/ProductDetails";
+import { motion } from "framer-motion";
 
-export default function ShopCategory() {
+export default function ShopCatg() {
   const [all_product, setAllProduct] = useState([]);
+  const [alignment, setAlignment] = useState(null);
+  const [clickedProduct, setclickedProduct] = useState({});
+  const [open, setOpen] = React.useState(false);
+  const [category, setCategory] = useState("allproduct");
+  
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleAlignment = (event, value) => {
+    if (value != null) {
+      setAlignment(value);
+      setCategory(value);
+    }
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
   useEffect(() => {
     axios
-      .get(`${import.meta.env.VITE_BASE_URL}/allproduct`)
+      .get(`${import.meta.env.VITE_BASE_URL}/${category}`)
       .then((response) => {
         setAllProduct(response.data);
         console.log(all_product);
@@ -38,23 +55,8 @@ export default function ShopCategory() {
       .catch((error) => {
         console.log(error);
       });
-  }, []);
+  }, [alignment]);
   const theme = useTheme();
-  const [alignment, setAlignment] = useState(null);
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-  const [open, setOpen] = React.useState(false);
-
-  const handleAlignment = (event, value) => {
-    setAlignment(value);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-  const [clickedProduct, setclickedProduct] = useState({});
 
   return (
     <Container sx={{ mt: 9 }}>
@@ -109,10 +111,17 @@ export default function ShopCategory() {
 
       {/* item */}
       <Box sx={{ flexGrow: 1 }} flexWrap={"wrap"}>
-        <Grid container>
+        <Grid
+          container
+          component={motion.section}
+          layout
+          initial={{ transform: "scale(0)" }}
+          animate={{ transform: "scale(1)" }}
+          transition={{ duration: 0.6 }}
+        >
           {all_product.map((item) => {
             return (
-              <Grid xs={2} sm={4} md={4} key={item}>
+              <Grid xs={2} sm={4} md={4}>
                 <Card
                   variant="outlined"
                   sx={{
@@ -153,7 +162,10 @@ export default function ShopCategory() {
                           color: theme.palette.text.secondary,
                           textTransform: "capitalize",
                         }}
-                        onClick={handleClickOpen}
+                        onClick={() => {
+                          handleClickOpen();
+                          setclickedProduct(item);
+                        }}
                       >
                         <ShoppingCartIcon />
                         Add To Card

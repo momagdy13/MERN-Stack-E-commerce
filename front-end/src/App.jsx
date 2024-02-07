@@ -1,13 +1,12 @@
 import Navbar from "./Components/Navbar/Navbar";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { ColorModeContext, useMode } from "./Them";
-import Header from "./Components/Headers/Header";
-import Header2 from "./Components/Headers/Header-";
-import Hero from "./Components/Hero/Hero";
-import IconSection from "./Components/IconSection/IconSection";
-import ShopCategory from "./Components/ShopCategory/ShopCategory";
 import Fotter from "./Components/Fotter/Fotter";
-import ScrollToTop from "./Components/Scroll/Scroll";
+import Cart from "./Pages/Cart";
+import Shop from "./Pages/Shop";
+import Login from "./Pages/Login";
+import { Route, Routes } from "react-router-dom";
+import Header from "./Components/Headers/Header";
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -16,14 +15,14 @@ function App() {
     <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <Navbar />
-        <Header />
-        <Header2 />
-        <ScrollToTop />
-        <Hero />
-        <IconSection />
-        <ShopCategory />
-        <Fotter />
+         <Navbar />
+         <Header />
+         <Routes>
+           <Route path="/" element={<Shop />} />
+           <Route path="/cart" element={<Cart />} />
+           <Route path="/logIn" element={<Login />} />
+         </Routes>
+         <Fotter />
       </ThemeProvider>
     </ColorModeContext.Provider>
   );

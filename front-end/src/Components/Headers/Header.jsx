@@ -1,8 +1,6 @@
 import { ExpandMore, ShoppingCartOutlined } from "@mui/icons-material";
 import {
-  Badge,
   Container,
-  IconButton,
   InputBase,
   Stack,
   Typography,
@@ -10,14 +8,13 @@ import {
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import { styled } from "@mui/material/styles";
-import Person2OutlinedIcon from "@mui/icons-material/Person2Outlined";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { useState } from "react";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
+import { Link } from "react-router-dom";
 
 const Search = styled("div")(({ theme }) => ({
   flexGrow: 0.4,
@@ -60,15 +57,6 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-const StyledBadge = styled(Badge)(({ theme }) => ({
-  "& .MuiBadge-badge": {
-    right: -3,
-    top: 13,
-    border: `2px solid ${theme.palette.background.paper}`,
-    padding: "0 4px",
-  },
-}));
-
 const options = ["All Categories", "CAR", "Clothes", "Electronics"];
 
 const Header2 = () => {
@@ -93,7 +81,9 @@ const Header2 = () => {
   return (
     <Container sx={{ my: 3, display: "flex", justifyContent: "space-between" }}>
       <Stack alignItems={"center"}>
-        <ShoppingCartOutlined />
+        <Link to={"/"}>
+          <ShoppingCartOutlined sx={{ cursor: "pointer" }} />
+        </Link>
         <Typography variant="body2">E-commerce</Typography>
       </Stack>
 
@@ -102,6 +92,7 @@ const Header2 = () => {
           display: "flex",
           borderRadius: "22px",
           justifyContent: "space-between",
+          mr: "350px",
         }}
       >
         <SearchIconWrapper>
@@ -167,18 +158,6 @@ const Header2 = () => {
           </Menu>
         </div>
       </Search>
-
-      <Stack direction={"row"} alignItems={"center"}>
-        <IconButton aria-label="cart">
-          <StyledBadge badgeContent={''} color="primary">
-            <ShoppingCartIcon />
-          </StyledBadge>
-        </IconButton>
-
-        <IconButton>
-          <Person2OutlinedIcon />
-        </IconButton>
-      </Stack>
     </Container>
   );
 };

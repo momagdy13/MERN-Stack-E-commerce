@@ -7,6 +7,7 @@ const multer = require("multer");
 const path = require("path");
 const cors = require("cors");
 const Product = require("./models/Products.js");
+const Users = require("./models/User.js");
 app.use(express.json());
 app.use(cors());
 
@@ -23,78 +24,178 @@ mongoose
     console.log(`error:`, error);
   });
 
+app.get("/", (req, res) => {
+  res.send("Express app is running");
+});
 
-  app.get("/", (req, res) => {
-    res.send("Express app is running");
+// image storage Engine
+
+const storage = multer.diskStorage({
+  destination: "./upload/images",
+  filename: (req, file, cb) => {
+    return cb(
+      null,
+      `${file.fieldname}_${Date.now()}${path.extname(file.originalname)}`
+    );
+  },
+});
+
+const upload = multer({ storage: storage });
+
+// Creating Upload EndPoint For images
+app.use("/images", express.static("upload/images"));
+app.post("/upload", upload.single("product"), (req, res) => {
+  res.json({
+    sucsses: 1,
+    img_url: `http://localhost:4000/images/${req.file.filename}`,
   });
+});
 
-  // image storage Engine
+// Upload EndPoint\\
 
-  const storage = multer.diskStorage({
-    destination: "./upload/images",
-    filename: (req, file, cb) => {
-      return cb(
-        null,
-        `${file.fieldname}_${Date.now()}${path.extname(file.originalname)}`
-      );
-    },
+app.post("/addproduct", async (req, res) => {
+  let products = await Product.find({});
+  let Id;
+  if (products.length > 0) {
+    let last_product_array = products.slice(-1);
+    let last_product = last_product_array[0];
+    Id = last_product.id + 1;
+  } else {
+    Id = 1;
+  }
+  const product = new Product();
+  product.id = Id;
+  product.name = req.body.name;
+  product.descripe = req.body.descripe;
+  product.image = req.body.image;
+  product.category = req.body.category;
+  product.rate = req.body.rate;
+  product.price = req.body.price;
+  await product.save();
+
+  res.json(product);
+});
+app.delete("/deleteproduct", async (req, res) => {
+  await Product.findOneAndDelete(req.body.id, req.body.name);
+  res.json({
+    success: true,
+    name: req.body.name,
   });
+});
+app.get("/allproduct", async (req, res) => {
+  let product = await Product.find({});
+  res.json(product);
+});
+app.get("/:catg", async (req, res) => {
+  let params = req.params.catg;
 
-  const upload = multer({ storage: storage });
+  let product = await Product.find({ category: params });
+  res.json(product);
+});
 
-  // Creating Upload EndPoint For images
-  app.use("/images", express.static("upload/images"));
-  app.post("/upload", upload.single("product"), (req, res) => {
-    res.json({
-      sucsses: 1,
-      img_url: `http://localhost:4000/images/${req.file.filename}`,
+// Creating EndPoint For Registering the user //
+
+app.post("/signup", async (req, res) => {
+  await Users.find({ email: req.body.email })
+    .exec()
+    .then(async (user) => {
+      if (user.length >= 1) {
+        return res.status(409).json({
+          success: false,
+          message: "Mail exists",
+        });
+      } else {
+        let cart = [];
+        const user = new Users();
+        user.username = req.body.username;
+        user.email = req.body.email;
+        user.password = req.body.password;
+        user.cartData = cart;
+        await user.save();
+        const data = {
+          user: {
+            id: user.id,
+          },
+        };
+        const token = jwt.sign(data, "seceret_ecom");
+        res.json({ success: true, token });
+      }
     });
-  });
+});
 
-  // Upload EndPoint\\
+// Creating EndPoint For Registering the user //
 
-  app.post("/addproduct", async (req, res) => {
-    let products = await Product.find({});
-    let Id;
-    if (products.length > 0) {
-      let last_product_array = products.slice(-1);
-      let last_product = last_product_array[0];
-      Id = last_product.id + 1;
+// Creating EndPoint For User Login//
+app.post("/login", async (req, res) => {
+  let user = await Users.findOne({ email: req.body.email });
+  if (!req.body.email || req.body.password) {
+    if (user) {
+      if (req.body.password == user.password) {
+        const data = {
+          user: user._id,
+        };
+        const token = jwt.sign(data, "seceret_ecom");
+        res.json({ success: true, token });
+      } else {
+        res.json({ success: false, errors: "Wrong Password" });
+      }
     } else {
-      Id = 1;
+      res.json({ success: false, errors: "Wrong Email Id" });
     }
-    const product = new Product();
-    product.id = Id;
-    product.name = req.body.name;
-    product.descripe = req.body.descripe;
-    product.image = req.body.image;
-    product.category = req.body.category;
-    product.rate = req.body.rate;
-    product.price = req.body.price;
-    await product.save();
+  } else {
+    res.json({ success: false, errors: "Fill out all fields" });
+  }
+});
+// Creating EndPoint For User Login//
 
-    res.json(product);
-  });
-  app.delete("/deleteproduct", async (req, res) => {
-    await Product.findOneAndDelete(req.body.id, req.body.name);
-    res.json({
-      success: true,
-      name: req.body.name,
-    });
-  });
-  app.get("/allproduct", async (req, res) => {
-    let product = await Product.find({});
-    res.json(product);
-  });
- 
+const fetchUser = async (req, res, next) => {
+  const token = req.header("auth-token");
 
+  if (!token) {
+    res.status(401).send({ errors: "please authenticate using valid token" });
+  } else {
+    try {
+      const data = jwt.verify(token, "seceret_ecom");
+      req.user = data.user;
+      next();
+    } catch (error) {
+      res.status(401).send({ errors: "please authenticate using valid token" });
+      console.log(error);
+    }
+  }
+};
 
+// Creating EndPoint For Add to cart//
+app.post("/addtocart", fetchUser, async (req, res) => {
+  let userData = await Users.findOne({ _id: req.user });
+  userData.cartData[req.body.itemId] += 1;
 
+  await Users.findOneAndUpdate(
+    { _id: req.user },
+    { cartData: userData.cartData }
+  );
+  res.send("Added");
+});
+// Creating EndPoint For Add to cart//
 
+app.post("/deletefromcart", fetchUser, async (req, res) => {
+  let userData = await Users.findOne({ _id: req.user });
+  if (userData.cartData[req.body.itemId] > 0) {
+    userData.cartData[req.body.itemId] -= 1;
+    await Users.findOneAndUpdate(
+      { _id: req.user },
+      { cartData: userData.cartData }
+    );
+    res.send("Deleted");
+  } else {
+    res.json("err cart is empty");
+  }
+});
 
-
-
-  app.listen(port, () => {
-    console.log("I'm Listen to 4000");
-  });
-
+app.post("/getcart", fetchUser, async (req, res) => {
+  let userData = await Users.findOne({ _id: req.user })
+  res.json(userData.cartData)
+});
+app.listen(port, () => {
+  console.log("I'm Listen to 4000");
+});

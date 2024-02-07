@@ -198,7 +198,7 @@ export default function Header2() {
                     <Typography>{item.mainLink}</Typography>
                   </AccordionSummary>
 
-                  <List sx={{ py: 0, my: 0 }}>
+                  <List sx={{ py: 0, my: 0 }} key={item.id}>
                     {item.subLinks.map((link) => {
                       return (
                         <ListItem key={link} sx={{ py: 0, my: 0 }}>

@@ -1,11 +1,14 @@
 import { AddShoppingCartOutlined } from "@mui/icons-material";
-import { Box, Button, Stack, Typography } from "@mui/material";
+import { Box, Button, Stack, ToggleButton, Typography } from "@mui/material";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
-import {  useState } from "react";
+import { useContext, useState } from "react";
+import { ShopContext } from "../../Contexs/ShopContext";
+import { Link } from "react-router-dom";
 
 const ProductDetails = ({ clickedProduct }) => {
- 
-  const [selectedImg, setselectedImg] = useState(0);
+  const { addToCart, cartItems } = useContext(ShopContext);
+  const cartItemAmount = cartItems[clickedProduct.id]
+
   return (
     <Box
       sx={{
@@ -16,26 +19,15 @@ const ProductDetails = ({ clickedProduct }) => {
       }}
     >
       <Box sx={{ display: "flex" }}>
-        <img
-          width={360}
-          //   src={
-          //     clickedProduct.attributes.productImg.data[selectedImg].attributes
-          //       .url
-          //   }
-          alt=""
-        />
+        <img width={360} src={clickedProduct.image} alt="" />
       </Box>
 
       <Box sx={{ py: 2, textAlign: { xs: "center", sm: "left" } }}>
-        <Typography variant="h5">
-          {/* {clickedProduct.attributes.productTitle} */}
-        </Typography>
+        <Typography variant="h5">{clickedProduct.name}</Typography>
         <Typography my={0.4} fontSize={"22px"} color={"crimson"} variant="h6">
-          {/* ${clickedProduct.attributes.productPrice} */}
+          ${clickedProduct.price}
         </Typography>
-        <Typography variant="body1">
-          {/* {clickedProduct.attributes.productDescription} */}
-        </Typography>
+        <Typography variant="body1">{clickedProduct.descripe}</Typography>
 
         <Stack
           sx={{ justifyContent: { xs: "center", sm: "left" } }}
@@ -44,7 +36,7 @@ const ProductDetails = ({ clickedProduct }) => {
           my={2}
         >
           <ToggleButtonGroup
-            // value={selectedImg}
+            value={clickedProduct.image}
             exclusive
             sx={{
               ".Mui-selected": {
@@ -55,42 +47,52 @@ const ProductDetails = ({ clickedProduct }) => {
               },
             }}
           >
-            {/* {clickedProduct.attributes.productImg.data.map((item, index) => {
-              return (
-                <ToggleButton
-                  key={item.id}
-                  value={index}
-                  sx={{
-                    width: "110px",
-                    height: "110px",
-                    mx: 1,
-                    p: "0",
-                    opacity: "0.5",
-                  }}
-                >
-                  <img
-                    onClick={() => {
-                      setselectedImg(index);
-                    }}
-                    style={{ borderRadius: 3 }}
-                    height={"100%"}
-                    width={"100%"}
-                    src={item.attributes.url}
-                    alt=""
-                  />
-                </ToggleButton>
-              );
-            })} */}
+            <ToggleButton
+              key={clickedProduct.id}
+              sx={{
+                width: "110px",
+                height: "110px",
+                mx: 1,
+                p: "0",
+                opacity: "0.5",
+              }}
+            >
+              <img
+                style={{ borderRadius: 3, m: 4 }}
+                height={"100%"}
+                width={"100%"}
+                src={clickedProduct.image}
+                alt=""
+              />
+            </ToggleButton>
           </ToggleButtonGroup>
         </Stack>
 
         <Button
-          sx={{ mb: { xs: 1, sm: 0 }, textTransform: "capitalize" }}
+          sx={{
+            mb: { xs: 1, sm: 0, margin: " 16px" },
+            textTransform: "capitalize",
+          }}
           variant="contained"
+          onClick={() => {
+            addToCart(clickedProduct.id, clickedProduct._id);
+          }}
         >
           <AddShoppingCartOutlined sx={{ mr: 1 }} fontSize="small" />
-          Buy now
+          Add to cart {cartItemAmount > 0 && <>({cartItemAmount})</>}
         </Button>
+        <Link to={"/cart"}>
+          <Button
+            sx={{
+              mb: { xs: 1, sm: 0, marginTop: "16px" },
+              textTransform: "capitalize",
+            }}
+            variant="contained"
+          >
+            <AddShoppingCartOutlined sx={{ mr: 1 }} fontSize="small" />
+            Go to Cart
+          </Button>
+        </Link>
       </Box>
     </Box>
   );

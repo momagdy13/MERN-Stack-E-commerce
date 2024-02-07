@@ -7,6 +7,8 @@ import {
   Typography,
   Stack,
   ListItem,
+  Badge,
+  Button,
 } from "@mui/material";
 import {
   DarkModeOutlined,
@@ -21,16 +23,30 @@ import List from "@mui/material/List";
 import ListItemText from "@mui/material/ListItemText";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
+import Person2OutlinedIcon from "@mui/icons-material/Person2Outlined";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import styled from "@emotion/styled";
+import { Link } from "react-router-dom";
+import { ShopContext } from "../../Contexs/ShopContext";
 
 const options = ["AR", "EN"];
 
 export default function Navbar() {
   const colorMode = useContext(ColorModeContext);
   const theme = useTheme();
-
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedIndex, setSelectedIndex] = useState(1);
   const open = Boolean(anchorEl);
+  const { getTotalCartItems } = useContext(ShopContext);
+  const StyledBadge = styled(Badge)(({ theme }) => ({
+    "& .MuiBadge-badge": {
+      right: -3,
+      top: 13,
+      border: `2px solid ${theme.palette.background.paper}`,
+      padding: "0 4px",
+    },
+  }));
+
   const handleClickListItem = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -175,6 +191,45 @@ export default function Navbar() {
               mr: 1,
             }}
           />
+          <Stack direction={"row"} alignItems={"center"}>
+            <IconButton aria-label="cart">
+              <StyledBadge badgeContent={getTotalCartItems()} color="secondary">
+                <Link to={"/cart"}>
+                  <ShoppingCartIcon
+                    sx={{ color: theme.palette.text.secondary }}
+                  />
+                </Link>
+              </StyledBadge>
+            </IconButton>
+
+            {localStorage.getItem("token") ? (
+              <Button
+                color="error"
+                onClick={() => {
+                  localStorage.removeItem("token");
+                  window.location.replace("/");
+                }}
+              >
+                Log Out
+              </Button>
+            ) : (
+              <IconButton>
+                <Link
+                  to={"/login"}
+                  type="error"
+                  style={{
+                    textDecoration: "none",
+                    color: theme.palette.text.secondary,
+                  }}
+                >
+                  <Person2OutlinedIcon
+                    sx={{ color: theme.palette.text.secondary }}
+                  />
+                  Log-In
+                </Link>
+              </IconButton>
+            )}
+          </Stack>
         </Stack>
       </Container>
     </Box>
