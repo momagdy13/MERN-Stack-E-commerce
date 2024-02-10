@@ -93,35 +93,33 @@ export default function Navbar() {
           </Typography>
           <Box flexGrow={1} />
 
-          <div>
-            {theme.palette.mode === "light" ? (
-              <IconButton
-                onClick={() => {
-                  localStorage.setItem(
-                    "mode",
-                    theme.palette.mode === "dark" ? "light" : "dark"
-                  );
-                  colorMode.toggleColorMode();
-                }}
-                color="white"
-              >
-                <LightModeOutlined fontSize="mid" sx={{ color: "white" }} />
-              </IconButton>
-            ) : (
-              <IconButton
-                onClick={() => {
-                  localStorage.setItem(
-                    "mode",
-                    theme.palette.mode === "dark" ? "light" : "dark"
-                  );
-                  colorMode.toggleColorMode();
-                }}
-                color="inherit"
-              >
-                <DarkModeOutlined fontSize="mid" sx={{ color: "white" }} />
-              </IconButton>
-            )}
-          </div>
+          {theme.palette.mode === "light" ? (
+            <IconButton
+              onClick={() => {
+                localStorage.setItem(
+                  "mode",
+                  theme.palette.mode === "dark" ? "light" : "dark"
+                );
+                colorMode.toggleColorMode();
+              }}
+              color="white"
+            >
+              <LightModeOutlined fontSize="mid" sx={{ color: "white" }} />
+            </IconButton>
+          ) : (
+            <IconButton
+              onClick={() => {
+                localStorage.setItem(
+                  "mode",
+                  theme.palette.mode === "dark" ? "light" : "dark"
+                );
+                colorMode.toggleColorMode();
+              }}
+              color="inherit"
+            >
+              <DarkModeOutlined fontSize="mid" sx={{ color: "white" }} />
+            </IconButton>
+          )}
 
           <List
             component="nav"
@@ -168,29 +166,43 @@ export default function Navbar() {
               </MenuItem>
             ))}
           </Menu>
-
-          <Twitter
-            sx={{
-              fontSize: "25px",
-              color: "#fff",
-              mr: 1,
-            }}
-          />
-          <Facebook
-            sx={{
-              fontSize: "25px",
-              mx: 1,
-              color: "#fff",
-              mr: 1,
-            }}
-          />
-          <Instagram
-            sx={{
-              fontSize: "25px",
-              color: "#fff",
-              mr: 1,
-            }}
-          />
+          <IconButton>
+            <Link to={"https://twitter.com/"} target="_blank">
+              <Twitter
+                sx={{
+                  fontSize: "25px",
+                  color: "#fff",
+                  mr: 1,
+                  mt: 1,
+                }}
+              />
+            </Link>
+          </IconButton>
+          <IconButton>
+            <Link to={"https://web.facebook.com/?_rdc=1&_rdr"} target="_blank">
+              <Facebook
+                sx={{
+                  fontSize: "25px",
+                  mx: 1,
+                  color: "#fff",
+                  mr: 1,
+                  mt: 1,
+                }}
+              />
+            </Link>{" "}
+          </IconButton>
+          <IconButton>
+            <Link to={"https://www.instagram.com/mmagdy89/"} target="_blank">
+              <Instagram
+                sx={{
+                  fontSize: "25px",
+                  color: "#fff",
+                  mr: 1,
+                  mt: 1,
+                }}
+              />
+            </Link>
+          </IconButton>
           <Stack direction={"row"} alignItems={"center"}>
             <IconButton aria-label="cart">
               <StyledBadge badgeContent={getTotalCartItems()} color="secondary">

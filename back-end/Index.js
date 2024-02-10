@@ -10,12 +10,17 @@ const Product = require("./models/Products.js");
 const Users = require("./models/User.js");
 app.use(express.json());
 app.use(cors());
-
+app.use((req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "http://localhost:5173");
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+  next();
+});
 // mongoose user = {hamomagdy12266} pass = {pY0EyZ2ow0yPeDIw}
 
 mongoose
   .connect(
-    `mongodb+srv://hamomagdy12266:pY0EyZ2ow0yPeDIw@productculster.pym2sey.mongodb.net/`
+    `mongodb+srv://hamomagdy12266:pY0EyZ2ow0yPeDIw@productculster.pym2sey.mongodb.net/?retryWrites=true&w=majority`
   )
   .then(() => {
     console.log("Success Connect");
@@ -96,41 +101,50 @@ app.get("/:catg", async (req, res) => {
 // Creating EndPoint For Registering the user //
 
 app.post("/signup", async (req, res) => {
-  await Users.find({ email: req.body.email })
-    .exec()
-    .then(async (user) => {
-      if (user.length >= 1) {
-        return res.status(409).json({
-          success: false,
-          message: "Mail exists",
-        });
-      } else {
-        let cart = [];
-        const user = new Users();
-        user.username = req.body.username;
-        user.email = req.body.email;
-        user.password = req.body.password;
-        user.cartData = cart;
-        await user.save();
-        const data = {
-          user: {
-            id: user.id,
-          },
-        };
-        const token = jwt.sign(data, "seceret_ecom");
-        res.json({ success: true, token });
+  const { username, email, password } = req.body;
+  if (username && email && password != "") {
+    const user = await Users.findOne({ email }).exec();
+    if (user) {
+      return res.json({
+        success: false,
+        errors: "Mail exists",
+      });
+    } else {
+      let cart = {};
+      for (let index = 0; index < 300; index++) {
+        cart[index] = 0;
       }
+      const user = new Users({
+        username,
+        email,
+        password,
+        cartData: cart,
+      });
+      await user.save();
+      const data = {
+        user: user._id,
+      };
+      const token = jwt.sign(data, "seceret_ecom");
+      res.json({ success: true, token });
+    }
+  } else {
+    return res.json({
+      success: false,
+      errors: "Fill Out All Fields",
     });
+  }
 });
 
 // Creating EndPoint For Registering the user //
 
 // Creating EndPoint For User Login//
 app.post("/login", async (req, res) => {
-  let user = await Users.findOne({ email: req.body.email });
-  if (!req.body.email || req.body.password) {
+  const { email, password } = req.body;
+
+  if (email && password != "") {
+    let user = await Users.findOne({ email });
     if (user) {
-      if (req.body.password == user.password) {
+      if (password == user.password) {
         const data = {
           user: user._id,
         };
@@ -169,7 +183,6 @@ const fetchUser = async (req, res, next) => {
 app.post("/addtocart", fetchUser, async (req, res) => {
   let userData = await Users.findOne({ _id: req.user });
   userData.cartData[req.body.itemId] += 1;
-
   await Users.findOneAndUpdate(
     { _id: req.user },
     { cartData: userData.cartData }
@@ -193,8 +206,8 @@ app.post("/deletefromcart", fetchUser, async (req, res) => {
 });
 
 app.post("/getcart", fetchUser, async (req, res) => {
-  let userData = await Users.findOne({ _id: req.user })
-  res.json(userData.cartData)
+  let userData = await Users.findOne({ _id: req.user });
+  res.json(userData.cartData);
 });
 app.listen(port, () => {
   console.log("I'm Listen to 4000");

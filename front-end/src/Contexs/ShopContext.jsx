@@ -80,25 +80,26 @@ const ShopContextProvider = (props) => {
       .get(`${import.meta.env.VITE_BASE_URL}/allproduct`)
       .then((response) => {
         setAllProduct(response.data);
-        if (localStorage.getItem("token")) {
-          axios
-            .post(
-              "http://localhost:4000/getcart",
-              {},
-              {
-                headers: { "auth-token": `${localStorage.getItem("token")}` },
-              }
-            )
-            .then((response) => {
-              setCartItems(response.data);
-            })
-            .catch((error) => {
-              console.log(error);
-            });
-        }
-      })
-      .catch((error) => {
-        console.log(error);
+          if (localStorage.getItem("token")) {
+            axios
+              .post(
+                "http://localhost:4000/getcart",
+                {},
+                {
+                  headers: { "auth-token": `${localStorage.getItem("token")}` },
+                }
+              )
+              .then((response) => {
+                setCartItems(response.data);
+              })
+              .catch((error) => {
+                console.log(error);
+              });
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        
       });
   }, []);
 

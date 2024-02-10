@@ -6,6 +6,7 @@ import {
   Box,
   Button,
   Checkbox,
+  Collapse,
   Divider,
   IconButton,
   Input,
@@ -16,6 +17,9 @@ import {
 } from "@mui/material";
 
 export default function SignUpLogin() {
+  const [open, setOpen] = React.useState(false);
+  const [alertContent, setAlertContent] = useState("");
+
   const [state, setState] = useState("Login");
   const [formData, setFormData] = useState({
     email: "",
@@ -27,25 +31,34 @@ export default function SignUpLogin() {
   };
   const login = async () => {
     await axios
-      .post("http://localhost:4000/login",formData)
+      .post("http://localhost:4000/login", formData)
       .then((response) => {
-        localStorage.setItem("token", response.data.token);
+        console.log(response);
         if (response.data.success) {
           window.location.replace("/");
+          localStorage.setItem("token", response.data.token);
+        } else {
+          setAlertContent(response.data.errors);
+          setOpen(true);
         }
       })
       .catch((response) => {
-        console.log(response.message);
-        Alert(response.message);
+        console.log(response);
+        setAlertContent(response.data.response.data);
+        setOpen(true);
       });
   };
   const signup = async () => {
     await axios
       .post("http://localhost:4000/signup", formData)
       .then((response) => {
-        if (response) {
+       console.log(response)
+        if (response.data.success) {
           window.location.replace("/");
           localStorage.setItem("token", response.data.token);
+        } else {
+          setAlertContent(response.data.errors);
+          setOpen(true);
         }
       })
       .catch((error) => {
@@ -55,6 +68,18 @@ export default function SignUpLogin() {
 
   return (
     <Container>
+      <Box sx={{ ml: "25%", width: "600px" }}>
+        <Collapse in={open}>
+          <Alert
+            severity="error"
+            onClose={() => {
+              setOpen(false);
+            }}
+          >
+            {alertContent}
+          </Alert>
+        </Collapse>
+      </Box>
       <Typography variant="h4" sx={{ marginLeft: "45%", color: "red" }}>
         {state}{" "}
       </Typography>
@@ -77,6 +102,7 @@ export default function SignUpLogin() {
         ) : (
           <></>
         )}
+
         <Input
           error
           type="email"
@@ -124,7 +150,7 @@ export default function SignUpLogin() {
 
         <Stack display={"flex"} marginTop={"40px"}>
           {state === "Login" ? (
-            <Typography className="loginsignup">
+            <Typography>
               Creating an account?{" "}
               <Typography
                 sx={{ cursor: "pointer", ":hover": { color: "red" } }}
@@ -136,7 +162,7 @@ export default function SignUpLogin() {
               </Typography>
             </Typography>
           ) : (
-            <Typography className="loginsignup">
+            <Typography>
               Already have an account?{" "}
               <Typography
                 sx={{ cursor: "pointer", ":hover": { color: "red" } }}
@@ -150,9 +176,11 @@ export default function SignUpLogin() {
           )}
         </Stack>
 
-        <Box display={'flex'} marginTop={'30px'} marginBottom={'50px'}>
+        <Box display={"flex"} marginTop={"30px"} marginBottom={"50px"}>
           <Checkbox type="checkbox" name="" id="" />
-          <p>By continuem i agree the terms of use & privacy policy.</p>
+          <Typography component={"p"}>
+            By continuem i agree the terms of use & privacy policy.
+          </Typography>
         </Box>
       </Stack>
     </Container>
