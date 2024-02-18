@@ -1,27 +1,132 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
+  Alert,
   Box,
   Button,
+  Collapse,
   Container,
   Divider,
   Stack,
   TextField,
   Typography,
+  useTheme,
 } from "@mui/material";
-import hero_ from "../Assest/apple-black-glowing-logo.jpg";
 import cross_icon from "../Assest/cross_icon.png";
 import { ShopContext } from "../../Contexs/ShopContext";
+import Modal from "@mui/material/Modal";
+
+const style = {
+  position: "absolute",
+  top: "45%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  border: "2px solid #000",
+  boxShadow: 24,
+  p: 4,
+  width: "50%",
+  height: "610px",
+  borderRadius: "70px",
+  backdropFilter: "blur(10px)",
+  backgroudColor: "transparent",
+  color: "ghostwhite",
+};
 
 export default function CartItem() {
-  const { cartItems, all_product, removeFromCart, getTotalCartAmount } =
-    useContext(ShopContext);
+  const {
+    cartItems,
+    all_product,
+    removeFromCart,
+    removeAllFromCart,
+    getTotalCartAmount,
+  } = useContext(ShopContext);
+  const theme = useTheme();
+
+  const [open, setOpen] = React.useState(false);
+  const [openCollapse, setOpenCol] = useState();
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
   return (
-    <Container>
-      <Stack
-        direction={"row"}
-        justifyContent={"space-between"}
-        sx={{ mt: "40px" }}
+    <Container sx={{ mt: "8%", mb: "12%" }}>
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
       >
+        <Box sx={style}>
+          <Typography variant="h4" sx={{ ml: "35%", mb: "30px" }}>
+            Bill Dateails
+          </Typography>
+          <Typography variant="h5" sx={{ mb: "20px" }}>
+            Sub Total: ${getTotalCartAmount()}
+          </Typography>
+          <Typography variant="h5" sx={{ mb: "20px" }}>
+            {" "}
+            Total: ${getTotalCartAmount()}
+          </Typography>
+          <Typography variant="h5" sx={{ mb: "20px" }}>
+            Payment Way : Upon Receipt
+          </Typography>
+          <Typography variant="h5" sx={{ mb: "20px" }}>
+            Your Order will arrive after three days
+          </Typography>
+          <Box sx={{ display: "flex", mt: "100px", ml: "280px" }}>
+            <Button
+              variant="outlined"
+              sx={{
+                width: "280px",
+                mr: "50px",
+                color: "ghostwhite",
+                border: `3px solid ghostwhite`,
+                height: "55px",
+                borderRadius: "20px",
+                fontSize: "20px",
+              }}
+              onClick={() => {
+                removeAllFromCart(),
+                  setOpenCol(true),
+                  setInterval(() => {
+                    window.location.reload(true);
+                  }, 2800);
+              }}
+            >
+              CHECKOUT
+            </Button>
+            <Button
+              variant="outlined"
+              sx={{
+                width: "240px",
+                fontSize: "20px",
+                color: "ghostwhite",
+                border: `3px solid ghostwhite`,
+                height: "55px",
+                borderRadius: "20px",
+              }}
+              onClick={() => {
+                handleClose(), setOpenCol(false), setinterval;
+              }}
+            >
+              Close
+            </Button>
+          </Box>
+          <Collapse in={openCollapse}>
+            <Alert
+              sx={{
+                mt: "30px",
+                border: "2px solid green",
+                borderRadius: "30px",
+              }}
+            >
+              Done Order
+            </Alert>
+          </Collapse>
+        </Box>
+      </Modal>
+      <Divider sx={{ borderColor: `${theme.palette.text.primary}` }} />
+
+      <Stack direction={"row"} justifyContent={"space-between"}>
         <Typography variant="h6">Products</Typography>
         <Typography variant="h6">Title</Typography>
         <Typography variant="h6">Price</Typography>
@@ -29,7 +134,9 @@ export default function CartItem() {
         <Typography variant="h6">Total</Typography>
         <Typography variant="h6">Remove</Typography>
       </Stack>
-      <hr />
+      <Divider
+        sx={{ borderColor: `${theme.palette.text.primary}`, mb: "10px" }}
+      />
 
       {all_product.map((item) => {
         if (cartItems[item.id] > 0) {
@@ -72,31 +179,41 @@ export default function CartItem() {
         }
       })}
 
-      <hr />
+      <Divider
+        sx={{ borderColor: `${theme.palette.text.primary}`, mt: "20px" }}
+      />
       <Container sx={{ display: "flex", mt: "80px", mb: "40px" }}>
         <Stack sx={{ width: "45%" }}>
           <Typography variant="h5">cart Totals</Typography>
+          <Stack direction={"row"} justifyContent={"space-between"} mt={"30px"}>
+            <Typography variant="h5">SubTotal</Typography>
+            <Typography variant="h5">${getTotalCartAmount()}</Typography>
+          </Stack>
+          <Divider sx={{ borderColor: `${theme.palette.text.primary}` }} />
+          <Stack direction={"row"} justifyContent={"space-between"} mt={"30px"}>
+            <Typography variant="h5">Shipping Fee</Typography>
+            <Typography variant="h5">Free</Typography>
+          </Stack>
+          <Divider sx={{ borderColor: `${theme.palette.text.primary}` }} />
+          <Stack direction={"row"} justifyContent={"space-between"} mt={"30px"}>
+            <Typography variant="h5">Total</Typography>
+            <Typography variant="h5">${getTotalCartAmount()}</Typography>
+          </Stack>
 
-          <Stack direction={"row"} justifyContent={"space-between"}>
-            <h3>SubTotal</h3>
-            <h3>${getTotalCartAmount()}</h3>
-          </Stack>
-          <Divider />
-          <Stack direction={"row"} justifyContent={"space-between"}>
-            <p>Shipping Fee</p>
-            <p>Free</p>
-          </Stack>
-          <Divider />
-          <Stack direction={"row"} justifyContent={"space-between"}>
-            <h3>Total</h3>
-            <h3>${getTotalCartAmount()}</h3>
-          </Stack>
-          <Divider />
+          <Divider sx={{ borderColor: `${theme.palette.text.primary}` }} />
 
           <Button
             variant="outlined"
-            color="error"
-            sx={{ width: "50%", mt: "20px" }}
+            sx={{
+              width: "100%",
+              mt: "20px",
+              color: theme.palette.text.secondary,
+              border: `3px solid ${theme.palette.text.secondary}`,
+              height: "55px",
+              borderRadius: "20px",
+              fontSize:'18px'
+            }}
+            onClick={handleOpen}
           >
             PROCEED TO CHECKOUT
           </Button>
@@ -111,9 +228,8 @@ export default function CartItem() {
           <Typography variant="h6">
             IF you have a promo code, Enter here
           </Typography>
-          <Stack>
+          <Stack mt={"5%"}>
             <TextField
-              error
               id="outlined-password-input"
               label="Promo code"
               type="text"
@@ -121,8 +237,16 @@ export default function CartItem() {
             />{" "}
             <Button
               variant="outlined"
-              color="error"
-              sx={{ width: "50%", mt: "20px", ml: "110px", height: "50px" }}
+              sx={{
+                width: "50%",
+                mt: "20px",
+                height: "50px",
+                color: theme.palette.text.secondary,
+                border: `3px solid ${theme.palette.text.secondary}`,
+                height: "55px",
+                borderRadius: "20px",
+                fontSize: "18px",
+              }}
             >
               Submit
             </Button>

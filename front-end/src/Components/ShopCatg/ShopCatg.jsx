@@ -22,6 +22,7 @@ import axios from "axios";
 import { Close } from "@mui/icons-material";
 import ProductDetails from "../ProductDetails/ProductDetails";
 import { motion } from "framer-motion";
+import Favourite from "../../Pages/Favourite";
 
 export default function ShopCatg() {
   const [all_product, setAllProduct] = useState([]);
@@ -29,7 +30,6 @@ export default function ShopCatg() {
   const [clickedProduct, setclickedProduct] = useState({});
   const [open, setOpen] = React.useState(false);
   const [category, setCategory] = useState("allproduct");
-  
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -99,7 +99,7 @@ export default function ShopCatg() {
             </ToggleButton>
             <ToggleButton
               sx={{ width: "200px" }}
-              value="women"
+              value="Women"
               aria-label="right aligned"
             >
               Women Category
@@ -131,6 +131,8 @@ export default function ShopCatg() {
                       transition: "2s",
                       scale: "1.1",
                     },
+                    borderRadius: "30px",
+                    boxShadow: "rgb(38, 57, 77) 0px 20px 30px -10px;",
                   }}
                 >
                   <CardMedia sx={{ height: 350 }} image={item.image} />
@@ -158,9 +160,10 @@ export default function ShopCatg() {
                       <Button
                         sx={{
                           border: "1px  solid black",
-                          boxShadow: ".5px .2px 1px .3px #ff1412",
+
                           color: theme.palette.text.secondary,
                           textTransform: "capitalize",
+                          background: "#cca300",
                         }}
                         onClick={() => {
                           handleClickOpen();
@@ -201,6 +204,7 @@ export default function ShopCatg() {
             position: "absolute",
             top: 0,
             right: 10,
+            zIndex: "1000",
           }}
           onClick={handleClose}
         >

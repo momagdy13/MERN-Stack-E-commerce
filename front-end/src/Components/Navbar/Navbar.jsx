@@ -16,6 +16,7 @@ import {
   Facebook,
   Instagram,
   LightModeOutlined,
+  ShoppingCartOutlined,
   Twitter,
 } from "@mui/icons-material";
 import { Box, Container } from "@mui/system";
@@ -28,6 +29,7 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import styled from "@emotion/styled";
 import { Link } from "react-router-dom";
 import { ShopContext } from "../../Contexs/ShopContext";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 
 const options = ["AR", "EN"];
 
@@ -37,7 +39,7 @@ export default function Navbar() {
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedIndex, setSelectedIndex] = useState(1);
   const open = Boolean(anchorEl);
-  const { getTotalCartItems } = useContext(ShopContext);
+  const { getTotalCartItems, FavNumber } = useContext(ShopContext);
   const StyledBadge = styled(Badge)(({ theme }) => ({
     "& .MuiBadge-badge": {
       right: -3,
@@ -63,8 +65,22 @@ export default function Navbar() {
   return (
     <Box sx={{ bgcolor: "#2B3445", py: "4px" }}>
       <Container>
-        {" "}
         <Stack direction={"row"} alignItems={"center"}>
+          <Typography
+            sx={{
+              color: theme.palette.text.secondary,
+              fontSize: "20px",
+              fontFamily: "inherit",
+            }}
+          >
+            Mo_Shop
+          </Typography>
+          <Link to={"/"}>
+            <ShoppingCartOutlined
+              sx={{ cursor: "pointer", color: theme.palette.text.secondary }}
+            />
+          </Link>
+
           <Typography
             sx={{
               mr: 2,
@@ -167,6 +183,19 @@ export default function Navbar() {
             ))}
           </Menu>
           <IconButton>
+            <StyledBadge badgeContent={FavNumber()} color="secondary">
+              <Link to={"/fav"}>
+                <FavoriteIcon
+                  sx={{
+                    fontSize: "30px",
+                    color: "red",
+                   mt:'10px'
+                  }}
+                />
+              </Link>
+            </StyledBadge>
+          </IconButton>
+          <IconButton>
             <Link to={"https://twitter.com/"} target="_blank">
               <Twitter
                 sx={{
@@ -208,7 +237,7 @@ export default function Navbar() {
               <StyledBadge badgeContent={getTotalCartItems()} color="secondary">
                 <Link to={"/cart"}>
                   <ShoppingCartIcon
-                    sx={{ color: theme.palette.text.secondary }}
+                    sx={{ color: theme.palette.text.disabled, mt:'10px', fontSize:'30px' }}
                   />
                 </Link>
               </StyledBadge>

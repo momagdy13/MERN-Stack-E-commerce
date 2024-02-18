@@ -6,21 +6,20 @@ import Cart from "./Pages/Cart";
 import Shop from "./Pages/Shop";
 import Login from "./Pages/Login";
 import { Route, Routes } from "react-router-dom";
-import Header from "./Components/Headers/Header";
+import Favourite from "./Pages/Favourite";
 
 function App() {
   const [theme, colorMode] = useMode();
-
   return (
     <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>
         <CssBaseline />
          <Navbar />
-         <Header />
          <Routes>
            <Route path="/" element={<Shop />} />
            <Route path="/cart" element={<Cart />} />
            <Route path="/logIn" element={<Login />} />
+           <Route path="/fav" element={<Favourite />} />
          </Routes>
          <Fotter />
       </ThemeProvider>

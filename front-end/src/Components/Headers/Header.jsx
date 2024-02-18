@@ -1,5 +1,6 @@
 import { ExpandMore, ShoppingCartOutlined } from "@mui/icons-material";
 import {
+  Box,
   Container,
   InputBase,
   Stack,
@@ -26,10 +27,10 @@ const Search = styled("div")(({ theme }) => ({
   },
   marginRight: theme.spacing(2),
   marginLeft: 0,
-  width: "266px",
+  width: "300px",
   [theme.breakpoints.up("sm")]: {
     marginLeft: theme.spacing(3),
-    width: "330px",
+    width: "390px",
   },
 }));
 
@@ -79,14 +80,8 @@ const Header2 = () => {
   const theme = useTheme();
 
   return (
-    <Container sx={{ my: 3, display: "flex", justifyContent: "space-between" }}>
-      <Stack alignItems={"center"}>
-        <Link to={"/"}>
-          <ShoppingCartOutlined sx={{ cursor: "pointer" }} />
-        </Link>
-        <Typography variant="body2">E-commerce</Typography>
-      </Stack>
-
+    <Container sx={{ my: 3, display: "flex" }}>
+      <Box flexGrow={1} />
       <Search
         sx={{
           display: "flex",

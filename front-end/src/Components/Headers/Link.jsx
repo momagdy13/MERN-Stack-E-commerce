@@ -4,9 +4,9 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
+
 export default function Link({ title }) {
   return (
-
     <Box
       sx={{
         ":hover .show-when-hover": { display: "block" },
@@ -15,9 +15,8 @@ export default function Link({ title }) {
         position: "relative",
         display: "flex",
         alignItems: "center",
-        gap:'50px',
-        width:'180px',
-      
+        gap: "50px",
+        width: "180px",
       }}
     >
       <Typography variant="body1">{title} </Typography>
@@ -45,7 +44,6 @@ export default function Link({ title }) {
                     display: "flex",
                     p: 0,
                     px: 1.5,
-                    
                   }}
                 >
                   <ListItemText
@@ -53,104 +51,12 @@ export default function Link({ title }) {
                       "& .MuiTypography-root": {
                         fontSize: "15px",
                         fontWeight: 300,
-                        
                       },
                     }}
                     primary="Dashboard"
                   />
                   <Box flexGrow={1} />
                 </ListItemButton>
-              </ListItem>
-
-              <ListItem
-                sx={{
-                  ":hover .sub-link": { display: "block" },
-                  position: "relative",
-                  
-                }}
-                disablePadding
-              >
-                <ListItemButton
-                  sx={{
-                    display: "flex",
-                    p: 0,
-                    px: 1.5,
-                  }}
-                >
-                  <ListItemText
-                    sx={{
-                      "& .MuiTypography-root": {
-                        fontSize: "15px",
-                        fontWeight: 300,
-                      },
-                    }}
-                    primary="products"
-                  />
-                  <Box flexGrow={1} />
-
-                  <KeyboardArrowRightOutlined fontSize="small" />
-                </ListItemButton>
-
-                <Box
-                  className="sub-link"
-                  sx={{
-                    display: "none",
-
-                    position: "absolute",
-                    top: 0,
-                    left: "100%",
-                    
-                  }}
-                >
-                  <Paper sx={{ ml: 1, minWidth: 150 }}>
-                    <nav aria-label="secondary mailbox folders">
-                      <List>
-                        <ListItem disablePadding>
-                          <ListItemButton
-                            sx={{
-                              display: "flex",
-                              p: 0,
-                              px: 1.5,
-                            }}
-                          >
-                            <ListItemText
-                              sx={{
-                                "& .MuiTypography-root": {
-                                  fontSize: "15px",
-                                  fontWeight: 300,
-                                },
-                              }}
-                              primary="Add Product"
-                            />
-                            <Box flexGrow={1} />
-                          </ListItemButton>
-                        </ListItem>
-
-                        <ListItem disablePadding>
-                          <ListItemButton
-                            sx={{
-                              display: "flex",
-                              p: 0,
-                              px: 1.5,
-                            }}
-                          >
-                            <ListItemText
-                              sx={{
-                                "& .MuiTypography-root": {
-                                  fontSize: "15px",
-                                  fontWeight: 300,
-                                  
-                                },
-                              }}
-                              primary="Edit Product"
-                            />
-                            <Box flexGrow={1} />
-                          </ListItemButton>
-                        </ListItem>
-                      </List>
-                    </nav>
-                  </Paper>
-                </Box>
               </ListItem>
 
               <ListItem disablePadding>

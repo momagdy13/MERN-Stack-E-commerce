@@ -7,19 +7,18 @@ import {
   Button,
   Checkbox,
   Collapse,
-  Divider,
-  IconButton,
-  Input,
-  InputAdornment,
   Stack,
   TextField,
   Typography,
+  useTheme,
 } from "@mui/material";
+import sign from "../Components/Assest/sign-up-black.png";
 
 export default function SignUpLogin() {
   const [open, setOpen] = React.useState(false);
   const [alertContent, setAlertContent] = useState("");
-
+  const [alert, setAlert] = useState("");
+  const theme = useTheme();
   const [state, setState] = useState("Login");
   const [formData, setFormData] = useState({
     email: "",
@@ -39,6 +38,7 @@ export default function SignUpLogin() {
           localStorage.setItem("token", response.data.token);
         } else {
           setAlertContent(response.data.errors);
+          setAlert(response.data.errors);
           setOpen(true);
         }
       })
@@ -52,12 +52,11 @@ export default function SignUpLogin() {
     await axios
       .post("http://localhost:4000/signup", formData)
       .then((response) => {
-       console.log(response)
         if (response.data.success) {
           window.location.replace("/");
           localStorage.setItem("token", response.data.token);
         } else {
-          setAlertContent(response.data.errors);
+          setAlertContent(response.data);
           setOpen(true);
         }
       })
@@ -65,33 +64,96 @@ export default function SignUpLogin() {
         console.log(error);
       });
   };
+  const colse = () => {
+    setTimeout(() => {});
+  };
+  console.log(alert);
 
   return (
     <Container>
-      <Box sx={{ ml: "25%", width: "600px" }}>
-        <Collapse in={open}>
-          <Alert
-            severity="error"
-            onClose={() => {
-              setOpen(false);
-            }}
-          >
-            {alertContent}
-          </Alert>
-        </Collapse>
-      </Box>
-      <Typography variant="h4" sx={{ marginLeft: "45%", color: "red" }}>
-        {state}{" "}
-      </Typography>
-      <Stack width={"50%"} marginLeft={"25%"}>
-        {state === "Signup" ? (
-          <Input
-            error
-            type="text"
-            name="username"
-            value={formData.username}
+      <Stack
+        sx={{
+          mt: "100px",
+          width: "70%",
+          ml: "15%",
+          height: "790px",
+          boxShadow: ` 0px 14px 28px ${theme.palette.text.secondary},  0px 10px 10px  ${theme.palette.text.secondary}`,
+        }}
+        border={`4px solid ${theme.palette.text.secondary}`}
+        borderRadius={"50px"}
+      >
+        <Typography variant="h4" sx={{ marginLeft: "43%", mt: "80px" }}>
+          {state}{" "}
+        </Typography>
+
+        {alertContent.username ? (
+          <Box sx={{ ml: "25%", width: "400px", mt: "3%" }}>
+            <Alert severity="error">{alertContent.username.message}</Alert>
+          </Box>
+        ) : (
+          <></>
+        )}
+        <Stack width={"50%"} marginLeft={"25%"}>
+          {state === "Signup" ? (
+            <TextField
+              name="username"
+              value={formData.username}
+              onChange={changeHandle}
+              placeholder="Your Name"
+              sx={{
+                height: "50px",
+                fontSize: "14px",
+                mt: "30px",
+                borderRadius: "10px",
+              }}
+            />
+          ) : (
+            <></>
+          )}
+          {alertContent.email ? (
+            <Box sx={{ width: "400px", mt: "10%" }}>
+              <Alert severity="error">{alertContent.email.message}</Alert>
+            </Box>
+          ) : (
+            <Collapse in={open}>
+              <Box sx={{ width: "400px", mt: "10%" }}>
+                <Alert
+                  severity="error"
+                  onClose={() => {
+                    setOpen(false);
+                  }}
+                >
+                  {alert}
+                </Alert>
+              </Box>
+            </Collapse>
+          )}
+          <TextField
+            type="email"
+            name="email"
+            value={formData.email}
             onChange={changeHandle}
-            placeholder="Your Name"
+            placeholder="Your Email"
+            sx={{
+              height: "50px",
+              fontSize: "14px",
+              mt: "30px",
+              borderRadius: "20px",
+            }}
+          />
+          {alertContent.password ? (
+            <Box sx={{ width: "400px", mt: "5%" }}>
+              <Alert severity="error">{alertContent.password.message}</Alert>
+            </Box>
+          ) : (
+            <></>
+          )}
+          <TextField
+            type="password"
+            name="password"
+            value={formData.password}
+            onChange={changeHandle}
+            placeholder="Your Password"
             sx={{
               height: "50px",
               fontSize: "14px",
@@ -99,89 +161,57 @@ export default function SignUpLogin() {
               borderRadius: "10px",
             }}
           />
-        ) : (
-          <></>
-        )}
+          <Button
+            variant="outlined"
+            sx={{
+              width: "50%",
+              ml: "25%",
+              mt: "30px",
+              borderRadius: "15px",
+              height: "40px",
+            }}
+            onClick={() => {
+              state === "Login" ? login() : signup();
+            }}
+          >
+            Continue
+          </Button>
 
-        <Input
-          error
-          type="email"
-          name="email"
-          value={formData.email}
-          onChange={changeHandle}
-          placeholder="Your Email"
-          sx={{
-            height: "50px",
-            fontSize: "14px",
-            mt: "40px",
-            borderRadius: "20px",
-          }}
-        />
-        <Input
-          type="password"
-          name="password"
-          value={formData.password}
-          onChange={changeHandle}
-          placeholder="Your Password"
-          error
-          sx={{
-            height: "50px",
-            fontSize: "14px",
-            mt: "40px",
-            borderRadius: "10px",
-          }}
-        />
-        <Button
-          variant="outlined"
-          color="error"
-          sx={{
-            width: "50%",
-            ml: "25%",
-            mt: "30px",
-            borderRadius: "15px",
-            height: "40px",
-          }}
-          onClick={() => {
-            state === "Login" ? login() : signup();
-          }}
-        >
-          Continue
-        </Button>
+          <Stack display={"flex"} marginTop={"40px"}>
+            {state === "Login" ? (
+              <Typography>
+                Creating an account?{" "}
+                <Typography
+                  sx={{ cursor: "pointer", ":hover": { color: "red" } }}
+                  onClick={() => {
+                    setState("Signup");
+                  }}
+                >
+                  Click here
+                </Typography>
+              </Typography>
+            ) : (
+              <Typography>
+                Already have an account?{" "}
+                <Typography
+                  sx={{ cursor: "pointer", ":hover": { color: "red" } }}
+                  onClick={() => {
+                    setState("Login");
+                  }}
+                >
+                  Login here
+                </Typography>
+              </Typography>
+            )}
+          </Stack>
 
-        <Stack display={"flex"} marginTop={"40px"}>
-          {state === "Login" ? (
-            <Typography>
-              Creating an account?{" "}
-              <Typography
-                sx={{ cursor: "pointer", ":hover": { color: "red" } }}
-                onClick={() => {
-                  setState("Signup");
-                }}
-              >
-                Click here
-              </Typography>
+          <Box display={"flex"} marginTop={"30px"} marginBottom={"50px"}>
+            <Checkbox type="checkbox" name="" id="" />
+            <Typography component={"p"}>
+              By continuem i agree the terms of use & privacy policy.
             </Typography>
-          ) : (
-            <Typography>
-              Already have an account?{" "}
-              <Typography
-                sx={{ cursor: "pointer", ":hover": { color: "red" } }}
-                onClick={() => {
-                  setState("Login");
-                }}
-              >
-                Login here
-              </Typography>
-            </Typography>
-          )}
+          </Box>
         </Stack>
-
-        <Box display={"flex"} marginTop={"30px"} marginBottom={"50px"}>
-          <Checkbox type="checkbox" name="" id="" />
-          <Typography component={"p"}>
-            By continuem i agree the terms of use & privacy policy.
-          </Typography>
-        </Box>
       </Stack>
     </Container>
   );

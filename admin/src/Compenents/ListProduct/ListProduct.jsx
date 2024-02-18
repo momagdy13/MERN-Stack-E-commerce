@@ -5,8 +5,8 @@ import axios from "axios";
 export default function ListProduct() {
   const [allproducts, setProducts] = useState([]);
 
-  const req = async () => {
-    await axios
+  const req = () => {
+    axios
       .get(`${import.meta.env.VITE_BASE_URL}/allproduct`)
       .then((response) => {
         console.log(response.data);
@@ -17,7 +17,7 @@ export default function ListProduct() {
       });
   };
   const deleteProduct = async (id) => {
-    await axios
+    axios
       .delete(`${import.meta.env.VITE_BASE_URL}/deleteproduct`, { id: id })
       .then((response) => {
         alert("Deleted Success!");

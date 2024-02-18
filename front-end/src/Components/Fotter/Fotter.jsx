@@ -10,7 +10,9 @@ export default function Fotter() {
         py: 1.3,
         borderTopLeftRadius: 8,
         borderTopRightRadius: 8,
-        mt:21.6
+        position: "absolute",
+        width:'100%',
+        mt:'30px'
       }}
     >
       <Typography

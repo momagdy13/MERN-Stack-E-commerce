@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
-
 const Users = mongoose.Schema({
-  username: { type: String },
+  username: { type: String, required: true },
   email: {
     type: String,
     required: true,
@@ -11,6 +10,7 @@ const Users = mongoose.Schema({
   },
   password: { type: String, required: true },
   cartData: { type: Object, ref: "product" },
+  favourite: { type: Object, ref: "product" },
   date: { type: Date, default: Date.now },
 });
 
