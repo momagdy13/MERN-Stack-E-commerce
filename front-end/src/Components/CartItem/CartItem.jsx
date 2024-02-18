@@ -73,27 +73,29 @@ export default function CartItem() {
             Your Order will arrive after three days
           </Typography>
           <Box sx={{ display: "flex", mt: "100px", ml: "280px" }}>
-            <Button
-              variant="outlined"
-              sx={{
-                width: "280px",
-                mr: "50px",
-                color: "ghostwhite",
-                border: `3px solid ghostwhite`,
-                height: "55px",
-                borderRadius: "20px",
-                fontSize: "20px",
-              }}
-              onClick={() => {
-                removeAllFromCart(),
-                  setOpenCol(true),
-                  setInterval(() => {
-                    window.location.reload(true);
-                  }, 2800);
-              }}
-            >
-              CHECKOUT
-            </Button>
+            {getTotalCartAmount() > 0 && (
+              <Button
+                variant="outlined"
+                sx={{
+                  width: "280px",
+                  mr: "50px",
+                  color: "ghostwhite",
+                  border: `3px solid ghostwhite`,
+                  height: "55px",
+                  borderRadius: "20px",
+                  fontSize: "20px",
+                }}
+                onClick={() => {
+                  removeAllFromCart(),
+                    setOpenCol(true),
+                    setInterval(() => {
+                      window.location.reload(true);
+                    }, 2800);
+                }}
+              >
+                CHECKOUT
+              </Button>
+            )}
             <Button
               variant="outlined"
               sx={{
@@ -211,7 +213,7 @@ export default function CartItem() {
               border: `3px solid ${theme.palette.text.secondary}`,
               height: "55px",
               borderRadius: "20px",
-              fontSize:'18px'
+              fontSize: "18px",
             }}
             onClick={handleOpen}
           >
