@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 const Product = mongoose.model("product", {
-  
   id: { type: Number, required: true },
   name: { type: String, required: true },
   descripe: { type: String, required: true },

@@ -53,12 +53,12 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     transition: theme.transitions.create("width"),
     width: "100%",
     [theme.breakpoints.up("md")]: {
-      width: "33ch",
+      width: "30ch",
     },
   },
 }));
 
-const options = ["All Categories", "CAR", "Clothes", "Electronics"];
+const options = ["All Categories", "Men", "Women"];
 
 const Header2 = () => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -121,7 +121,7 @@ const Header2 = () => {
               <ListItemText
                 // className="border"
                 sx={{
-                  width: 93,
+                  width: 99,
                   textAlign: "center",
                   "&:hover": { cursor: "pointer" },
                 }}

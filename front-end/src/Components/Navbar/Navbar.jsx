@@ -30,15 +30,19 @@ import styled from "@emotion/styled";
 import { Link } from "react-router-dom";
 import { ShopContext } from "../../Contexs/ShopContext";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-
-const options = ["AR", "EN"];
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
 export default function Navbar() {
   const colorMode = useContext(ColorModeContext);
   const theme = useTheme();
   const [anchorEl, setAnchorEl] = useState(null);
+  const [anchor, setAnchor] = useState(null);
   const [selectedIndex, setSelectedIndex] = useState(1);
   const open = Boolean(anchorEl);
+  const Open = Boolean(anchor);
+  const handleClick = (event) => {
+    setAnchor(event.currentTarget);
+  };
   const { getTotalCartItems, FavNumber } = useContext(ShopContext);
   const StyledBadge = styled(Badge)(({ theme }) => ({
     "& .MuiBadge-badge": {
@@ -48,20 +52,38 @@ export default function Navbar() {
       padding: "0 4px",
     },
   }));
-
   const handleClickListItem = (event) => {
     setAnchorEl(event.currentTarget);
   };
-
   const handleMenuItemClick = (event, index) => {
     setSelectedIndex(index);
     setAnchorEl(null);
   };
-
   const handleClose = () => {
     setAnchorEl(null);
   };
+  const HandleClose = () => {
+    setAnchor(null);
+  };
 
+  const googleTranslateElementInit = () => {
+    new window.google.translate.TranslateElement(
+      {
+        pageLanguage: "en",
+        autoDisplay: false,
+      },
+      "google_translate_element"
+    );
+  };
+  React.useEffect(() => {
+    let addScript = document.createElement("script");
+    addScript.setAttribute(
+      "src",
+      "//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"
+    );
+    document.body.appendChild(addScript);
+    window.googleTranslateElementInit = googleTranslateElementInit;
+  }, []);
   return (
     <Box sx={{ bgcolor: "#2B3445", py: "4px" }}>
       <Container>
@@ -137,59 +159,14 @@ export default function Navbar() {
             </IconButton>
           )}
 
-          <List
-            component="nav"
-            aria-label="Device settings"
-            sx={{ p: 0, m: 0 }}
-          >
-            <ListItem
-              id="lock-button"
-              aria-haspopup="listbox"
-              aria-controls="lock-menu"
-              aria-label="when device is locked"
-              aria-expanded={open ? "true" : undefined}
-              onClick={handleClickListItem}
-              sx={{ "&:hover": { cursor: "pointer" }, px: 1 }}
-            >
-              <ListItemText
-                sx={{
-                  ".MuiTypography-root": { fontSize: "15px", color: "#fff" },
-                }}
-                secondary={options[selectedIndex]}
-              />
-              <ExpandMore sx={{ fontSize: "16px", color: "#fff" }} />
-            </ListItem>
-          </List>
-
-          <Menu
-            id="lock-menu"
-            anchorEl={anchorEl}
-            open={open}
-            onClose={handleClose}
-            MenuListProps={{
-              "aria-labelledby": "lock-button",
-              role: "listbox",
-            }}
-          >
-            {options.map((option, index) => (
-              <MenuItem
-                sx={{ fontSize: "15px", p: "3px 10px", minHeight: "10px" }}
-                key={option}
-                selected={index === selectedIndex}
-                onClick={(event) => handleMenuItemClick(event, index)}
-              >
-                {option}
-              </MenuItem>
-            ))}
-          </Menu>
           <IconButton>
             <StyledBadge badgeContent={FavNumber()} color="secondary">
               <Link to={"/fav"}>
                 <FavoriteIcon
                   sx={{
                     fontSize: "30px",
-                    color: "red",
-                   mt:'10px'
+                    color: "white",
+                    mt: "10px",
                   }}
                 />
               </Link>
@@ -237,22 +214,62 @@ export default function Navbar() {
               <StyledBadge badgeContent={getTotalCartItems()} color="secondary">
                 <Link to={"/cart"}>
                   <ShoppingCartIcon
-                    sx={{ color: theme.palette.text.disabled, mt:'10px', fontSize:'30px' }}
+                    sx={{
+                      color: theme.palette.text.disabled,
+                      mt: "10px",
+                      fontSize: "30px",
+                    }}
                   />
                 </Link>
               </StyledBadge>
             </IconButton>
 
             {localStorage.getItem("token") ? (
-              <Button
-                color="error"
-                onClick={() => {
-                  localStorage.removeItem("token");
-                  window.location.replace("/");
-                }}
-              >
-                Log Out
-              </Button>
+              <Stack direction={"row"} justifyContent={"center"}>
+                <Button
+                  sx={{ width: "150px", color: theme.palette.text.primary }}
+                  id="basic-button"
+                  aria-controls={Open ? "basic-menu" : undefined}
+                  aria-haspopup="true"
+                  aria-expanded={Open ? "true" : undefined}
+                  onClick={handleClick}
+                >
+                  <AccountCircleIcon
+                    sx={{ marginRight: "8px", color: "ghostwhite" }}
+                  />
+                  <Typography sx={{ color: "ghostwhite" }}>My Account</Typography>
+                </Button>
+                <Menu
+                  id="basic-menu"
+                  anchorEl={anchor}
+                  open={Open}
+                  onClose={HandleClose}
+                  MenuListProps={{
+                    "aria-labelledby": "basic-button",
+                  }}
+                  sx={{ "& .MuiPaper-root": { width: "150px", mr: "30px" } }}
+                >
+                  <Link to={"/profile"}>
+                    <MenuItem onClick={handleClose}>
+                      {" "}
+                      <ListItemText sx={{ color: theme.palette.text.primary }}>
+                        Profile
+                      </ListItemText>
+                    </MenuItem>
+                  </Link>
+                  <MenuItem>
+                    <Button
+                      color="error"
+                      onClick={() => {
+                        localStorage.removeItem("token");
+                        window.location.replace("/");
+                      }}
+                    >
+                      Log Out
+                    </Button>
+                  </MenuItem>
+                </Menu>
+              </Stack>
             ) : (
               <IconButton>
                 <Link
@@ -271,6 +288,7 @@ export default function Navbar() {
               </IconButton>
             )}
           </Stack>
+          <Box id="google_translate_element" ></Box>
         </Stack>
       </Container>
     </Box>

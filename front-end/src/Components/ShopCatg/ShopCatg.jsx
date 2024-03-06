@@ -22,7 +22,6 @@ import axios from "axios";
 import { Close } from "@mui/icons-material";
 import ProductDetails from "../ProductDetails/ProductDetails";
 import { motion } from "framer-motion";
-import Favourite from "../../Pages/Favourite";
 
 export default function ShopCatg() {
   const [all_product, setAllProduct] = useState([]);
@@ -114,14 +113,22 @@ export default function ShopCatg() {
         <Grid
           container
           component={motion.section}
-          layout
+          layout="true"
           initial={{ transform: "scale(0)" }}
           animate={{ transform: "scale(1)" }}
           transition={{ duration: 0.6 }}
         >
           {all_product.map((item) => {
             return (
-              <Grid xs={2} sm={4} md={4}>
+              <Grid
+                container
+                item
+                key={item.id}
+                spacing={2}
+                xs={2}
+                sm={4}
+                md={4}
+              >
                 <Card
                   variant="outlined"
                   sx={{
@@ -210,7 +217,6 @@ export default function ShopCatg() {
         >
           <Close />
         </IconButton>
-
         <ProductDetails clickedProduct={clickedProduct} />
       </Dialog>
       {/* Dialog */}

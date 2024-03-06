@@ -7,6 +7,7 @@ import Shop from "./Pages/Shop";
 import Login from "./Pages/Login";
 import { Route, Routes } from "react-router-dom";
 import Favourite from "./Pages/Favourite";
+import Profile from "./Pages/Profile";
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -20,6 +21,7 @@ function App() {
            <Route path="/cart" element={<Cart />} />
            <Route path="/logIn" element={<Login />} />
            <Route path="/fav" element={<Favourite />} />
+           <Route path="/profile" element={<Profile />} />
          </Routes>
          <Fotter />
       </ThemeProvider>

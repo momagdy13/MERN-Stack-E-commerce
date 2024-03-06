@@ -16,7 +16,7 @@ app.use(cors());
 //   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 //   next();
 // });
-// mongoose user = {hamomagdy12266} pass = {pY0EyZ2ow0yPeDIw} 
+// mongoose user = {hamomagdy12266} pass = {pY0EyZ2ow0yPeDIw}
 mongoose
   .connect(
     `mongodb+srv://hamomagdy12266:pY0EyZ2ow0yPeDIw@productculster.pym2sey.mongodb.net/?retryWrites=true&w=majority`
@@ -50,6 +50,8 @@ app.post("/upload", upload.single("product"), (req, res) => {
   });
 });
 // Upload EndPoint\\
+// Creating EndPoint For Add product//
+
 app.post("/addproduct", async (req, res) => {
   let products = await Product.find({});
   let Id;
@@ -71,6 +73,9 @@ app.post("/addproduct", async (req, res) => {
   await product.save();
   res.json(product);
 });
+// Creating EndPoint For Add product//
+
+// Creating EndPoint For delete product//
 app.delete("/deleteproduct", async (req, res) => {
   await Product.findOneAndDelete(req.body.id, req.body.name);
   res.json({
@@ -78,16 +83,23 @@ app.delete("/deleteproduct", async (req, res) => {
     name: req.body.name,
   });
 });
+// Creating EndPoint For delete product//
+// Creating EndPoint to get all_product//
 app.get("/allproduct", async (req, res) => {
   let product = await Product.find({});
   res.json(product);
 });
+// Creating EndPoint to get all_product//
+// Creating EndPoint For Catg//
+
 app.get("/:catg", async (req, res) => {
   let params = req.params.catg;
 
   let product = await Product.find({ category: params });
   res.json(product);
 });
+// Creating EndPoint For Catg//
+
 // Creating EndPoint For Registering the user //
 app.post("/signup", async (req, res) => {
   const { username, email, password } = req.body;
@@ -95,8 +107,19 @@ app.post("/signup", async (req, res) => {
     const user = await Users.findOne({ email }).exec();
     if (user) {
       return res.json({
-        success: false,
-        errors: "Mail exists",
+        email: {
+          name: "ValidatorError",
+          message: "Mail Is Exist!",
+          properties: {
+            message: "Mail Is Exist!",
+            type: "Dublicate",
+            path: "email",
+            value: `${email}`,
+          },
+          kind: "Dublicate",
+          path: "email",
+          value: `${email}`,
+        },
       });
     } else {
       let cart = {};
@@ -137,10 +160,38 @@ app.post("/login", async (req, res) => {
         const token = jwt.sign(data, "seceret_ecom");
         res.json({ success: true, token });
       } else {
-        res.json({ success: false, errors: "Wrong Password" });
+        res.json({
+          password: {
+            name: "ValidatorError",
+            message: "Wrong password!",
+            properties: {
+              message: "Wrong password!",
+              type: "Wrong",
+              path: "password",
+              value: `passwordd`,
+            },
+            kind: "wrong",
+            path: "password",
+            value: `password`,
+          },
+        });
       }
     } else {
-      res.json({ success: false, errors: "Wrong Email Id" });
+      res.json({
+        email: {
+          name: "ValidatorError",
+          message: "Wrong Email Id",
+          properties: {
+            message: "Wrong Email Id",
+            type: "Wrong",
+            path: "email",
+            value: `${email}`,
+          },
+          kind: "Wrong",
+          path: "email",
+          value: `${email}`,
+        },
+      });
     }
   } catch (e) {
     res.json(e.errors);
@@ -184,9 +235,9 @@ app.post("/addtofav", fetchUser, async (req, res) => {
 app.post("/removefromfav", fetchUser, async (req, res) => {
   let userData = await Users.findOne({ _id: req.user });
   if ((await userData.favourite[req.body.itemId]) > 0) {
-    userData.favourite[req.body.itemId] = -1;
+    userData.favourite[req.body.itemId] -= 1;
     await Users.findOneAndUpdate(
-      { _id: req.user }, 
+      { _id: req.user },
       { favourite: userData.favourite }
     );
     res.send("Removed");
@@ -215,10 +266,12 @@ app.post("/addtocart", fetchUser, async (req, res) => {
 });
 // Creating EndPoint For Add to cart//
 
+// Creating EndPoint For delet from cart//
+
 app.post("/deletefromcart", fetchUser, async (req, res) => {
   let userData = await Users.findOne({ _id: req.user });
 
-  if (await userData.cartData[req.body.itemId] > 0) {
+  if ((await userData.cartData[req.body.itemId]) > 0) {
     userData.cartData[req.body.itemId] -= 1;
     await Users.findOneAndUpdate(
       { _id: req.user },
@@ -226,7 +279,7 @@ app.post("/deletefromcart", fetchUser, async (req, res) => {
     );
     res.send("Deleted");
   } else {
-    res.json("err cart is empty"); 
+    res.json("err cart is empty");
   }
 });
 app.delete("/deleteallfromcart", fetchUser, async (req, res) => {
@@ -238,11 +291,36 @@ app.delete("/deleteallfromcart", fetchUser, async (req, res) => {
   await Users.findOneAndUpdate({ _id: req.user }, { cartData: cart });
   res.send("Deleted");
 });
+// Creating EndPoint For delet from cart//
+
+// Creating EndPoint to get cart//
 
 app.post("/getcart", fetchUser, async (req, res) => {
   let userData = await Users.findOne({ _id: req.user });
   res.json(userData.cartData);
 });
+// Creating EndPoint to get cart//
+
+app.post("/getaccount", fetchUser, async (req, res) => {
+  let userData = await Users.findOne({ _id: req.user });
+  res.json(userData);
+});
+
+// Creating EndPoint to creat done order//
+app.post("/addtodone", fetchUser, async (req, res) => {
+  let user = await Users.findOne({ _id: req.user });
+  if (user) {
+    await Users.updateOne({ _id: req.user }, { $push: { doneOrder: 1 } });
+  }
+  res.json('Done');
+});
+// Creating EndPoint to creat done order//
+// Creating EndPoint to get done order//
+app.post("/getdone", fetchUser, async (req, res) => {
+  let user = await Users.findOne({ _id: req.user });
+  res.json(user.doneOrder.length);
+});
+// Creating EndPoint to get done order//
 
 app.listen(port, () => {
   console.log("I'm Listen to 4000");

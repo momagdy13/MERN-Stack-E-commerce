@@ -60,11 +60,11 @@ const ShopContextProvider = (props) => {
         });
     }
   };
-  const addToFav = (itemId) => {
+  const addToFav = async (itemId) => {
     setFavItem((prev) => ({ ...prev, [itemId]: prev[itemId] + 1 }));
 
     if (localStorage.getItem("token")) {
-      axios
+      await axios
         .post(
           "http://localhost:4000/addtofav",
           { itemId: itemId },
@@ -80,11 +80,11 @@ const ShopContextProvider = (props) => {
         });
     }
   };
-  const removeFromFav = (itemId) => {
+  const removeFromFav = async (itemId) => {
     setFavItem((prev) => ({ ...prev, [itemId]: prev[itemId] - 1 }));
 
     if (localStorage.getItem("token")) {
-      axios
+      await axios
         .post(
           "http://localhost:4000/removefromfav",
           { itemId: itemId },

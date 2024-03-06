@@ -30,7 +30,6 @@ const ProductDetails = ({ clickedProduct }) => {
       <Box
         sx={{
           display: "flex",
-          background: "none",
         }}
       >
         <img width={360} src={clickedProduct.image} alt="" />
@@ -139,8 +138,10 @@ const ProductDetails = ({ clickedProduct }) => {
             addToFav(clickedProduct.id);
           }}
         >
-          
-          Add to Fav {FavItem > 0 && <>{<FavoriteIcon sx={{color:'red', ml:'7px'}}/>}</>}
+          Add to Fav{" "}
+          {FavItem > 0 && (
+            <>{<FavoriteIcon sx={{ color: "red", ml: "7px" }} />}</>
+          )}
         </Button>
         <Link to={"/fav"}>
           <Button

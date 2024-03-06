@@ -23,7 +23,7 @@ export default function Hero() {
   const mySlider = [
     { text: "MEN", link: slider },
     {
-      text: "Women"     
+      text: "Women",
     },
   ];
 
@@ -38,19 +38,15 @@ export default function Hero() {
           modules={[Pagination]}
           className="mySwiper"
         >
-          {mySlider.map((item) => {
+          {mySlider.map((item, index) => {
             return (
-              <SwiperSlide key={item.link} className="parent-slider">
+              <SwiperSlide key={index} className="parent-slider">
                 <img src={item.link} alt="" />
                 <Box
                   sx={{
-                   
-                      position: "absolute",
-                      left: "10%",
-                      textAlign: "left",
-                    
-
-                   
+                    position: "absolute",
+                    left: "10%",
+                    textAlign: "left",
                   }}
                 >
                   <Typography

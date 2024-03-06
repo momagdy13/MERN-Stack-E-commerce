@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext,useState } from "react";
 import {
   Alert,
   Box,
@@ -14,7 +14,7 @@ import {
 import cross_icon from "../Assest/cross_icon.png";
 import { ShopContext } from "../../Contexs/ShopContext";
 import Modal from "@mui/material/Modal";
-
+import axios from 'axios'
 const style = {
   position: "absolute",
   top: "45%",
@@ -41,11 +41,26 @@ export default function CartItem() {
     getTotalCartAmount,
   } = useContext(ShopContext);
   const theme = useTheme();
-
   const [open, setOpen] = React.useState(false);
   const [openCollapse, setOpenCol] = useState();
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const doneOrder = () => {
+    axios
+      .post(
+        "http://localhost:4000/addtodone",
+        {},
+        {
+          headers: { "auth-token": `${localStorage.getItem("token")}` },
+        }
+      )
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   return (
     <Container sx={{ mt: "8%", mb: "12%" }}>
@@ -86,11 +101,10 @@ export default function CartItem() {
                   fontSize: "20px",
                 }}
                 onClick={() => {
-                  removeAllFromCart(),
-                    setOpenCol(true),
-                    setInterval(() => {
-                      window.location.reload(true);
-                    }, 2800);
+                  removeAllFromCart(), setOpenCol(true), doneOrder();
+                  setInterval(() => {
+                    window.location.reload(true);
+                  }, 2850);
                 }}
               >
                 CHECKOUT

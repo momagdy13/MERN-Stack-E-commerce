@@ -20,11 +20,11 @@ export default function Favourite() {
   const { favItems, all_product, removeFromFav } = useContext(ShopContext);
   const theme = useTheme();
   return (
-    <Container sx={{ mb: "48px" }}>
+    <Container sx={{ mb: "659px" }}>
       <Box sx={{ flexGrow: 1 }} flexWrap={"wrap"}>
         <Grid
           container
-          layout
+          layout="true"
           initial={{ transform: "scale(0)" }}
           animate={{ transform: "scale(1)" }}
           transition={{ duration: 0.6 }}
@@ -78,7 +78,9 @@ export default function Favourite() {
                             color: theme.palette.text.secondary,
                             textTransform: "capitalize",
                           }}
-                          onClick={() => {removeFromFav(item.id)}}
+                          onClick={() => {
+                            removeFromFav(item.id);
+                          }}
                         >
                           <Cancel />
                           Remove From Fav

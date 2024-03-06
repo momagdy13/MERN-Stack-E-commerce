@@ -17,7 +17,6 @@ import sign from "../Components/Assest/sign-up-black.png";
 export default function SignUpLogin() {
   const [open, setOpen] = React.useState(false);
   const [alertContent, setAlertContent] = useState("");
-  const [alert, setAlert] = useState("");
   const theme = useTheme();
   const [state, setState] = useState("Login");
   const [formData, setFormData] = useState({
@@ -32,18 +31,16 @@ export default function SignUpLogin() {
     await axios
       .post("http://localhost:4000/login", formData)
       .then((response) => {
-        console.log(response);
         if (response.data.success) {
           window.location.replace("/");
           localStorage.setItem("token", response.data.token);
         } else {
-          setAlertContent(response.data.errors);
-          setAlert(response.data.errors);
+          console.log(response);
+          setAlertContent(response.data);
           setOpen(true);
         }
       })
       .catch((response) => {
-        console.log(response);
         setAlertContent(response.data.response.data);
         setOpen(true);
       });
@@ -64,10 +61,6 @@ export default function SignUpLogin() {
         console.log(error);
       });
   };
-  const colse = () => {
-    setTimeout(() => {});
-  };
-  console.log(alert);
 
   return (
     <Container>
@@ -87,9 +80,18 @@ export default function SignUpLogin() {
         </Typography>
 
         {alertContent.username ? (
-          <Box sx={{ ml: "25%", width: "400px", mt: "3%" }}>
-            <Alert severity="error">{alertContent.username.message}</Alert>
-          </Box>
+          <Collapse in={open}>
+            <Box sx={{ ml: "25%", width: "400px", mt: "3%" }}>
+              <Alert
+                severity="error"
+                onClose={() => {
+                  setOpen(false);
+                }}
+              >
+                {alertContent.username.message}
+              </Alert>
+            </Box>
+          </Collapse>
         ) : (
           <></>
         )}
@@ -111,10 +113,6 @@ export default function SignUpLogin() {
             <></>
           )}
           {alertContent.email ? (
-            <Box sx={{ width: "400px", mt: "10%" }}>
-              <Alert severity="error">{alertContent.email.message}</Alert>
-            </Box>
-          ) : (
             <Collapse in={open}>
               <Box sx={{ width: "400px", mt: "10%" }}>
                 <Alert
@@ -123,10 +121,12 @@ export default function SignUpLogin() {
                     setOpen(false);
                   }}
                 >
-                  {alert}
+                  {alertContent.email.message}
                 </Alert>
               </Box>
             </Collapse>
+          ) : (
+            <></>
           )}
           <TextField
             type="email"
@@ -142,9 +142,18 @@ export default function SignUpLogin() {
             }}
           />
           {alertContent.password ? (
-            <Box sx={{ width: "400px", mt: "5%" }}>
-              <Alert severity="error">{alertContent.password.message}</Alert>
-            </Box>
+            <Collapse in={open}>
+              <Box sx={{ width: "400px", mt: "5%" }}>
+                <Alert
+                  severity="error"
+                  onClose={() => {
+                    setOpen(false);
+                  }}
+                >
+                  {alertContent.password.message}
+                </Alert>
+              </Box>
+            </Collapse>
           ) : (
             <></>
           )}
