@@ -9,8 +9,10 @@ import {
   ListItem,
   Badge,
   Button,
+  Collapse,
 } from "@mui/material";
 import {
+  Close,
   DarkModeOutlined,
   ExpandMore,
   Facebook,
@@ -20,7 +22,6 @@ import {
   Twitter,
 } from "@mui/icons-material";
 import { Box, Container } from "@mui/system";
-import List from "@mui/material/List";
 import ListItemText from "@mui/material/ListItemText";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
@@ -31,15 +32,15 @@ import { Link } from "react-router-dom";
 import { ShopContext } from "../../Contexs/ShopContext";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-
+import GTranslateIcon from "@mui/icons-material/GTranslate";
 export default function Navbar() {
   const colorMode = useContext(ColorModeContext);
   const theme = useTheme();
   const [anchorEl, setAnchorEl] = useState(null);
   const [anchor, setAnchor] = useState(null);
-  const [selectedIndex, setSelectedIndex] = useState(1);
-  const open = Boolean(anchorEl);
   const Open = Boolean(anchor);
+  const [open, setOpen] = useState("");
+  const [icon, setIcon] = useState("true");
   const handleClick = (event) => {
     setAnchor(event.currentTarget);
   };
@@ -52,13 +53,7 @@ export default function Navbar() {
       padding: "0 4px",
     },
   }));
-  const handleClickListItem = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleMenuItemClick = (event, index) => {
-    setSelectedIndex(index);
-    setAnchorEl(null);
-  };
+
   const handleClose = () => {
     setAnchorEl(null);
   };
@@ -86,8 +81,7 @@ export default function Navbar() {
   }, []);
   return (
     <Box sx={{ bgcolor: "#2B3445", py: "4px" }}>
-      <Container>
-        <Stack direction={"row"} alignItems={"center"}>
+        <Stack direction={"row"} alignItems={"center"} mr={'0px'} ml={'40px'}>
           <Typography
             sx={{
               color: theme.palette.text.secondary,
@@ -237,7 +231,9 @@ export default function Navbar() {
                   <AccountCircleIcon
                     sx={{ marginRight: "8px", color: "ghostwhite" }}
                   />
-                  <Typography sx={{ color: "ghostwhite" }}>My Account</Typography>
+                  <Typography sx={{ color: "ghostwhite" }} variant="h7">
+                    My Account
+                  </Typography>
                 </Button>
                 <Menu
                   id="basic-menu"
@@ -288,9 +284,30 @@ export default function Navbar() {
               </IconButton>
             )}
           </Stack>
-          <Box id="google_translate_element" ></Box>
+          <Stack direction={"row"} justifyContent={"center"}>
+            <Collapse in={icon}>
+              <GTranslateIcon
+                sx={{ cursor: "pointer" }}
+                onClick={() => {
+                  setOpen(true);
+                  setIcon("");
+                }}
+              />
+            </Collapse>
+            <Collapse in={open}>
+              <Stack direction={"row"}>
+                <Box id="google_translate_element" />
+                <Close
+                  sx={{ cursor: "pointer" }}
+                  onClick={() => {
+                    setOpen("");
+                    setIcon("true");
+                  }}
+                />
+              </Stack>
+            </Collapse>
+          </Stack>
         </Stack>
-      </Container>
     </Box>
   );
 }
