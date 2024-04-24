@@ -4,7 +4,6 @@ import {
   Card,
   CardActions,
   CardMedia,
-  Container,
   Divider,
   Grid,
   Rating,
@@ -19,11 +18,19 @@ import { Cancel } from "@mui/icons-material";
 export default function Favourite() {
   const { favItems, all_product, removeFromFav } = useContext(ShopContext);
   const theme = useTheme();
+
   return (
-    <Container sx={{ mb: "659px" }}>
+    <Stack sx={{ mb: "659px", padding: "60px", width: "100%", height: "100%" }}>
+      <Typography
+        variant="h3"
+        sx={{ textAlign: "center", fontFamily: "cursive" }}
+      >
+        Favourite Page
+      </Typography>
+
       <Box sx={{ flexGrow: 1 }} flexWrap={"wrap"}>
         <Grid
-          container
+          Stack
           layout="true"
           initial={{ transform: "scale(0)" }}
           animate={{ transform: "scale(1)" }}
@@ -42,8 +49,8 @@ export default function Favourite() {
                         transition: "2s",
                         scale: "1.1",
                       },
-                      borderRadius: "40px",
-                      boxShadow: "  rgb(38, 57, 77) 0px 20px 30px -10px;",
+                      borderRadius: "20px",
+                      boxShadow: "  rgb(38, 57, 77) 0px 10px 10px -10px;",
                     }}
                   >
                     <CardMedia
@@ -100,6 +107,6 @@ export default function Favourite() {
           })}
         </Grid>
       </Box>
-    </Container>
+    </Stack>
   );
 }

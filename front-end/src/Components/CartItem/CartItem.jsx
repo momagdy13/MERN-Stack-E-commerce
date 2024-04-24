@@ -1,6 +1,6 @@
-import React, { useContext,useState } from "react";
+import React, { useContext, useState } from "react";
 import {
-  Alert,
+  
   Box,
   Button,
   Collapse,
@@ -13,8 +13,10 @@ import {
 } from "@mui/material";
 import cross_icon from "../Assest/cross_icon.png";
 import { ShopContext } from "../../Contexs/ShopContext";
-import Modal from "@mui/material/Modal";
-import axios from 'axios'
+import axios from "axios";
+import PayButtom from "../PayButtom/PayButtom";
+
+
 const style = {
   position: "absolute",
   top: "45%",
@@ -35,16 +37,14 @@ const style = {
 export default function CartItem() {
   const {
     cartItems,
-    all_product,
+    all_product, 
     removeFromCart,
     removeAllFromCart,
     getTotalCartAmount,
   } = useContext(ShopContext);
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
-  const [openCollapse, setOpenCol] = useState();
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+
   const doneOrder = () => {
     axios
       .post(
@@ -63,85 +63,10 @@ export default function CartItem() {
   };
 
   return (
-    <Container sx={{ mt: "8%", mb: "12%" }}>
-      <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={style}>
-          <Typography variant="h4" sx={{ ml: "35%", mb: "30px" }}>
-            Bill Dateails
-          </Typography>
-          <Typography variant="h5" sx={{ mb: "20px" }}>
-            Sub Total: ${getTotalCartAmount()}
-          </Typography>
-          <Typography variant="h5" sx={{ mb: "20px" }}>
-            {" "}
-            Total: ${getTotalCartAmount()}
-          </Typography>
-          <Typography variant="h5" sx={{ mb: "20px" }}>
-            Payment Way : Upon Receipt
-          </Typography>
-          <Typography variant="h5" sx={{ mb: "20px" }}>
-            Your Order will arrive after three days
-          </Typography>
-          <Box sx={{ display: "flex", mt: "100px", ml: "280px" }}>
-            {getTotalCartAmount() > 0 && (
-              <Button
-                variant="outlined"
-                sx={{
-                  width: "280px",
-                  mr: "50px",
-                  color: "ghostwhite",
-                  border: `3px solid ghostwhite`,
-                  height: "55px",
-                  borderRadius: "20px",
-                  fontSize: "20px",
-                }}
-                onClick={() => {
-                  removeAllFromCart(), setOpenCol(true), doneOrder();
-                  setInterval(() => {
-                    window.location.reload(true);
-                  }, 2850);
-                }}
-              >
-                CHECKOUT
-              </Button>
-            )}
-            <Button
-              variant="outlined"
-              sx={{
-                width: "240px",
-                fontSize: "20px",
-                color: "ghostwhite",
-                border: `3px solid ghostwhite`,
-                height: "55px",
-                borderRadius: "20px",
-              }}
-              onClick={() => {
-                handleClose(), setOpenCol(false), setinterval;
-              }}
-            >
-              Close
-            </Button>
-          </Box>
-          <Collapse in={openCollapse}>
-            <Alert
-              sx={{
-                mt: "30px",
-                border: "2px solid green",
-                borderRadius: "30px",
-              }}
-            >
-              Done Order
-            </Alert>
-          </Collapse>
-        </Box>
-      </Modal>
-      <Divider sx={{ borderColor: `${theme.palette.text.primary}` }} />
+    <Container sx={{ mt: "4%" }}>
+   
 
+      <Divider sx={{ borderColor: `${theme.palette.text.primary}` }} />
       <Stack direction={"row"} justifyContent={"space-between"}>
         <Typography variant="h6">Products</Typography>
         <Typography variant="h6">Title</Typography>
@@ -218,21 +143,8 @@ export default function CartItem() {
 
           <Divider sx={{ borderColor: `${theme.palette.text.primary}` }} />
 
-          <Button
-            variant="outlined"
-            sx={{
-              width: "100%",
-              mt: "20px",
-              color: theme.palette.text.secondary,
-              border: `3px solid ${theme.palette.text.secondary}`,
-              height: "55px",
-              borderRadius: "20px",
-              fontSize: "18px",
-            }}
-            onClick={handleOpen}
-          >
-            PROCEED TO CHECKOUT
-          </Button>
+         
+          <PayButtom cartItem = {cartItems} />
         </Stack>
 
         <Stack

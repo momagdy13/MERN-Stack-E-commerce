@@ -124,27 +124,25 @@ export default function ShopCatg() {
                 container
                 item
                 key={item.id}
-                spacing={2}
-                xs={2}
-                sm={4}
+                spacing={-1}
                 md={4}
               >
                 <Card
                   variant="outlined"
                   sx={{
-                    maxWidth: 350,
-                    my: 5,
+                   width:'350px',
+                    my: 6,
                     ":hover .MuiCardMedia-root ": {
                       transition: "2s",
                       scale: "1.1",
                     },
-                    borderRadius: "30px",
-                    boxShadow: "rgb(38, 57, 77) 0px 20px 30px -10px;",
+                    borderRadius: "10px",
+                    boxShadow: "rgb(38, 57, 77) 0px 10px 20px -10px;",
                   }}
                 >
-                  <CardMedia sx={{ height: 350 }} image={item.image} />
+                  <CardMedia sx={{ height: 300 }} image={item.image} />
 
-                  <Box sx={{ p: 2 }}>
+                  <Box sx={{ p: 3 }}>
                     <Stack
                       direction="row"
                       justifyContent="space-between"

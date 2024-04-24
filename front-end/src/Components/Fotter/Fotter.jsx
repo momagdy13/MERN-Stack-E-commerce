@@ -6,13 +6,14 @@ export default function Fotter() {
   return (
     <Box
       sx={{
-        bgcolor: "#2115",
-        py: 1.3,
+        bgcolor: 'black',
+        py: 2,
         borderTopLeftRadius: 8,
         borderTopRightRadius: 8,
-        position: "absolute",
         width:'100%',
-        mt:'30px'
+        position:'absolute',
+        bottom:'-49px',
+        
       }}
     >
       <Typography

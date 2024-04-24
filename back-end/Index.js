@@ -1,4 +1,5 @@
 const port = 4000;
+require("dotenv").config();
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
@@ -8,6 +9,8 @@ const path = require("path");
 const cors = require("cors");
 const Product = require("./models/Products.js");
 const Users = require("./models/User.js");
+const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
+const User = require("./models/User.js");
 app.use(express.json());
 app.use(cors());
 app.use((req, res, next) => {
@@ -17,11 +20,8 @@ app.use((req, res, next) => {
   next();
 });
 
-// mongoose user = {hamomagdy12266} pass = {pY0EyZ2ow0yPeDIw}
 mongoose
-  .connect(
-    `mongodb+srv://hamomagdy12266:pY0EyZ2ow0yPeDIw@productculster.pym2sey.mongodb.net/?retryWrites=true&w=majority`
-  )
+  .connect(process.env.MONGO_URL)
   .then(() => {
     console.log("Success Connect");
   })
@@ -107,20 +107,18 @@ app.post("/signup", async (req, res) => {
   try {
     const user = await Users.findOne({ email }).exec();
     if (user) {
-      return res.json({
-        email: {
-          name: "ValidatorError",
+      return res.status(401).json({
+        name: "ValidatorError",
+        message: "Mail Is Exist!",
+        properties: {
           message: "Mail Is Exist!",
-          properties: {
-            message: "Mail Is Exist!",
-            type: "Dublicate",
-            path: "email",
-            value: `${email}`,
-          },
-          kind: "Dublicate",
+          type: "Dublicate",
           path: "email",
           value: `${email}`,
         },
+        kind: "Dublicate",
+        path: "email",
+        value: `${email}`,
       });
     } else {
       let cart = {};
@@ -144,7 +142,7 @@ app.post("/signup", async (req, res) => {
       res.json({ success: true, token });
     }
   } catch (e) {
-    res.json(e.errors);
+    res.status(401).json(e.errors);
   }
 });
 // Creating EndPoint For Registering the user //
@@ -161,41 +159,37 @@ app.post("/login", async (req, res) => {
         const token = jwt.sign(data, "seceret_ecom");
         res.json({ success: true, token });
       } else {
-        res.json({
-          password: {
-            name: "ValidatorError",
+        res.status(401).json({
+          name: "ValidatorError",
+          message: "Wrong password!",
+          properties: {
             message: "Wrong password!",
-            properties: {
-              message: "Wrong password!",
-              type: "Wrong",
-              path: "password",
-              value: `passwordd`,
-            },
-            kind: "wrong",
+            type: "Wrong",
             path: "password",
-            value: `password`,
+            value: `passwordd`,
           },
+          kind: "wrong",
+          path: "password",
+          value: `password`,
         });
       }
     } else {
-      res.json({
-        email: {
-          name: "ValidatorError",
-          message: "Wrong Email Id",
-          properties: {
-            message: "Wrong Email Id",
-            type: "Wrong",
-            path: "email",
-            value: `${email}`,
-          },
-          kind: "Wrong",
+      res.status(401).json({
+        name: "ValidatorError",
+        message: "This Email Isn't Exist",
+        properties: {
+          message: "This Email Isn't Exist",
+          type: "Wrong",
           path: "email",
           value: `${email}`,
         },
+        kind: "Wrong",
+        path: "email",
+        value: `${email}`,
       });
     }
   } catch (e) {
-    res.json(e.errors);
+    res.status(401).json(e.errors);
   }
 });
 // Creating EndPoint For User Login//
@@ -207,10 +201,9 @@ const fetchUser = async (req, res, next) => {
     try {
       const data = jwt.verify(token, "seceret_ecom");
       req.user = data.user;
-
       next();
     } catch (error) {
-      res.status(401).send({ errors: "please authenticate using valid token" });
+      res.status(401).send({ errors: "Please Login To Checkout " });
       console.log(error);
     }
   }
@@ -316,12 +309,47 @@ app.post("/addtodone", fetchUser, async (req, res) => {
   res.json("Done");
 });
 // Creating EndPoint to creat done order//
+
 // Creating EndPoint to get done order//
 app.post("/getdone", fetchUser, async (req, res) => {
   let user = await Users.findOne({ _id: req.user });
   res.json(user.doneOrder.length);
 });
 // Creating EndPoint to get done order//
+
+/////////////////////////// Handle Payment ///////////
+
+app.post("/create-checkout-session", fetchUser, async (req, res) => {
+  const item = await req.body.items;
+  const line_items = item.map((item) => {
+    return {
+      price_data: {
+        currency: "usd",
+        product_data: {
+          name: item.name,
+          images: [item.image],
+          description: item.descripe,
+        },
+        unit_amount: Math.round(item.price) * 100,
+      },
+      quantity: item.quant,
+    };
+  });
+  try {
+    const session = await stripe.checkout.sessions.create({
+      line_items,
+      mode: "payment",
+      success_url: `${process.env.CLINT_SITE_URL}/checkout-success`,
+      cancel_url: `${process.env.CLINT_SITE_URL}/cart`,
+    });
+
+    res.send({ url: session.url });
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+/////////////////////////// Handle Payment ///////////
 
 app.listen(port, () => {
   console.log("I'm Listen to 4000");

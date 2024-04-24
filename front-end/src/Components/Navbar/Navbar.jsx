@@ -81,233 +81,233 @@ export default function Navbar() {
   }, []);
   return (
     <Box sx={{ bgcolor: "#2B3445", py: "4px" }}>
-        <Stack direction={"row"} alignItems={"center"} mr={'0px'} ml={'40px'}>
-          <Typography
-            sx={{
-              color: theme.palette.text.secondary,
-              fontSize: "20px",
-              fontFamily: "inherit",
+      <Stack direction={"row"} alignItems={"center"} mr={"0px"} ml={"40px"}>
+        <Typography
+          sx={{
+            color: theme.palette.text.secondary,
+            fontSize: "20px",
+            fontFamily: "inherit",
+          }}
+        >
+          Mo_Shop
+        </Typography>
+        <Link to={"/"}>
+          <ShoppingCartOutlined
+            sx={{ cursor: "pointer", color: theme.palette.text.secondary }}
+          />
+        </Link>
+
+        <Typography
+          sx={{
+            mr: 2,
+            ml: 1,
+            p: "1px 7px",
+            bgcolor: "#D23F57",
+            borderRadius: "12px",
+            fontSize: "15px",
+            fontWeight: "bold",
+            color: "#fff",
+          }}
+          variant="body2"
+        >
+          HOT
+        </Typography>
+
+        <Typography
+          sx={{
+            fontSize: "15px",
+            fontWeight: 300,
+            color: "#fff",
+          }}
+          variant="body2"
+        >
+          Free Express Shipping
+        </Typography>
+        <Box flexGrow={1} />
+
+        {theme.palette.mode === "light" ? (
+          <IconButton
+            onClick={() => {
+              localStorage.setItem(
+                "mode",
+                theme.palette.mode === "dark" ? "light" : "dark"
+              );
+              colorMode.toggleColorMode();
             }}
+            color="white"
           >
-            Mo_Shop
-          </Typography>
-          <Link to={"/"}>
-            <ShoppingCartOutlined
-              sx={{ cursor: "pointer", color: theme.palette.text.secondary }}
+            <LightModeOutlined fontSize="mid" sx={{ color: "white" }} />
+          </IconButton>
+        ) : (
+          <IconButton
+            onClick={() => {
+              localStorage.setItem(
+                "mode",
+                theme.palette.mode === "dark" ? "light" : "dark"
+              );
+              colorMode.toggleColorMode();
+            }}
+            color="inherit"
+          >
+            <DarkModeOutlined fontSize="mid" sx={{ color: "white" }} />
+          </IconButton>
+        )}
+
+        <IconButton>
+          <StyledBadge badgeContent={FavNumber()} color="secondary">
+            <Link to={"/fav"}>
+              <FavoriteIcon
+                sx={{
+                  fontSize: "30px",
+                  color: "white",
+                  mt: "10px",
+                }}
+              />
+            </Link>
+          </StyledBadge>
+        </IconButton>
+        <IconButton>
+          <Link to={"https://twitter.com/"} target="_blank">
+            <Twitter
+              sx={{
+                fontSize: "25px",
+                color: "#fff",
+                mr: 1,
+                mt: 1,
+              }}
             />
           </Link>
-
-          <Typography
-            sx={{
-              mr: 2,
-              ml: 1,
-              p: "1px 7px",
-              bgcolor: "#D23F57",
-              borderRadius: "12px",
-              fontSize: "15px",
-              fontWeight: "bold",
-              color: "#fff",
-            }}
-            variant="body2"
-          >
-            HOT
-          </Typography>
-
-          <Typography
-            sx={{
-              fontSize: "15px",
-              fontWeight: 300,
-              color: "#fff",
-            }}
-            variant="body2"
-          >
-            Free Express Shipping
-          </Typography>
-          <Box flexGrow={1} />
-
-          {theme.palette.mode === "light" ? (
-            <IconButton
-              onClick={() => {
-                localStorage.setItem(
-                  "mode",
-                  theme.palette.mode === "dark" ? "light" : "dark"
-                );
-                colorMode.toggleColorMode();
+        </IconButton>
+        <IconButton>
+          <Link to={"https://web.facebook.com/?_rdc=1&_rdr"} target="_blank">
+            <Facebook
+              sx={{
+                fontSize: "25px",
+                mx: 1,
+                color: "#fff",
+                mr: 1,
+                mt: 1,
               }}
-              color="white"
-            >
-              <LightModeOutlined fontSize="mid" sx={{ color: "white" }} />
-            </IconButton>
-          ) : (
-            <IconButton
-              onClick={() => {
-                localStorage.setItem(
-                  "mode",
-                  theme.palette.mode === "dark" ? "light" : "dark"
-                );
-                colorMode.toggleColorMode();
+            />
+          </Link>{" "}
+        </IconButton>
+        <IconButton>
+          <Link to={"https://www.instagram.com/mmagdy89/"} target="_blank">
+            <Instagram
+              sx={{
+                fontSize: "25px",
+                color: "#fff",
+                mr: 1,
+                mt: 1,
               }}
-              color="inherit"
-            >
-              <DarkModeOutlined fontSize="mid" sx={{ color: "white" }} />
-            </IconButton>
-          )}
-
-          <IconButton>
-            <StyledBadge badgeContent={FavNumber()} color="secondary">
-              <Link to={"/fav"}>
-                <FavoriteIcon
+            />
+          </Link>
+        </IconButton>
+        <Stack direction={"row"} alignItems={"center"}>
+          <IconButton aria-label="cart">
+            <StyledBadge badgeContent={getTotalCartItems()} color="secondary">
+              <Link to={"/cart"}>
+                <ShoppingCartIcon
                   sx={{
-                    fontSize: "30px",
-                    color: "white",
+                    color: theme.palette.text.disabled,
                     mt: "10px",
+                    fontSize: "30px",
                   }}
                 />
               </Link>
             </StyledBadge>
           </IconButton>
-          <IconButton>
-            <Link to={"https://twitter.com/"} target="_blank">
-              <Twitter
-                sx={{
-                  fontSize: "25px",
-                  color: "#fff",
-                  mr: 1,
-                  mt: 1,
-                }}
-              />
-            </Link>
-          </IconButton>
-          <IconButton>
-            <Link to={"https://web.facebook.com/?_rdc=1&_rdr"} target="_blank">
-              <Facebook
-                sx={{
-                  fontSize: "25px",
-                  mx: 1,
-                  color: "#fff",
-                  mr: 1,
-                  mt: 1,
-                }}
-              />
-            </Link>{" "}
-          </IconButton>
-          <IconButton>
-            <Link to={"https://www.instagram.com/mmagdy89/"} target="_blank">
-              <Instagram
-                sx={{
-                  fontSize: "25px",
-                  color: "#fff",
-                  mr: 1,
-                  mt: 1,
-                }}
-              />
-            </Link>
-          </IconButton>
-          <Stack direction={"row"} alignItems={"center"}>
-            <IconButton aria-label="cart">
-              <StyledBadge badgeContent={getTotalCartItems()} color="secondary">
-                <Link to={"/cart"}>
-                  <ShoppingCartIcon
-                    sx={{
-                      color: theme.palette.text.disabled,
-                      mt: "10px",
-                      fontSize: "30px",
-                    }}
-                  />
-                </Link>
-              </StyledBadge>
-            </IconButton>
 
-            {localStorage.getItem("token") ? (
-              <Stack direction={"row"} justifyContent={"center"}>
-                <Button
-                  sx={{ width: "150px", color: theme.palette.text.primary }}
-                  id="basic-button"
-                  aria-controls={Open ? "basic-menu" : undefined}
-                  aria-haspopup="true"
-                  aria-expanded={Open ? "true" : undefined}
-                  onClick={handleClick}
-                >
-                  <AccountCircleIcon
-                    sx={{ marginRight: "8px", color: "ghostwhite" }}
-                  />
-                  <Typography sx={{ color: "ghostwhite" }} variant="h7">
-                    My Account
-                  </Typography>
-                </Button>
-                <Menu
-                  id="basic-menu"
-                  anchorEl={anchor}
-                  open={Open}
-                  onClose={HandleClose}
-                  MenuListProps={{
-                    "aria-labelledby": "basic-button",
-                  }}
-                  sx={{ "& .MuiPaper-root": { width: "150px", mr: "30px" } }}
-                >
-                  <Link to={"/profile"}>
-                    <MenuItem onClick={handleClose}>
-                      {" "}
-                      <ListItemText sx={{ color: theme.palette.text.primary }}>
-                        Profile
-                      </ListItemText>
-                    </MenuItem>
-                  </Link>
-                  <MenuItem>
-                    <Button
-                      color="error"
-                      onClick={() => {
-                        localStorage.removeItem("token");
-                        window.location.replace("/");
-                      }}
-                    >
-                      Log Out
-                    </Button>
+          {localStorage.getItem("token") ? (
+            <Stack direction={"row"} justifyContent={"center"}>
+              <Button
+                sx={{ width: "150px", color: theme.palette.text.primary }}
+                id="basic-button"
+                aria-controls={Open ? "basic-menu" : undefined}
+                aria-haspopup="true"
+                aria-expanded={Open ? "true" : undefined}
+                onClick={handleClick}
+              >
+                <AccountCircleIcon
+                  sx={{ marginRight: "8px", color: "ghostwhite" }}
+                />
+                <Typography sx={{ color: "ghostwhite" }} variant="h7">
+                  My Account
+                </Typography>
+              </Button>
+              <Menu
+                id="basic-menu"
+                anchorEl={anchor}
+                open={Open}
+                onClose={HandleClose}
+                MenuListProps={{
+                  "aria-labelledby": "basic-button",
+                }}
+                sx={{ "& .MuiPaper-root": { width: "150px", mr: "30px" } }}
+              >
+                <Link to={"/profile"}>
+                  <MenuItem onClick={handleClose}>
+                    {" "}
+                    <ListItemText sx={{ color: theme.palette.text.primary }}>
+                      Profile
+                    </ListItemText>
                   </MenuItem>
-                </Menu>
-              </Stack>
-            ) : (
-              <IconButton>
-                <Link
-                  to={"/login"}
-                  type="error"
-                  style={{
-                    textDecoration: "none",
-                    color: theme.palette.text.secondary,
-                  }}
-                >
-                  <Person2OutlinedIcon
-                    sx={{ color: theme.palette.text.secondary }}
-                  />
-                  Log-In
                 </Link>
-              </IconButton>
-            )}
-          </Stack>
-          <Stack direction={"row"} justifyContent={"center"}>
-            <Collapse in={icon}>
-              <GTranslateIcon
+                <MenuItem>
+                  <Button
+                    color="error"
+                    onClick={() => {
+                      localStorage.removeItem("token");
+                      window.location.replace("/");
+                    }}
+                  >
+                    Log Out
+                  </Button>
+                </MenuItem>
+              </Menu>
+            </Stack>
+          ) : (
+            <IconButton>
+              <Link
+                to={"/login"}
+                type="error"
+                style={{
+                  textDecoration: "none",
+                  color: theme.palette.text.secondary,
+                }}
+              >
+                <Person2OutlinedIcon
+                  sx={{ color: theme.palette.text.secondary }}
+                />
+                Log-In
+              </Link>
+            </IconButton>
+          )}
+        </Stack>
+        <Stack direction={"row"} justifyContent={"center"}>
+          <Collapse in={icon}>
+            <GTranslateIcon
+              sx={{ cursor: "pointer" }}
+              onClick={() => {
+                setOpen(true);
+                setIcon("");
+              }}
+            />
+          </Collapse>
+          <Collapse in={open}>
+            <Stack direction={"row"}>
+              <Box id="google_translate_element" />
+              <Close
                 sx={{ cursor: "pointer" }}
                 onClick={() => {
-                  setOpen(true);
-                  setIcon("");
+                  setOpen("");
+                  setIcon("true");
                 }}
               />
-            </Collapse>
-            <Collapse in={open}>
-              <Stack direction={"row"}>
-                <Box id="google_translate_element" />
-                <Close
-                  sx={{ cursor: "pointer" }}
-                  onClick={() => {
-                    setOpen("");
-                    setIcon("true");
-                  }}
-                />
-              </Stack>
-            </Collapse>
-          </Stack>
+            </Stack>
+          </Collapse>
         </Stack>
+      </Stack>
     </Box>
   );
 }

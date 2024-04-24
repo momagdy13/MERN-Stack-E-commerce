@@ -151,8 +151,8 @@ const ShopContextProvider = (props) => {
     }
     return totalAmount;
   };
-  useEffect(() => {
-    axios
+  useEffect(async () => {
+    await axios
       .get(`${import.meta.env.VITE_BASE_URL}/allproduct`)
       .then((response) => {
         setAllProduct(response.data);
