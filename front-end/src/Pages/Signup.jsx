@@ -14,7 +14,7 @@ import axios from "axios";
 import { Box, useTheme } from "@mui/system";
 
 function LoginForm() {
-  const theme = useTheme()
+  const theme = useTheme();
   const [state, setState] = useState("Login");
   const [formData, setFormData] = useState({
     email: "",
@@ -161,7 +161,7 @@ function LoginForm() {
                     width: "70%",
                     height: "50px",
                     color: `black`,
-                    fontSize:'20px',
+                    fontSize: "20px",
                     border: "1px solid #fff",
                     borderRadius: "20px",
                     mb: "10px",
@@ -180,7 +180,7 @@ function LoginForm() {
                     width: "70%",
                     height: "50px",
                     color: `black`,
-                    fontSize:'20px',
+                    fontSize: "20px",
                     border: "1px solid #fff",
                     borderRadius: "20px",
                     mb: "10px",
@@ -194,7 +194,7 @@ function LoginForm() {
                 </Button>
               )}
               {state === "Signup" ? (
-                <Typography className="forget">
+                <Typography className="forget" sx={{ color: "ghostwhite" }}>
                   Already have an account ?{" "}
                   <Typography
                     sx={{ cursor: "pointer", ":hover": { color: "red" } }}
@@ -206,8 +206,8 @@ function LoginForm() {
                   </Typography>
                 </Typography>
               ) : (
-                <Typography>
-                  Don't have an account?{" "}
+                <Typography sx={{ color: "ghostwhite" }}>
+                  Don't have an account?
                   <Typography
                     sx={{ cursor: "pointer", ":hover": { color: "red" } }}
                     onClick={() => {
@@ -221,7 +221,10 @@ function LoginForm() {
 
               <Box display={"flex"} marginTop={"50px"} marginBottom={"50px"}>
                 <Checkbox type="checkbox" />
-                <Typography component={"p"} sx={{ mt: "10px" }}>
+                <Typography
+                  component={"p"}
+                  sx={{ mt: "10px", color: "ghostwhite" }}
+                >
                   By continuem i agree the terms of use & privacy policy.
                 </Typography>
               </Box>

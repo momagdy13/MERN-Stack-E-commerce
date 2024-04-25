@@ -218,7 +218,7 @@ app.post("/addtofav", fetchUser, async (req, res) => {
       { _id: req.user },
       { favourite: userData.favourite }
     );
-    res.send("Added");
+    res.json({ success: true });
   } else {
     res.json("Item Is Already Exist!");
   }

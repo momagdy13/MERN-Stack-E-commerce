@@ -80,11 +80,11 @@ export default function Navbar() {
     window.googleTranslateElementInit = googleTranslateElementInit;
   }, []);
   return (
-    <Box sx={{ bgcolor: "#2B3445", py: "4px" }}>
+    <Box sx={{ bgcolor: "black", py: "4px" }}>
       <Stack direction={"row"} alignItems={"center"} mr={"0px"} ml={"40px"}>
         <Typography
           sx={{
-            color: theme.palette.text.secondary,
+            color: "ghostwhite",
             fontSize: "20px",
             fontFamily: "inherit",
           }}
@@ -93,7 +93,7 @@ export default function Navbar() {
         </Typography>
         <Link to={"/"}>
           <ShoppingCartOutlined
-            sx={{ cursor: "pointer", color: theme.palette.text.secondary }}
+            sx={{ cursor: "pointer", color: "ghostwhite" }}
           />
         </Link>
 
@@ -209,7 +209,7 @@ export default function Navbar() {
               <Link to={"/cart"}>
                 <ShoppingCartIcon
                   sx={{
-                    color: theme.palette.text.disabled,
+                    color: 'ghostwhite',
                     mt: "10px",
                     fontSize: "30px",
                   }}
@@ -221,7 +221,7 @@ export default function Navbar() {
           {localStorage.getItem("token") ? (
             <Stack direction={"row"} justifyContent={"center"}>
               <Button
-                sx={{ width: "150px", color: theme.palette.text.primary }}
+                sx={{ width: "150px", color: "ghostwhite" }}
                 id="basic-button"
                 aria-controls={Open ? "basic-menu" : undefined}
                 aria-haspopup="true"
@@ -248,7 +248,7 @@ export default function Navbar() {
                 <Link to={"/profile"}>
                   <MenuItem onClick={handleClose}>
                     {" "}
-                    <ListItemText sx={{ color: theme.palette.text.primary }}>
+                    <ListItemText sx={{ color: 'ghostwhite' }}>
                       Profile
                     </ListItemText>
                   </MenuItem>
@@ -273,11 +273,11 @@ export default function Navbar() {
                 type="error"
                 style={{
                   textDecoration: "none",
-                  color: theme.palette.text.secondary,
+                  color:'ghostwhite' ,
                 }}
               >
                 <Person2OutlinedIcon
-                  sx={{ color: theme.palette.text.secondary }}
+                  sx={{ color: 'ghostwhite' }}
                 />
                 Log-In
               </Link>

@@ -17,21 +17,17 @@ import {
 import React, { useState, useEffect } from "react";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import axios from "axios";
-import { Close } from "@mui/icons-material";
-import ProductDetails from "../ProductDetails/ProductDetails";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 
 export default function ShopCatg() {
   const [all_product, setAllProduct] = useState([]);
   const [alignment, setAlignment] = useState(null);
-  const [clickedProduct, setclickedProduct] = useState({});
-  const [open, setOpen] = React.useState(false);
   const [category, setCategory] = useState("allproduct");
-
-  const handleClickOpen = () => {
-    setOpen(true);
+  const navigate = useNavigate();
+  const productDetails = (item) => {
+    navigate("/product-details", { state: item });
   };
 
   const handleAlignment = (event, value) => {
@@ -41,9 +37,6 @@ export default function ShopCatg() {
     }
   };
 
-  const handleClose = () => {
-    setOpen(false);
-  };
   useEffect(() => {
     axios
       .get(`${import.meta.env.VITE_BASE_URL}/${category}`)
@@ -120,17 +113,11 @@ export default function ShopCatg() {
         >
           {all_product.map((item) => {
             return (
-              <Grid
-                container
-                item
-                key={item.id}
-                spacing={-1}
-                md={4}
-              >
+              <Grid container item key={item.id} spacing={-1} md={4}>
                 <Card
                   variant="outlined"
                   sx={{
-                   width:'350px',
+                    width: "350px",
                     my: 6,
                     ":hover .MuiCardMedia-root ": {
                       transition: "2s",
@@ -140,8 +127,13 @@ export default function ShopCatg() {
                     boxShadow: "rgb(38, 57, 77) 0px 10px 20px -10px;",
                   }}
                 >
-                  <CardMedia sx={{ height: 300 }} image={item.image} />
-
+                  <CardMedia
+                    sx={{ height: 300, cursor: "pointer" }}
+                    image={item.image}
+                    onClick={() => {
+                      productDetails(item);
+                    }}
+                  />
                   <Box sx={{ p: 3 }}>
                     <Stack
                       direction="row"
@@ -162,22 +154,6 @@ export default function ShopCatg() {
                   <Divider />
                   <Box sx={{ p: 2 }}>
                     <CardActions>
-                      <Button
-                        sx={{
-                          border: "1px  solid black",
-
-                          color: theme.palette.text.secondary,
-                          textTransform: "capitalize",
-                          background: "#cca300",
-                        }}
-                        onClick={() => {
-                          handleClickOpen();
-                          setclickedProduct(item);
-                        }}
-                      >
-                        <ShoppingCartIcon />
-                        Add To Card
-                      </Button>
                       <Rating
                         name="half-rating-read"
                         value={item.rate}
@@ -193,31 +169,6 @@ export default function ShopCatg() {
         </Grid>
       </Box>
       {/* Item */}
-
-      {/* Dialog */}
-
-      <Dialog
-        sx={{ ".MuiPaper-root": { minWidth: { xs: "100%", md: 800 } } }}
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <IconButton
-          sx={{
-            ":hover": { color: "red", rotate: "180deg", transition: "0.3s" },
-            position: "absolute",
-            top: 0,
-            right: 10,
-            zIndex: "1000",
-          }}
-          onClick={handleClose}
-        >
-          <Close />
-        </IconButton>
-        <ProductDetails clickedProduct={clickedProduct} />
-      </Dialog>
-      {/* Dialog */}
     </Container>
   );
 }

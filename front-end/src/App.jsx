@@ -10,6 +10,7 @@ import Profile from "./Pages/Profile";
 import CheckoutSuccess from "./Components/CheckoutSuccess/CheckoutSuccess";
 import ERR from "./Components/ERR/ERR";
 import Signup from "./Pages/Signup";
+import Product from "./Components/Product";
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -25,6 +26,7 @@ function App() {
           <Route path="/fav" element={<Favourite />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/checkout-success" element={<CheckoutSuccess />} />
+          <Route path="/product-details" element={<Product />} />
           <Route path="/*" element={<ERR />} />
         </Routes>
         <Fotter />

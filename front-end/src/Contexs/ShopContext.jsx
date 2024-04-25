@@ -61,8 +61,6 @@ const ShopContextProvider = (props) => {
     }
   };
   const addToFav = async (itemId) => {
-    setFavItem((prev) => ({ ...prev, [itemId]: prev[itemId] + 1 }));
-
     if (localStorage.getItem("token")) {
       await axios
         .post(
@@ -73,7 +71,9 @@ const ShopContextProvider = (props) => {
           }
         )
         .then((response) => {
-          console.log(response);
+          if (response.data.success) {
+            setFavItem((prev) => ({ ...prev, [itemId]: prev[itemId] + 1 }));
+          }
         })
         .catch((error) => {
           console.log(error);
