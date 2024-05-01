@@ -6,19 +6,24 @@ import { motion } from "framer-motion";
 import { useContext } from "react";
 import { ShopContext } from "../../Contexs/ShopContext";
 import axios from "axios";
+import { Button } from "@mui/material";
 export default function CheckoutSuccess() {
   const { removeAllFromCart } = useContext(ShopContext);
+
   const addToDone = () => {
     axios
       .post(
-        "http://localhost:4000/addtodone",
+        "http://localhost:4000/cart/addtodone",
         {},
         {
           headers: { "auth-token": `${localStorage.getItem("token")}` },
         }
       )
       .then((res) => {
-        console.log(res);
+        console.log(res.data.success);
+        if (res.data.success == 1) {
+          window.location.href = "http://localhost:5173/";
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -61,8 +66,7 @@ export default function CheckoutSuccess() {
         >
           Thank you for your purchase. Enjoy your day!
         </p>
-        <Link
-          to="/"
+        <Button
           style={{
             color: "#2c3e50",
             textDecoration: "none",
@@ -74,7 +78,7 @@ export default function CheckoutSuccess() {
           }}
         >
           Go back to home
-        </Link>
+        </Button>
       </Card>
     </Container>
   );

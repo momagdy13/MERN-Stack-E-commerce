@@ -39,12 +39,14 @@ function LoginForm() {
   };
   const login = async () => {
     try {
-      await axios.post("http://localhost:4000/login", formData).then((res) => {
-        if (res.data.success) {
-          window.location.replace("/");
-          localStorage.setItem("token", res.data.token);
-        }
-      });
+      await axios
+        .post("http://localhost:4000/auth/login", formData)
+        .then((res) => {
+          if (res.data.success) {
+            window.location.replace("/");
+            localStorage.setItem("token", res.data.token);
+          }
+        });
     } catch (e) {
       console.log(e);
       console.log(e.response.data.message);
@@ -53,7 +55,7 @@ function LoginForm() {
   };
   const signup = async () => {
     await axios
-      .post("http://localhost:4000/signup", formData)
+      .post("http://localhost:4000/auth/signup", formData)
       .then((response) => {
         if (response.data.success) {
           window.location.replace("/");
@@ -61,8 +63,16 @@ function LoginForm() {
         }
       })
       .catch((e) => {
-        console.log(e);
-        handleShowAlert(e.response.data.message);
+        if (e.response.data.username) {
+          handleShowAlert(e.response.data.username.message);
+        } else if (e.response.data.email) {
+          handleShowAlert(e.response.data.email.message);
+        } else if (e.response.data.password) {
+          handleShowAlert(e.response.data.password.message);
+        } else {
+          console.log(e.response.data);
+          handleShowAlert(e.response.data.message);
+        }
       });
   };
 
@@ -86,7 +96,7 @@ function LoginForm() {
           onClose={handleClose}
           message={message}
           action={
-            <IconButton size="large" color="white" onClick={handleClose}>
+            <IconButton size="large" color="black" onClick={handleClose}>
               <CloseIcon fontSize="40px" />
             </IconButton>
           }

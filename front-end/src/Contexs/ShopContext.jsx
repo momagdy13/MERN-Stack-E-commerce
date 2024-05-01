@@ -27,7 +27,7 @@ const ShopContextProvider = (props) => {
     if (localStorage.getItem("token")) {
       axios
         .post(
-          "http://localhost:4000/addtocart",
+          "http://localhost:4000/cart/addtocart",
           { itemId: itemId },
           {
             headers: { "auth-token": `${localStorage.getItem("token")}` },
@@ -46,7 +46,7 @@ const ShopContextProvider = (props) => {
     if (localStorage.getItem("token")) {
       axios
         .post(
-          "http://localhost:4000/deletefromcart",
+          "http://localhost:4000/cart/deletefromcart",
           { itemId: itemId },
           {
             headers: { "auth-token": `${localStorage.getItem("token")}` },
@@ -64,7 +64,7 @@ const ShopContextProvider = (props) => {
     if (localStorage.getItem("token")) {
       await axios
         .post(
-          "http://localhost:4000/addtofav",
+          "http://localhost:4000/fav/addtofav",
           { itemId: itemId },
           {
             headers: { "auth-token": `${localStorage.getItem("token")}` },
@@ -86,7 +86,7 @@ const ShopContextProvider = (props) => {
     if (localStorage.getItem("token")) {
       await axios
         .post(
-          "http://localhost:4000/removefromfav",
+          "http://localhost:4000/fav/removefromfav",
           { itemId: itemId },
           {
             headers: { "auth-token": `${localStorage.getItem("token")}` },
@@ -114,7 +114,7 @@ const ShopContextProvider = (props) => {
     if (localStorage.getItem("token")) {
       axios
         .delete(
-          "http://localhost:4000/deleteallfromcart",
+          "http://localhost:4000/cart/deleteallfromcart",
 
           {
             headers: { "auth-token": `${localStorage.getItem("token")}` },
@@ -153,13 +153,13 @@ const ShopContextProvider = (props) => {
   };
   useEffect(async () => {
     await axios
-      .get(`${import.meta.env.VITE_BASE_URL}/allproduct`)
+      .get(`${import.meta.env.VITE_BASE_URL}/product/allproduct`)
       .then((response) => {
         setAllProduct(response.data);
         if (localStorage.getItem("token")) {
           axios
             .post(
-              "http://localhost:4000/getcart",
+              "http://localhost:4000/cart/getcart",
               {},
               {
                 headers: { "auth-token": `${localStorage.getItem("token")}` },
@@ -174,7 +174,7 @@ const ShopContextProvider = (props) => {
 
           axios
             .post(
-              "http://localhost:4000/getfav",
+              "http://localhost:4000/fav/getfav",
               {},
               {
                 headers: { "auth-token": `${localStorage.getItem("token")}` },

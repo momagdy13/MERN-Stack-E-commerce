@@ -13,7 +13,7 @@ export default function Profile() {
     if (localStorage.getItem("token")) {
       axios
         .post(
-          "http://localhost:4000/getaccount",
+          "http://localhost:4000/cart/getaccount",
           {},
           {
             headers: { "auth-token": `${localStorage.getItem("token")}` },
@@ -29,7 +29,7 @@ export default function Profile() {
 
     axios
       .post(
-        "http://localhost:4000/getdone",
+        "http://localhost:4000/cart/getdone",
         {},
         {
           headers: { "auth-token": `${localStorage.getItem("token")}` },

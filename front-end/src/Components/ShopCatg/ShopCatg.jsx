@@ -39,7 +39,7 @@ export default function ShopCatg() {
 
   useEffect(() => {
     axios
-      .get(`${import.meta.env.VITE_BASE_URL}/${category}`)
+      .get(`${import.meta.env.VITE_BASE_URL}/product/${category}`)
       .then((response) => {
         setAllProduct(response.data);
         console.log(all_product);

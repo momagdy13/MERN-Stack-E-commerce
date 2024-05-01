@@ -25,7 +25,6 @@ const Alert = ({ open, onClose, message }) => {
   );
 };
 
-
 const PayButtom = ({ cartItem }) => {
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
@@ -46,35 +45,38 @@ const PayButtom = ({ cartItem }) => {
   const { all_product } = useContext(ShopContext);
   const [item, setItem] = useState({});
 
-  const handleCheckout = async () => {
-    all_product.map(async (item) => {
-      if (cartItem[item.id] > 0) {
-        const items = await all_product.filter((item) => cartItem[item.id] > 0);
-        const itemsWithQuant = await items.map((item) => ({
-          ...item,
-          quant: cartItem[item.id],
-        }));
-        setTimeout(() => {
+
+
+  const handleCheckout = () => {
+      all_product.map((item) => {
+        if (cartItem[item.id] > 0) {
+          const items = all_product.filter((item) => cartItem[item.id] > 0);
+          const itemsWithQuant = items.map((item) => ({
+            ...item,
+            quant: cartItem[item.id],
+          }));
           setItem(itemsWithQuant);
-        }, 3000);
-      }
-    });
-    await axios
-      .post(
-        `${url}/create-checkout-session`,
-        { items: item },
-        {
-          headers: { "auth-token": `${localStorage.getItem("token")}` },
         }
-      )
-      .then((response) => {
-        if (response.data.url) {
-          window.location.href = response.data.url;
-        }
-      })
-      .catch((err) => {
-        handleShowAlert(err.response.data.errors);
       });
+    setTimeout(() => {
+      axios
+        .post(
+          `${url}/stripe/create-checkout-session`,
+          { items: item },
+          {
+            headers: { "auth-token": `${localStorage.getItem("token")}` },
+          }
+        )
+        .then((response) => {
+          if (response.data.url) {
+            window.location.href = response.data.url;
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+          handleShowAlert(err.response.data.errors);
+        });
+    }, 1000);
   };
 
   const Button = styled.button`

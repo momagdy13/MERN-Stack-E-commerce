@@ -22,7 +22,7 @@ export default function AddProduct() {
     let formData = new FormData();
     formData.append("product", image);
     await axios
-      .post(`${import.meta.env.VITE_BASE_URL}/upload`, formData)
+      .post(`${import.meta.env.VITE_BASE_URL}/product/image/upload`, formData)
       .then((response) => {
         product.image = response.data.img_url;
         responseData = response.data.sucsses;
@@ -34,7 +34,7 @@ export default function AddProduct() {
       });
     if (responseData) {
       await axios
-        .post(`${import.meta.env.VITE_BASE_URL}/addproduct`, product)
+        .post(`${import.meta.env.VITE_BASE_URL}/product/addproduct`, product)
         .then((response) => {
           console.log(response);
           alert("success");
