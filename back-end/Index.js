@@ -7,6 +7,7 @@ app.use(cors());
 app.use(express.json());
 require("./Config/dbConnect.js");
 app.use("/", router);
+app.get('/', (req, res)=>{res.send("hi")})
 app.use("/images", express.static("upload/images"));
 app.listen(port, () => {
   console.log("I'm Listen to 4000");
