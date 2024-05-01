@@ -13,7 +13,7 @@ export default function CheckoutSuccess() {
   const addToDone = () => {
     axios
       .post(
-        "http://localhost:4000/cart/addtodone",
+        "https://mern-stack-e-commerce-1.onrender.com/cart/addtodone",
         {},
         {
           headers: { "auth-token": `${localStorage.getItem("token")}` },

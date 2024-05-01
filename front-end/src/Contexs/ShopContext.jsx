@@ -27,7 +27,7 @@ const ShopContextProvider = (props) => {
     if (localStorage.getItem("token")) {
       axios
         .post(
-          "http://localhost:4000/cart/addtocart",
+          "https://mern-stack-e-commerce-1.onrender.com/cart/addtocart",
           { itemId: itemId },
           {
             headers: { "auth-token": `${localStorage.getItem("token")}` },
@@ -46,7 +46,7 @@ const ShopContextProvider = (props) => {
     if (localStorage.getItem("token")) {
       axios
         .post(
-          "http://localhost:4000/cart/deletefromcart",
+          "https://mern-stack-e-commerce-1.onrender.com/cart/deletefromcart",
           { itemId: itemId },
           {
             headers: { "auth-token": `${localStorage.getItem("token")}` },
@@ -64,7 +64,7 @@ const ShopContextProvider = (props) => {
     if (localStorage.getItem("token")) {
       await axios
         .post(
-          "http://localhost:4000/fav/addtofav",
+          "https://mern-stack-e-commerce-1.onrender.com/fav/addtofav",
           { itemId: itemId },
           {
             headers: { "auth-token": `${localStorage.getItem("token")}` },
@@ -86,7 +86,7 @@ const ShopContextProvider = (props) => {
     if (localStorage.getItem("token")) {
       await axios
         .post(
-          "http://localhost:4000/fav/removefromfav",
+          "https://mern-stack-e-commerce-1.onrender.com/fav/removefromfav",
           { itemId: itemId },
           {
             headers: { "auth-token": `${localStorage.getItem("token")}` },
@@ -114,7 +114,7 @@ const ShopContextProvider = (props) => {
     if (localStorage.getItem("token")) {
       axios
         .delete(
-          "http://localhost:4000/cart/deleteallfromcart",
+          "https://mern-stack-e-commerce-1.onrender.com/cart/deleteallfromcart",
 
           {
             headers: { "auth-token": `${localStorage.getItem("token")}` },
@@ -159,7 +159,7 @@ const ShopContextProvider = (props) => {
         if (localStorage.getItem("token")) {
           axios
             .post(
-              "http://localhost:4000/cart/getcart",
+              "https://mern-stack-e-commerce-1.onrender.com/cart/getcart",
               {},
               {
                 headers: { "auth-token": `${localStorage.getItem("token")}` },
@@ -174,7 +174,7 @@ const ShopContextProvider = (props) => {
 
           axios
             .post(
-              "http://localhost:4000/fav/getfav",
+              "https://mern-stack-e-commerce-1.onrender.com/fav/getfav",
               {},
               {
                 headers: { "auth-token": `${localStorage.getItem("token")}` },

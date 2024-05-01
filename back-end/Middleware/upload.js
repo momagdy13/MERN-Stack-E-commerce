@@ -17,7 +17,7 @@ const upload = multer({ storage: storage });
 router.post("/upload", upload.single("product"), (req, res) => {
   res.json({
     sucsses: 1,
-    img_url: `http://localhost:4000/images/${req.file.filename}`,
+    img_url: `https://mern-stack-e-commerce-1.onrender.com/images/${req.file.filename}`,
   });
 });
 // Upload EndPoint\\

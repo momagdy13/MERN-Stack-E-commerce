@@ -39,28 +39,9 @@ export default function CartItem() {
     cartItems,
     all_product, 
     removeFromCart,
-    removeAllFromCart,
     getTotalCartAmount,
   } = useContext(ShopContext);
   const theme = useTheme();
-  const [open, setOpen] = React.useState(false);
-
-  const doneOrder = () => {
-    axios
-      .post(
-        "http://localhost:4000/addtodone",
-        {},
-        {
-          headers: { "auth-token": `${localStorage.getItem("token")}` },
-        }
-      )
-      .then((response) => {
-        console.log(response);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
 
   return (
     <Container sx={{ mt: "4%" }}>

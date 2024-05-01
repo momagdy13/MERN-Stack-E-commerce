@@ -40,7 +40,10 @@ function LoginForm() {
   const login = async () => {
     try {
       await axios
-        .post("http://localhost:4000/auth/login", formData)
+        .post(
+          "https://mern-stack-e-commerce-1.onrender.com/auth/login",
+          formData
+        )
         .then((res) => {
           if (res.data.success) {
             window.location.replace("/");
@@ -55,7 +58,10 @@ function LoginForm() {
   };
   const signup = async () => {
     await axios
-      .post("http://localhost:4000/auth/signup", formData)
+      .post(
+        "https://mern-stack-e-commerce-1.onrender.com/auth/signup",
+        formData
+      )
       .then((response) => {
         if (response.data.success) {
           window.location.replace("/");

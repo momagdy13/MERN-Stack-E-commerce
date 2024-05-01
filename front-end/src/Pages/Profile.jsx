@@ -13,7 +13,7 @@ export default function Profile() {
     if (localStorage.getItem("token")) {
       axios
         .post(
-          "http://localhost:4000/cart/getaccount",
+          "https://mern-stack-e-commerce-1.onrender.com/cart/getaccount",
           {},
           {
             headers: { "auth-token": `${localStorage.getItem("token")}` },
@@ -29,7 +29,7 @@ export default function Profile() {
 
     axios
       .post(
-        "http://localhost:4000/cart/getdone",
+        "https://mern-stack-e-commerce-1.onrender.com/cart/getdone",
         {},
         {
           headers: { "auth-token": `${localStorage.getItem("token")}` },

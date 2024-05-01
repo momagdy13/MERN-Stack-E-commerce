@@ -1,4 +1,3 @@
-import { Button } from "@mui/material";
 import axios from "axios";
 import { useContext } from "react";
 import { ShopContext } from "../../Contexs/ShopContext";
@@ -25,6 +24,43 @@ const Alert = ({ open, onClose, message }) => {
   );
 };
 
+const Button = styled.button`
+  background: linear-gradient(45deg, #ffffff, #000000);
+  border: none;
+  color: white;
+  padding: 20px 40px;
+  font-size: 1.5em;
+  border-radius: 10px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  height: 50px;
+  transition: all 0.3s ease;
+  margin-top: 20px;
+  margin-bottom: 100px;
+
+  &:before {
+    content: "${({ children }) => children}";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 10px 0 20px;
+    background: rgba(0, 0, 0, 0.5);
+    text-align: center;
+    transform: translateY(100%);
+    transition: all 0.3s ease;
+  }
+
+  &:hover:before {
+    transform: translateY(0);
+  }
+
+  &:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+  }
+`;
 const PayButtom = ({ cartItem }) => {
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
@@ -41,81 +77,41 @@ const PayButtom = ({ cartItem }) => {
       setOpen(false);
     }, 8000);
   };
-  const url = "http://localhost:4000";
+  const url = "https://mern-stack-e-commerce-1.onrender.com";
   const { all_product } = useContext(ShopContext);
   const [item, setItem] = useState({});
 
-
-
   const handleCheckout = () => {
-      all_product.map((item) => {
-        if (cartItem[item.id] > 0) {
-          const items = all_product.filter((item) => cartItem[item.id] > 0);
-          const itemsWithQuant = items.map((item) => ({
-            ...item,
-            quant: cartItem[item.id],
-          }));
-          setItem(itemsWithQuant);
+    all_product.map((item) => {
+      if (cartItem[item.id] > 0) {
+        const items = all_product.filter((item) => cartItem[item.id] > 0);
+        const itemsWithQuant = items.map((item) => ({
+          ...item,
+          quant: cartItem[item.id],
+        }));
+        setItem(itemsWithQuant);
+      }
+    });
+
+    axios
+      .post(
+        `${url}/stripe/create-checkout-session`,
+        { items: item },
+        {
+          headers: { "auth-token": `${localStorage.getItem("token")}` },
         }
+      )
+      .then((response) => {
+        if (response.data.url) {
+          window.location.href = response.data.url;
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        handleShowAlert(err.response.data.errors);
       });
-    setTimeout(() => {
-      axios
-        .post(
-          `${url}/stripe/create-checkout-session`,
-          { items: item },
-          {
-            headers: { "auth-token": `${localStorage.getItem("token")}` },
-          }
-        )
-        .then((response) => {
-          if (response.data.url) {
-            window.location.href = response.data.url;
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-          handleShowAlert(err.response.data.errors);
-        });
-    }, 1000);
   };
 
-  const Button = styled.button`
-    background: linear-gradient(45deg, #ffffff, #000000);
-    border: none;
-    color: white;
-    padding: 20px 40px;
-    font-size: 1.5em;
-    border-radius: 10px;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-    height: 50px;
-    transition: all 0.3s ease;
-    margin-top: 20px;
-    margin-bottom: 100px;
-
-    &:before {
-      content: "${({ children }) => children}";
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      padding: 10px 0 20px;
-      background: rgba(0, 0, 0, 0.5);
-      text-align: center;
-      transform: translateY(100%);
-      transition: all 0.3s ease;
-    }
-
-    &:hover:before {
-      transform: translateY(0);
-    }
-
-    &:hover {
-      transform: translateY(-3px) scale(1.05);
-      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
-    }
-  `;
   return (
     <>
       <Button
