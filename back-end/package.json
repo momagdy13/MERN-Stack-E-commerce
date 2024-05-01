@@ -18,7 +18,7 @@
     "stripe": "^15.3.0"
   },
   "scripts": {
-    "dev": "nodemon Index.js",
+    "dev": "node Index.js",
     "build": "npm i"
   }
 }
