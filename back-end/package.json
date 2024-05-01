@@ -18,7 +18,7 @@
     "stripe": "^15.3.0"
   },
   "scripts": {
-    "start": "npx nodemon index.js",
+    "start": "npx nodemon ",
     "build": "npm i"
   }
 }
