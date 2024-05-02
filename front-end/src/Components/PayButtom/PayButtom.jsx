@@ -84,7 +84,6 @@ const PayButtom = ({ cartItem }) => {
   const handleCheckout = () => {
     all_product.map((item) => {
       if (cartItem[item.id] > 0) {
-        
         const items = all_product.filter((item) => cartItem[item.id] > 0);
         const itemsWithQuant = items.map((item) => ({
           ...item,

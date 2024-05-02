@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import "./product.css";
-import { ShopContext } from "../Contexs/ShopContext";
+import { ShopContext } from "../../Contexs/ShopContext";
 import { useLocation } from "react-router-dom";
 import { Rating } from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";

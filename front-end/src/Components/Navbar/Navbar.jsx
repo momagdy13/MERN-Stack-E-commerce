@@ -88,13 +88,12 @@ export default function Navbar() {
             fontSize: "20px",
             fontFamily: "inherit",
           }}
-        >
-          Mo_Shop
-        </Typography>
-        <Link to={"/"}>
+        ></Typography>
+        <Link to={"/"} style={{textDecoration:'none', color:'ghostwhite'}}>
           <ShoppingCartOutlined
             sx={{ cursor: "pointer", color: "ghostwhite" }}
           />
+          Mo_Shop
         </Link>
 
         <Typography
@@ -209,7 +208,7 @@ export default function Navbar() {
               <Link to={"/cart"}>
                 <ShoppingCartIcon
                   sx={{
-                    color: 'ghostwhite',
+                    color: "ghostwhite",
                     mt: "10px",
                     fontSize: "30px",
                   }}
@@ -243,12 +242,12 @@ export default function Navbar() {
                 MenuListProps={{
                   "aria-labelledby": "basic-button",
                 }}
-                sx={{ "& .MuiPaper-root": { width: "150px", mr: "30px" } }}
+                sx={{ "& .MuiPaper-root": { width: "150px", mr: "30px" , color:'ghostwhite'} }}
               >
-                <Link to={"/profile"}>
+                <Link to={"/profile"} style={{textDecoration:'none'}}>
                   <MenuItem onClick={handleClose}>
                     {" "}
-                    <ListItemText sx={{ color: 'ghostwhite' }}>
+                    <ListItemText sx={{ color: "black" }}>
                       Profile
                     </ListItemText>
                   </MenuItem>
@@ -273,12 +272,10 @@ export default function Navbar() {
                 type="error"
                 style={{
                   textDecoration: "none",
-                  color:'ghostwhite' ,
+                  color: "ghostwhite",
                 }}
               >
-                <Person2OutlinedIcon
-                  sx={{ color: 'ghostwhite' }}
-                />
+                <Person2OutlinedIcon sx={{ color: "ghostwhite" }} />
                 Log-In
               </Link>
             </IconButton>

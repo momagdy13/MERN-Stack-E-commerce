@@ -112,6 +112,7 @@ export default function ShopCatg() {
           transition={{ duration: 0.6 }}
         >
           {all_product.map((item) => {
+           
             return (
               <Grid container item key={item.id} spacing={-1} md={4}>
                 <Card

@@ -2,9 +2,6 @@ const express = require("express");
 const Product = require("../../models/Products");
 const router = express.Router();
 
-
-
-
 // Creating EndPoint For Add product//
 router.post("/addproduct", async (req, res) => {
   let products = await Product.find({});
@@ -54,7 +51,6 @@ router.get("/:catg", async (req, res) => {
   res.json(product);
 });
 // Creating EndPoint For Catg//
-
 
 
 module.exports = router;

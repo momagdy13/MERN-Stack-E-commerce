@@ -10,7 +10,8 @@ import Profile from "./Pages/Profile";
 import CheckoutSuccess from "./Components/CheckoutSuccess/CheckoutSuccess";
 import ERR from "./Components/ERR/ERR";
 import Signup from "./Pages/Signup";
-import Product from "./Components/Product";
+import Product from "./Components/ProductDetails/Product";
+import Result from "./Components/Result/Result";
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -27,6 +28,7 @@ function App() {
           <Route path="/profile" element={<Profile />} />
           <Route path="/checkout-success" element={<CheckoutSuccess />} />
           <Route path="/product-details" element={<Product />} />
+          <Route path="/result" element={<Result />} />
           <Route path="/*" element={<ERR />} />
         </Routes>
         <Fotter />

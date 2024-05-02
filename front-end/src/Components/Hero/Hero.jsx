@@ -29,7 +29,7 @@ export default function Hero() {
 
   return (
     <Container sx={{ display: "flex", alignItems: "center", mt: 6, mb: 6 }}>
-      <Box id="hero-left" flexGrow={1} sx={{ overflow: "auto", mr: "20px" }}>
+      <Box id="hero-left"  sx={{ overflow: "auto", mr: "20px" }}>
         <Swiper
           loop={true}
           pagination={{
@@ -94,24 +94,26 @@ export default function Hero() {
                     Get Free Shipping on orders over $99.00
                   </Typography>
 
-                  <Button
-                    sx={{
-                      px: 5,
-                      py: 1,
-                      mt: 2,
-                      backgroundColor: "#222",
-                      boxShadow: "0px 4px 16px rgba(43, 52, 69, 0.1)",
-                      color: "#fff",
-                      borderRadius: "1px",
-                      "&:hover": {
-                        bgcolor: "#151515",
+                  <a href="#select-product" style={{ textDecoration: "none" }}>
+                    <Button
+                      sx={{
+                        px: 5,
+                        py: 1,
+                        mt: 2,
+                        backgroundColor: "#222",
                         boxShadow: "0px 4px 16px rgba(43, 52, 69, 0.1)",
-                      },
-                    }}
-                    variant="contained"
-                  >
-                    shop now
-                  </Button>
+                        color: "#fff",
+                        borderRadius: "1px",
+                        "&:hover": {
+                          bgcolor: "#151515",
+                          boxShadow: "0px 4px 16px rgba(43, 52, 69, 0.1)",
+                        },
+                      }}
+                      variant="contained"
+                    >
+                      shop now
+                    </Button>
+                  </a>
                 </Box>
               </SwiperSlide>
             );
@@ -119,127 +121,7 @@ export default function Hero() {
         </Swiper>
       </Box>
 
-      <Box id="hero-right" display={{ xs: "none", md: "block" }}>
-        <Box sx={{ position: "relative" }}>
-          <img src={hero} height={"280px"} width={"100%"} alt="" />
-          <Stack
-            sx={{
-              position: "absolute",
-              top: "60%",
-              transform: "translateY(-50%)",
-              left: 31,
-            }}
-          >
-            <Typography
-              variant="caption"
-              sx={{
-                color: theme.palette.text.primary,
-                fontSize: "25px",
-              }}
-            >
-              NEW ARRIVALS
-            </Typography>
-            <Typography
-              variant="h6"
-              sx={{
-                color: theme.palette.text.primary,
-                lineHeight: "25px",
-                mt: 1,
-              }}
-            >
-              SUMMER
-            </Typography>
-            <Typography
-              variant="h6"
-              sx={{
-                color: theme.palette.text.primary,
-              }}
-            >
-              SALE 20% OFF
-            </Typography>
-
-            <Link
-              sx={{
-                color: theme.palette.text.primary,
-                display: "flex",
-                alignItems: "center",
-                gap: "15px",
-                transition: "0.2s",
-                fontSize: "20px",
-                "&:hover": {
-                  color: "red",
-                },
-              }}
-              href="#"
-              underline="none"
-            >
-              shop now
-              <ArrowForwardIcon sx={{ fontSize: "13px" }} />
-            </Link>
-          </Stack>
-        </Box>
-
-        <Box sx={{ position: "relative" }}>
-          <img src={hero_} alt="" />
-          <Stack
-            sx={{
-              position: "absolute",
-              top: "70%",
-              transform: "translateY(-50%)",
-              left: 31,
-            }}
-          >
-            <Typography
-              variant="caption"
-              sx={{
-                color: "white",
-                fontSize: "26px",
-                fontWeight: 300,
-              }}
-            >
-              GAMING 4K
-            </Typography>
-            <Typography
-              variant="h6"
-              sx={{
-                color: "white",
-                lineHeight: "26px",
-                mt: 1,
-              }}
-            >
-              DESKTOPS &
-            </Typography>
-
-            <Typography
-              variant="h6"
-              sx={{
-                color: "white",
-              }}
-            >
-              LAPTOPS
-            </Typography>
-
-            <Link
-              sx={{
-                color: "white",
-                display: "flex",
-                alignItems: "center",
-                gap: "5px",
-                transition: "0.2s",
-
-                "&:hover": {
-                  color: "#D23F57",
-                },
-              }}
-              href="#"
-              underline="none"
-            >
-              shop now
-              <ArrowForwardIcon sx={{ fontSize: "26px" }} />
-            </Link>
-          </Stack>
-        </Box>
-      </Box>
+     
     </Container>
   );
 }

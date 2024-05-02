@@ -191,6 +191,8 @@ const ShopContextProvider = (props) => {
       .catch((error) => {
         console.log(error);
       });
+
+  
   }, []);
 
   const contxtValue = {

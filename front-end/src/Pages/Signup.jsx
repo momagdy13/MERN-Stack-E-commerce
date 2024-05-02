@@ -218,7 +218,7 @@ function LoginForm() {
                       setState("Login");
                     }}
                   >
-                    Login
+                    Login here
                   </Typography>
                 </Typography>
               ) : (
@@ -230,7 +230,7 @@ function LoginForm() {
                       setState("Signup");
                     }}
                   >
-                    Login here
+                    Create Your Account
                   </Typography>
                 </Typography>
               )}
