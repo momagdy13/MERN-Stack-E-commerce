@@ -22,7 +22,8 @@ export default function CheckoutSuccess() {
       .then((res) => {
         console.log(res.data.success);
         if (res.data.success == 1) {
-          window.location.href = "https://mern-stack-e-commerce-1.onrender.com";
+          window.location.href =
+            "https://6634920ec7beeabf23be5a43--moshop12.netlify.app/";
         }
       })
       .catch((err) => {

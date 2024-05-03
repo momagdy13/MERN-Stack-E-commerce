@@ -9,12 +9,17 @@ const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 router.post("/create-checkout-session", fetchUser, async (req, res) => {
   const item = req.body.items;
 
+  if (!item) {
+    console.log("Item data is not available");
+    return;
+  }
+
   if (Object.keys(item).length > 0) {
     const line_items = Array.isArray(item)
       ? item.map((item) => {
           return {
             price_data: {
-              currency: "usd", 
+              currency: "usd",
               product_data: {
                 name: item.name,
                 description: item.descripe,
@@ -26,10 +31,13 @@ router.post("/create-checkout-session", fetchUser, async (req, res) => {
         })
       : [];
     try {
+      // Disable the button to prevent multiple submissions
+      res.locals.disableButton = true;
+
       const session = await stripe.checkout.sessions.create({
         line_items,
         mode: "payment",
-        success_url: `${process.env.CLINT_SITE_URL}/checkout-success`,
+        success_url: `${process.env.CLINT_SITE_URL}/success`,
         cancel_url: `${process.env.CLINT_SITE_URL}/cart`,
       });
 
@@ -38,9 +46,11 @@ router.post("/create-checkout-session", fetchUser, async (req, res) => {
       console.log(err);
     }
   } else {
-    console.log("nan");
+    console.log("No items found");
   }
 });
+
+
 
 /////////////////////////// Handle Payment ///////////
 module.exports = router;

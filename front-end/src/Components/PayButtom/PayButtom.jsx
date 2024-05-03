@@ -65,6 +65,8 @@ const PayButtom = ({ cartItem }) => {
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
 
+  const [disableButton, setDisableButton] = useState(false);
+
   const handleClose = () => {
     setOpen(false);
   };
@@ -77,7 +79,7 @@ const PayButtom = ({ cartItem }) => {
       setOpen(false);
     }, 8000);
   };
-  const url = "https://mern-stack-e-commerce-1.onrender.com";
+  const url = "http://localhost:4000";
   const { all_product } = useContext(ShopContext);
   const [item, setItem] = useState({});
 
@@ -118,6 +120,7 @@ const PayButtom = ({ cartItem }) => {
         onClick={() => {
           handleCheckout();
         }}
+        disabled={disableButton}
       >
         Check Out
       </Button>
