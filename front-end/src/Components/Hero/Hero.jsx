@@ -8,10 +8,8 @@ import {
   useTheme,
 } from "@mui/material";
 import React from "react";
-import hero from "../Assest/man-white-shirt.jpg";
-import hero_ from "../Assest/apple-black-glowing-logo.jpg";
-import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import slider from "../Assest/02-lestrange.webp";
+import women from "../Assest/OIP.jpeg";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/pagination";
@@ -24,12 +22,13 @@ export default function Hero() {
     { text: "MEN", link: slider },
     {
       text: "Women",
+      link: women,
     },
   ];
 
   return (
     <Container sx={{ display: "flex", alignItems: "center", mt: 6, mb: 6 }}>
-      <Box id="hero-left"  sx={{ overflow: "auto", mr: "20px" }}>
+      <Box id="hero-left" sx={{ overflow: "auto", mr: "20px" }}>
         <Swiper
           loop={true}
           pagination={{
@@ -120,8 +119,6 @@ export default function Hero() {
           })}
         </Swiper>
       </Box>
-
-     
     </Container>
   );
 }
