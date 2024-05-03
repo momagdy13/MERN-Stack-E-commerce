@@ -4,7 +4,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import styled from "styled-components";
 import { motion } from "framer-motion";
 import { useContext } from "react";
-import { ShopContext } from "../../Contexs/ShopContext";
+import { ShopContext } from "../Contexs/ShopContext";
 import axios from "axios";
 import { Button } from "@mui/material";
 export default function CheckoutSuccess() {

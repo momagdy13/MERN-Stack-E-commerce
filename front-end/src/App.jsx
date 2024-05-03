@@ -7,7 +7,7 @@ import Shop from "./Pages/Shop";
 import { Route, Routes } from "react-router-dom";
 import Favourite from "./Pages/Favourite";
 import Profile from "./Pages/Profile";
-import CheckoutSuccess from "./Components/CheckoutSuccess/CheckoutSuccess";
+import CheckoutSuccess from "./Pages/CheckoutSuccess";
 import ERR from "./Components/ERR/ERR";
 import Signup from "./Pages/Signup";
 import Product from "./Components/ProductDetails/Product";
