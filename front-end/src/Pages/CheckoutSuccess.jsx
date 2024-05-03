@@ -9,11 +9,12 @@ import axios from "axios";
 import { Button } from "@mui/material";
 export default function CheckoutSuccess() {
   const { removeAllFromCart } = useContext(ShopContext);
+  const url = "https://mern-stack-e-commerce-1.onrender.com";
 
   const addToDone = () => {
     axios
       .post(
-        "https://mern-stack-e-commerce-1.onrender.com/cart/addtodone",
+        `${url}/cart/addtodone`,
         {},
         {
           headers: { "auth-token": `${localStorage.getItem("token")}` },
@@ -22,8 +23,7 @@ export default function CheckoutSuccess() {
       .then((res) => {
         console.log(res.data.success);
         if (res.data.success == 1) {
-          window.location.href =
-            "https://6634920ec7beeabf23be5a43--moshop12.netlify.app/";
+          window.location.href = "https://moshop24.netlify.app/";
         }
       })
       .catch((err) => {

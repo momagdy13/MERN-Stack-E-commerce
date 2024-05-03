@@ -16,6 +16,7 @@ import { Box, useTheme } from "@mui/system";
 function LoginForm() {
   const theme = useTheme();
   const [state, setState] = useState("Login");
+  const url = "https://mern-stack-e-commerce-1.onrender.com";
   const [formData, setFormData] = useState({
     email: "",
     username: "",
@@ -39,17 +40,12 @@ function LoginForm() {
   };
   const login = async () => {
     try {
-      await axios
-        .post(
-          "https://mern-stack-e-commerce-1.onrender.com/auth/login",
-          formData
-        )
-        .then((res) => {
-          if (res.data.success) {
-            window.location.replace("/");
-            localStorage.setItem("token", res.data.token);
-          }
-        });
+      await axios.post(`${url}/auth/login`, formData).then((res) => {
+        if (res.data.success) {
+          window.location.replace("/");
+          localStorage.setItem("token", res.data.token);
+        }
+      });
     } catch (e) {
       console.log(e);
       console.log(e.response.data.message);
@@ -58,10 +54,7 @@ function LoginForm() {
   };
   const signup = async () => {
     await axios
-      .post(
-        "https://mern-stack-e-commerce-1.onrender.com/auth/signup",
-        formData
-      )
+      .post(`${url}/auth/login`, formData)
       .then((response) => {
         if (response.data.success) {
           window.location.replace("/");

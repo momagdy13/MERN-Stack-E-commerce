@@ -7,7 +7,7 @@ export default function ListProduct() {
 
   const req = () => {
     axios
-      .get(`${import.meta.env.VITE_BASE_URL}/product/allproduct`)
+      .get(`${import.meta.env.API_URL}/product/allproduct`)
       .then((response) => {
         console.log(response.data);
         setProducts(response.data);
@@ -18,7 +18,7 @@ export default function ListProduct() {
   };
   const deleteProduct = async (id) => {
     axios
-      .delete(`${import.meta.env.VITE_BASE_URL}/product/deleteproduct`, { id: id })
+      .delete(`${import.meta.env.API_URL}/product/deleteproduct`, { id: id })
       .then((response) => {
         alert("Deleted Success!");
         console.log(response);

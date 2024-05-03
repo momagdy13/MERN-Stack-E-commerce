@@ -8,12 +8,13 @@ export default function Profile() {
   const [userData, setUserData] = useState("");
   const [done, setDone] = useState(Number);
   const { getTotalCartItems } = useContext(ShopContext);
+  const url = "https://mern-stack-e-commerce-1.onrender.com";
 
   useEffect(() => {
     if (localStorage.getItem("token")) {
       axios
         .post(
-          "https://mern-stack-e-commerce-1.onrender.com/cart/getaccount",
+          `${url}/cart/getaccount`,
           {},
           {
             headers: { "auth-token": `${localStorage.getItem("token")}` },
@@ -29,7 +30,7 @@ export default function Profile() {
 
     axios
       .post(
-        "https://mern-stack-e-commerce-1.onrender.com/cart/getdone",
+        `${url}/cart/getdone`,
         {},
         {
           headers: { "auth-token": `${localStorage.getItem("token")}` },

@@ -25,6 +25,7 @@ export default function ShopCatg() {
   const [all_product, setAllProduct] = useState([]);
   const [alignment, setAlignment] = useState(null);
   const [category, setCategory] = useState("allproduct");
+  const url = "https://mern-stack-e-commerce-1.onrender.com";
   const navigate = useNavigate();
   const productDetails = (item) => {
     navigate("/product-details", { state: item });
@@ -39,7 +40,7 @@ export default function ShopCatg() {
 
   useEffect(() => {
     axios
-      .get(`${import.meta.env.VITE_BASE_URL}/product/${category}`)
+      .get(`${url}/product/${category}`)
       .then((response) => {
         setAllProduct(response.data);
         console.log(all_product);

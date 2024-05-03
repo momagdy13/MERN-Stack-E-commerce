@@ -5,6 +5,7 @@ import axios from "axios";
 
 export default function AddProduct() {
   const [image, setImage] = useState(false);
+  const url = "https://mern-stack-e-commerce-1.onrender.com";
   const [product_details, setProduct_details] = useState({
     name: "",
     image: "",
@@ -22,7 +23,7 @@ export default function AddProduct() {
     let formData = new FormData();
     formData.append("product", image);
     await axios
-      .post(`${import.meta.env.VITE_BASE_URL}/product/image/upload`, formData)
+      .post(`${url}/product/image/upload`, formData)
       .then((response) => {
         product.image = response.data.img_url;
         responseData = response.data.sucsses;
@@ -34,7 +35,7 @@ export default function AddProduct() {
       });
     if (responseData) {
       await axios
-        .post(`${import.meta.env.VITE_BASE_URL}/product/addproduct`, product)
+        .post(`${url}/product/addproduct`, product)
         .then((response) => {
           console.log(response);
           alert("success");

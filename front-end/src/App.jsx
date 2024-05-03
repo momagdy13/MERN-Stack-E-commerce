@@ -12,6 +12,7 @@ import ERR from "./Components/ERR/ERR";
 import Signup from "./Pages/Signup";
 import Product from "./Components/ProductDetails/Product";
 import Result from "./Components/Result/Result";
+import Protected from "./Protected";
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -21,13 +22,15 @@ function App() {
         <CssBaseline />
         <Navbar />
         <Routes>
-          <Route path="/login" element={<Signup />} />
-          <Route path="/" element={<Shop />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/fav" element={<Favourite />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/success" element={<CheckoutSuccess />} />
           <Route path="/product-details" element={<Product />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route element={<Protected />}>
+            <Route path="/success" element={<CheckoutSuccess />} />
+            <Route path="/login" element={<Signup />} />
+          </Route>
+          <Route path="/" element={<Shop />} />
           <Route path="/result" element={<Result />} />
           <Route path="/*" element={<ERR />} />
         </Routes>

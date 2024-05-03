@@ -64,6 +64,7 @@ const Button = styled.button`
 const PayButtom = ({ cartItem }) => {
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
+  const url = "https://mern-stack-e-commerce-1.onrender.com";
 
   const [disableButton, setDisableButton] = useState(false);
 
@@ -79,7 +80,7 @@ const PayButtom = ({ cartItem }) => {
       setOpen(false);
     }, 8000);
   };
-  const url = "https://mern-stack-e-commerce-1.onrender.com";
+  ;
   const { all_product } = useContext(ShopContext);
   const [item, setItem] = useState({});
 

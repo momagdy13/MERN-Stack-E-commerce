@@ -1,6 +1,5 @@
 import React, { useContext, useState } from "react";
 import {
-  
   Box,
   Button,
   Collapse,
@@ -15,7 +14,6 @@ import cross_icon from "../Assest/cross_icon.png";
 import { ShopContext } from "../../Contexs/ShopContext";
 import axios from "axios";
 import PayButtom from "../PayButtom/PayButtom";
-
 
 const style = {
   position: "absolute",
@@ -35,18 +33,12 @@ const style = {
 };
 
 export default function CartItem() {
-  const {
-    cartItems,
-    all_product, 
-    removeFromCart,
-    getTotalCartAmount,
-  } = useContext(ShopContext);
+  const { cartItems, all_product, removeFromCart, getTotalCartAmount } =
+    useContext(ShopContext);
   const theme = useTheme();
 
   return (
     <Container sx={{ mt: "4%" }}>
-   
-
       <Divider sx={{ borderColor: `${theme.palette.text.primary}` }} />
       <Stack direction={"row"} justifyContent={"space-between"}>
         <Typography variant="h6">Products</Typography>
@@ -124,8 +116,7 @@ export default function CartItem() {
 
           <Divider sx={{ borderColor: `${theme.palette.text.primary}` }} />
 
-         
-          <PayButtom cartItem = {cartItems} />
+          <PayButtom cartItem={cartItems} />
         </Stack>
 
         <Stack
