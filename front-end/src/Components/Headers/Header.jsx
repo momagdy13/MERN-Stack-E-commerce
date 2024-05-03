@@ -13,7 +13,11 @@ const Header2 = () => {
   const [name, setName] = useState("");
   const navigate = useNavigate();
   const productName = (name) => {
-    navigate("/result", { state: name });
+    if (name == "") {
+      navigate("/");
+    } else {
+      navigate("/result", { state: name });
+    }
   };
 
   return (

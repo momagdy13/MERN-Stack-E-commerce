@@ -22,7 +22,7 @@ export default function CheckoutSuccess() {
       .then((res) => {
         console.log(res.data.success);
         if (res.data.success == 1) {
-          window.location.href = "http://localhost:5173/";
+          window.location.href = "https://mern-stack-e-commerce-1.onrender.com";
         }
       })
       .catch((err) => {
