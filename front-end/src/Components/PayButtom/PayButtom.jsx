@@ -79,7 +79,7 @@ const PayButtom = ({ cartItem }) => {
       setOpen(false);
     }, 8000);
   };
-  const url = "http://localhost:4000";
+  const url = "https://mern-stack-e-commerce-1.onrender.com";
   const { all_product } = useContext(ShopContext);
   const [item, setItem] = useState({});
 
