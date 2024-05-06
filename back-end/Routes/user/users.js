@@ -9,6 +9,13 @@ const UsersVerfication = require("../../models/UserVerification");
 const nodemailer = require("nodemailer");
 const { v4: uuidv4 } = require("uuid");
 const moment = require("moment-timezone");
+app.use(cors());
+app.use((req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "https://moshop24.netlify.app");
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+  next();
+});
 
 const transporter = nodemailer.createTransport({
   service: "gmail",

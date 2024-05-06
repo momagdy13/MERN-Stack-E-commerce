@@ -14,19 +14,6 @@ app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
   next();
 });
-const whitelist = ["https://moshop24.netlify.app"];
-const corsOptions = {
-  origin: function (origin, callback) {
-    if (whitelist.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
-};
-
-// Use the cors middleware with the configured options
-app.use(cors(corsOptions));
 
 app.use(
   cookieSession({
