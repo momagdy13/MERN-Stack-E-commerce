@@ -9,11 +9,24 @@ require("./Config/dbConnect");
 const app = express();
 app.use(cors());
 app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "https://moshop24.netlify.app/");
+  res.setHeader("Access-Control-Allow-Origin", "https://moshop24.netlify.app");
   res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
   next();
 });
+const whitelist = ["https://moshop24.netlify.app"];
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (whitelist.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+};
+
+// Use the cors middleware with the configured options
+app.use(cors(corsOptions));
 
 app.use(
   cookieSession({
