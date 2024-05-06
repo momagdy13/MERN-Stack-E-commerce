@@ -8,9 +8,14 @@ const router = require("./Controll/Controll");
 require("./Config/dbConnect");
 const app = express();
 app.use(cors());
-app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "https://moshop24.netlify.app");
-  next();
+app.get("/", (req, res) => {
+  // Set CORS headers
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "GET");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+
+  // Your route logic
+  res.send("Hello, world!");
 });
 app.use(
   cookieSession({
@@ -35,9 +40,6 @@ app.use(function (request, response, next) {
 app.use(passport.initialize());
 app.use(passport.session());
 app.use("/", router);
-app.get("/", (req, res) => {
-  res.send("hi");
-});
 
 const port = 4000;
 app.listen(port, () => console.log(`Listenting on port ${port}...`));
