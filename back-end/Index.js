@@ -10,11 +10,8 @@ const app = express();
 app.use(cors());
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "https://moshop24.netlify.app");
-  res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
   next();
 });
-
 app.use(
   cookieSession({
     maxAge: 30 * 24 * 60 * 60 * 1000,
