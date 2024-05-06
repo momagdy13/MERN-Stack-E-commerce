@@ -11,19 +11,13 @@ const app = express();
 app.use(cors());
 app.get("/", (req, res) => {
   // Set CORS headers
-  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Origin", "https://moshop24.netlify.app");
   res.setHeader("Access-Control-Allow-Methods", "GET,PUT,DELETE,POST,PATCH");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
   // Your route logic
   res.send("Hello, world!");
 });
-const proxyMiddleware = createProxyMiddleware({
-  target: "https://mern-stack-e-commerce-50uh.onrender.com",
-  changeOrigin: true,
-  secure: false,
-});
-app.use("/auth", proxyMiddleware);
 
 app.use(
   cookieSession({
