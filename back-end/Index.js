@@ -4,9 +4,9 @@ const cors = require("cors");
 const passport = require("passport");
 const cookieSession = require("cookie-session");
 const passportStrategy = require("./googlAuth/passport");
-const { createProxyMiddleware } = require("http-proxy-middleware");
 const router = require("./Controll/Controll");
 require("./Config/dbConnect");
+app.use("/", router);
 const app = express();
 function corsMiddleware(req, res, next) {
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -43,7 +43,6 @@ app.use(function (request, response, next) {
 });
 app.use(passport.initialize());
 app.use(passport.session());
-app.use("/", router);
 
 const port = 4000;
 app.listen(port, () => console.log(`Listenting on port ${port}...`));
