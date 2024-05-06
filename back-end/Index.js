@@ -4,6 +4,7 @@ const cors = require("cors");
 const passport = require("passport");
 const cookieSession = require("cookie-session");
 const passportStrategy = require("./googlAuth/passport");
+const { createProxyMiddleware } = require("http-proxy-middleware");
 const router = require("./Controll/Controll");
 require("./Config/dbConnect");
 const app = express();
@@ -17,6 +18,13 @@ app.get("/", (req, res) => {
   // Your route logic
   res.send("Hello, world!");
 });
+const proxyMiddleware = createProxyMiddleware({
+  target: "https://mern-stack-e-commerce-50uh.onrender.com",
+  changeOrigin: true,
+  secure: false,
+});
+app.use("/auth", proxyMiddleware);
+
 app.use(
   cookieSession({
     maxAge: 30 * 24 * 60 * 60 * 1000,
