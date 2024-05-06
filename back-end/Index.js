@@ -7,8 +7,12 @@ const passportStrategy = require("./googlAuth/passport");
 const router = require("./Controll/Controll");
 require("./Config/dbConnect");
 const app = express();
-app.options("*", cors());
-
+app.use(
+  cors({
+    origin: "https://moshop24.netlify.app",
+    credentials: true,
+  })
+);
 app.use(
   cookieSession({
     maxAge: 30 * 24 * 60 * 60 * 1000,
