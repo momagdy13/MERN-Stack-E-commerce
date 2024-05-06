@@ -13,6 +13,17 @@ app.use(
     origin: "https://moshop24.netlify.app",
   })
 );
+
+app.use((req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "https://moshop24.netlify.app");
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "GET, POST, PUT, PATCH, DELETE"
+  );
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  next();
+});
+
 app.use(
   cookieSession({
     maxAge: 30 * 24 * 60 * 60 * 1000,
