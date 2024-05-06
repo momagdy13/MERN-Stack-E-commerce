@@ -16,7 +16,11 @@ app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
   next();
 });
-
+app.use(
+  cors({
+    origin: "https://moshop24.netlify.app",
+  })
+);
 app.use(
   cookieSession({
     maxAge: 30 * 24 * 60 * 60 * 1000,
@@ -39,10 +43,10 @@ app.use(function (request, response, next) {
 });
 app.use(passport.initialize());
 app.use(passport.session());
-
-
-
 app.use("/", router);
+app.get("/", (req, res) => {
+  res.send("hi");
+});
 
 const port = 4000;
 app.listen(port, () => console.log(`Listenting on port ${port}...`));

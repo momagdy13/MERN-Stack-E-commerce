@@ -12,6 +12,7 @@ export default function Shop() {
     if (token) {
       console.log("Token:", token);
       localStorage.setItem("token", token);
+      window.location.reload();
     }
   }, [token]);
   return (
