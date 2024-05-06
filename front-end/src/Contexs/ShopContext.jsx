@@ -21,7 +21,7 @@ const ShopContextProvider = (props) => {
   const [cartItems, setCartItems] = useState(getDefultCart());
   const [all_product, setAllProduct] = useState([]);
   const [favItems, setFavItem] = useState(getDefultFav());
-  const url = "https://mern-stack-e-commerce-1.onrender.com";
+  const url = "https://mern-stack-e-commerce-50uh.onrender.com";
 
   const addToCart = (itemId) => {
     setCartItems((prev) => ({ ...prev, [itemId]: prev[itemId] + 1 }));

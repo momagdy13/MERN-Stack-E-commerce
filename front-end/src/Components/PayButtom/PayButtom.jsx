@@ -64,7 +64,7 @@ const Button = styled.button`
 const PayButtom = ({ cartItem }) => {
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
-  const url = "https://mern-stack-e-commerce-1.onrender.com";
+  const url = "https://mern-stack-e-commerce-50uh.onrender.com";
 
   const [disableButton, setDisableButton] = useState(false);
 

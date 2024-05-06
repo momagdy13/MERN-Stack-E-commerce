@@ -25,7 +25,7 @@ export default function ShopCatg() {
   const [all_product, setAllProduct] = useState([]);
   const [alignment, setAlignment] = useState(null);
   const [category, setCategory] = useState("allproduct");
-  const url = "https://mern-stack-e-commerce-1.onrender.com";
+  const url = "https://mern-stack-e-commerce-50uh.onrender.com";
   const navigate = useNavigate();
   const productDetails = (item) => {
     navigate("/product-details", { state: item });
@@ -112,7 +112,6 @@ export default function ShopCatg() {
           transition={{ duration: 0.6 }}
         >
           {all_product.map((item) => {
-           
             return (
               <Grid container item key={item.id} spacing={-1} md={4}>
                 <Card

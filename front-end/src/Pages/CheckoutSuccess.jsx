@@ -9,7 +9,7 @@ import axios from "axios";
 import { Button } from "@mui/material";
 export default function CheckoutSuccess() {
   const { removeAllFromCart } = useContext(ShopContext);
-  const url = "https://mern-stack-e-commerce-1.onrender.com";
+  const url = "https://mern-stack-e-commerce-50uh.onrender.com";
 
   const addToDone = () => {
     axios

@@ -18,7 +18,7 @@ import { useParams } from "react-router-dom";
 function LoginForm() {
   const theme = useTheme();
   const [state, setState] = useState("Login");
-  const url = "https://mern-stack-e-commerce-1.onrender.com";
+  const url = "https://mern-stack-e-commerce-50uh.onrender.com";
   const [formData, setFormData] = useState({
     email: "",
     username: "",

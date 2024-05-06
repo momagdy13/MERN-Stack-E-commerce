@@ -8,7 +8,7 @@ export default function Profile() {
   const [userData, setUserData] = useState("");
   const [done, setDone] = useState(Number);
   const { getTotalCartItems } = useContext(ShopContext);
-  const url = "https://mern-stack-e-commerce-1.onrender.com";
+  const url = "https://mern-stack-e-commerce-50uh.onrender.com";
 
   useEffect(() => {
     if (localStorage.getItem("token")) {

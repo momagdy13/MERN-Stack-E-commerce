@@ -5,7 +5,7 @@ import axios from "axios";
 
 export default function AddProduct() {
   const [image, setImage] = useState(false);
-  const url = "https://mern-stack-e-commerce-1.onrender.com";
+  const url = "https://mern-stack-e-commerce-50uh.onrender.com";
   const [product_details, setProduct_details] = useState({
     name: "",
     image: "",
