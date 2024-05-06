@@ -12,7 +12,7 @@ app.use(cors());
 app.get("/", (req, res) => {
   // Set CORS headers
   res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Methods", "GET");
+  res.setHeader("Access-Control-Allow-Methods", "GET,PUT,DELETE,POST,PATCH");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
   // Your route logic
