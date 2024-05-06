@@ -69,6 +69,7 @@ function LoginForm() {
       .post(`${url}/auth/signup`, formData)
       .then((response) => {
         if (response.data.success) {
+          localStorage.setItem("token", res.data.token);
           window.location.replace("/");
         }
       })
