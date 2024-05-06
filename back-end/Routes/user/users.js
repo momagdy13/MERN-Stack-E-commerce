@@ -2,7 +2,6 @@ const express = require("express");
 const router = express.Router();
 const jwt = require("jsonwebtoken");
 const Users = require("../../models/User");
-const bcrypt = require("bcrypt");
 const app = express();
 require("dotenv").config();
 const UsersVerfication = require("../../models/UserVerification");
@@ -77,28 +76,24 @@ router.post("/signup", async (req, res) => {
         cart[index] = 0;
         Favourite[index] = 0;
       }
-      const saltRounds = 10;
-      bcrypt.hash(password, saltRounds, async (err, hash) => {
-        if (err) {
-          throw err;
-        }
-        const user = new Users({
-          username,
-          email,
-          password: hash,
-          cartData: cart,
-          favourite: Favourite,
-        });
 
-        await user.save();
-        const data = {
-          user: user._id,
-        };
-        const token = jwt.sign(data, "seceret_ecom");
-        await sendVerificationEmail({ user, token, res });
-
-        res.json({ success: true, token });
+      const user = new Users({
+        username,
+        email,
+        password,
+        cartData: cart,
+        favourite: Favourite,
       });
+      
+
+      await user.save();
+      const data = {
+        user: user._id,
+      };
+      const token = jwt.sign(data, "seceret_ecom");
+      await sendVerificationEmail({ user, token, res });
+
+      res.json({ success: true, token });
     }
   } catch (e) {
     res.status(401).json(e.errors);
@@ -106,7 +101,7 @@ router.post("/signup", async (req, res) => {
 });
 // Creating EndPoint For Registering the user //
 
-const sendVerificationEmail = ({ user, token, res }) => {
+const sendVerificationEmail = async ({ user, token, res }) => {
   const currentUrl = `${process.env.CLINT_SITE_URL}/login`;
   const uniqueString = uuidv4() + user._id;
   const mailOptions = {
@@ -118,27 +113,19 @@ const sendVerificationEmail = ({ user, token, res }) => {
     }>here</a> To proceed. </p>`,
   };
 
-  const saltRounds = 10;
-  bcrypt
-    .hash(uniqueString, saltRounds)
-    .then(async (hashUnique) => {
-      const newVerification = new UsersVerfication({
-        userId: user._id,
-        uniqueString: hashUnique,
-        createdAt: Date.now(),
-        expiresAt: moment().add(5, "minutes").valueOf(),
-      });
+  const newVerification = new UsersVerfication({
+    userId: user._id,
+    uniqueString,
+    createdAt: Date.now(),
+    expiresAt: moment().add(5, "minutes").valueOf(),
+  });
 
-      await newVerification
-        .save()
-        .then(() => {
-          transporter
-            .sendMail(mailOptions)
+  await newVerification
+    .save()
+    .then(() => {
+      transporter
+        .sendMail(mailOptions)
 
-            .catch((err) => {
-              console.log(err);
-            });
-        })
         .catch((err) => {
           console.log(err);
         });
@@ -172,29 +159,27 @@ router.post("/login", async (req, res) => {
       if (!user.verified) {
         res.json("Email has not verified. please check your inbox");
       } else {
-        bcrypt.compare(password, user.password, function (err, result) {
-          if (result) {
-            const data = {
-              user: user._id,
-            };
-            const token = jwt.sign(data, "seceret_ecom");
-            res.json({ success: true, token });
-          } else {
-            res.status(401).json({
-              name: "ValidatorError",
+        if (password == user.password) {
+          const data = {
+            user: user._id,
+          };
+          const token = jwt.sign(data, "seceret_ecom");
+          res.json({ success: true, token });
+        } else {
+          res.status(401).json({
+            name: "ValidatorError",
+            message: "Wrong password!",
+            properties: {
               message: "Wrong password!",
-              properties: {
-                message: "Wrong password!",
-                type: "Wrong",
-                path: "password",
-                value: `passwordd`,
-              },
-              kind: "wrong",
+              type: "Wrong",
               path: "password",
-              value: `password`,
-            });
-          }
-        });
+              value: `passwordd`,
+            },
+            kind: "wrong",
+            path: "password",
+            value: `password`,
+          });
+        }
       }
     } else {
       res.status(401).json({
