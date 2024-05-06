@@ -6,8 +6,8 @@ const cookieSession = require("cookie-session");
 const passportStrategy = require("./googlAuth/passport");
 const router = require("./Controll/Controll");
 require("./Config/dbConnect");
-app.use("/", router);
 const app = express();
+app.use("/", router);
 function corsMiddleware(req, res, next) {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader(
