@@ -6,7 +6,6 @@ import {
   useTheme,
   Typography,
   Stack,
-  ListItem,
   Badge,
   Button,
   Collapse,
@@ -14,7 +13,6 @@ import {
 import {
   Close,
   DarkModeOutlined,
-  ExpandMore,
   Facebook,
   Instagram,
   LightModeOutlined,
@@ -28,7 +26,7 @@ import Menu from "@mui/material/Menu";
 import Person2OutlinedIcon from "@mui/icons-material/Person2Outlined";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import styled from "@emotion/styled";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { ShopContext } from "../../Contexs/ShopContext";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
@@ -79,6 +77,7 @@ export default function Navbar() {
     document.body.appendChild(addScript);
     window.googleTranslateElementInit = googleTranslateElementInit;
   }, []);
+
   return (
     <Box sx={{ bgcolor: "black", py: "4px" }}>
       <Stack direction={"row"} alignItems={"center"} mr={"0px"} ml={"40px"}>
@@ -89,7 +88,7 @@ export default function Navbar() {
             fontFamily: "inherit",
           }}
         ></Typography>
-        <Link to={"/"} style={{textDecoration:'none', color:'ghostwhite'}}>
+        <Link to={"/"} style={{ textDecoration: "none", color: "ghostwhite" }}>
           <ShoppingCartOutlined
             sx={{ cursor: "pointer", color: "ghostwhite" }}
           />
@@ -242,14 +241,18 @@ export default function Navbar() {
                 MenuListProps={{
                   "aria-labelledby": "basic-button",
                 }}
-                sx={{ "& .MuiPaper-root": { width: "150px", mr: "30px" , color:'ghostwhite'} }}
+                sx={{
+                  "& .MuiPaper-root": {
+                    width: "150px",
+                    mr: "30px",
+                    color: "ghostwhite",
+                  },
+                }}
               >
-                <Link to={"/profile"} style={{textDecoration:'none'}}>
+                <Link to={"/profile"} style={{ textDecoration: "none" }}>
                   <MenuItem onClick={handleClose}>
                     {" "}
-                    <ListItemText sx={{ color: "black" }}>
-                      Profile
-                    </ListItemText>
+                    <ListItemText sx={{ color: "black" }}>Profile</ListItemText>
                   </MenuItem>
                 </Link>
                 <MenuItem>

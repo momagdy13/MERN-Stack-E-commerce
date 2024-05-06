@@ -14,26 +14,22 @@ router.post("/create-checkout-session", fetchUser, async (req, res) => {
     return;
   }
 
-  if (Object.keys(item).length > 0) {
-    const line_items = Array.isArray(item)
-      ? item.map((item) => {
-          return {
-            price_data: {
-              currency: "usd",
-              product_data: {
-                name: item.name,
-                description: item.descripe,
-              },
-              unit_amount: Math.round(item.price) * 100,
-            },
-            quantity: item.quant,
-          };
-        })
-      : [];
-    try {
-      // Disable the button to prevent multiple submissions
-      res.locals.disableButton = true;
+  if (item.length > 0) {
+    const line_items = item.map((item) => {
+      return {
+        price_data: {
+          currency: "usd",
+          product_data: {
+            name: item.name,
+            description: item.descripe,
+          },
+          unit_amount: Math.round(item.price) * 100,
+        },
+        quantity: item.quant,
+      };
+    });
 
+    try {
       const session = await stripe.checkout.sessions.create({
         line_items,
         mode: "payment",

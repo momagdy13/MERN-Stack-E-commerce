@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../css.css";
 import CloseIcon from "@mui/icons-material/Close";
 import {
@@ -12,6 +12,8 @@ import {
 } from "@mui/material";
 import axios from "axios";
 import { Box, useTheme } from "@mui/system";
+import GoogleIcon from "../Components/Assest/search.png";
+import { useParams } from "react-router-dom";
 
 function LoginForm() {
   const theme = useTheme();
@@ -41,6 +43,7 @@ function LoginForm() {
   const login = async () => {
     try {
       await axios.post(`${url}/auth/login`, formData).then((res) => {
+        handleShowAlert(res.data);
         if (res.data.success) {
           window.location.replace("/");
           localStorage.setItem("token", res.data.token);
@@ -52,13 +55,21 @@ function LoginForm() {
       handleShowAlert(e.response.data.message);
     }
   };
+
+  const loginWithGoogle = async () => {
+    try {
+      window.location.href = `${url}/googleauth/google/callback`;
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   const signup = async () => {
     await axios
-      .post(`${url}/auth/login`, formData)
+      .post(`${url}/auth/signup`, formData)
       .then((response) => {
         if (response.data.success) {
           window.location.replace("/");
-          localStorage.setItem("token", response.data.token);
         }
       })
       .catch((e) => {
@@ -74,6 +85,22 @@ function LoginForm() {
         }
       });
   };
+
+  const { token, userId, uniqueString } = useParams();
+
+  useEffect(async () => {
+    if (token || userId || uniqueString) {
+      await axios
+        .get(`${url}/auth/verify/${token}/${userId}/${uniqueString}`)
+        .then((res) => {
+          console.log(res.data);
+          handleShowAlert(res.data);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+  }, [token, userId, uniqueString]);
 
   return (
     <section className="sec">
@@ -163,44 +190,95 @@ function LoginForm() {
                 />
               </Stack>
               {state === "Signup" ? (
-                <Button
-                  sx={{
-                    mt: "20px",
-                    ml: "10%",
-                    width: "70%",
-                    height: "50px",
-                    color: `black`,
-                    fontSize: "20px",
-                    border: "1px solid #fff",
-                    borderRadius: "20px",
-                    mb: "10px",
-                  }}
-                  onClick={() => {
-                    signup();
-                  }}
-                >
-                  Create Account
-                </Button>
+                <>
+                  <Button
+                    sx={{
+                      mt: "20px",
+                      ml: "10%",
+                      width: "70%",
+                      height: "50px",
+                      color: `black`,
+                      fontSize: "20px",
+                      border: "1px solid #fff",
+                      borderRadius: "20px",
+                      mb: "10px",
+                    }}
+                    onClick={() => {
+                      signup();
+                    }}
+                  >
+                    Create Account
+                  </Button>
+                  <Button
+                    sx={{
+                      mt: "20px",
+                      ml: "10%",
+                      width: "70%",
+                      height: "50px",
+                      color: `black`,
+                      fontSize: "20px",
+                      border: "1px solid #fff",
+                      borderRadius: "20px",
+                      mb: "10px",
+                    }}
+                    value="Login"
+                    onClick={() => {
+                      loginWithGoogle();
+                    }}
+                  >
+                    <img
+                      src={GoogleIcon}
+                      style={{ height: "30px", marginRight: "20px" }}
+                    />
+                    signup With Google
+                  </Button>
+                </>
               ) : (
-                <Button
-                  sx={{
-                    mt: "20px",
-                    ml: "10%",
-                    width: "70%",
-                    height: "50px",
-                    color: `black`,
-                    fontSize: "20px",
-                    border: "1px solid #fff",
-                    borderRadius: "20px",
-                    mb: "10px",
-                  }}
-                  value="Login"
-                  onClick={() => {
-                    login();
-                  }}
-                >
-                  Log In
-                </Button>
+                <>
+                  <Button
+                    sx={{
+                      mt: "20px",
+                      ml: "10%",
+                      width: "70%",
+                      height: "50px",
+                      color: `black`,
+                      fontSize: "20px",
+                      border: "1px solid #fff",
+                      borderRadius: "20px",
+                      mb: "10px",
+                    }}
+                    value="Login"
+                    onClick={() => {
+                      login();
+                    }}
+                  >
+                    Log In
+                  </Button>
+
+                  <Button
+                    sx={{
+                      mt: "20px",
+                      ml: "10%",
+                      width: "70%",
+                      height: "50px",
+                      color: `black`,
+                      fontSize: "20px",
+                      border: "1px solid #fff",
+                      borderRadius: "20px",
+                      mb: "10px",
+                    }}
+                    value="Login"
+                    onClick={() => {
+                      loginWithGoogle();
+                    }}
+                  >
+                    <img
+                      src={GoogleIcon}
+                      style={{ height: "30px", marginRight: "20px" }}
+                    />
+                    Log In With Google
+                  </Button>
+                </>
               )}
               {state === "Signup" ? (
                 <Typography className="forget" sx={{ color: "ghostwhite" }}>

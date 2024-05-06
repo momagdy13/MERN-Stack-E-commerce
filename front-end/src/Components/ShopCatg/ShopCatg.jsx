@@ -43,7 +43,6 @@ export default function ShopCatg() {
       .get(`${url}/product/${category}`)
       .then((response) => {
         setAllProduct(response.data);
-        console.log(all_product);
       })
       .catch((error) => {
         console.log(error);

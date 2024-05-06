@@ -7,11 +7,13 @@ const stripe = require("../Routes/payment/payment.js");
 const product = require("../Routes/Products/product.js");
 const upload = require("../Middleware/upload.js");
 
+const gauth = require("../Routes/googleRoute/googleAuth.js");
 router.use("/product", product);
 router.use("/auth", user);
 router.use("/cart", cart);
 router.use("/fav", fav);
 router.use("/stripe", stripe);
 router.use("/image", upload);
+router.use("/googleauth", gauth);
 
 module.exports = router;

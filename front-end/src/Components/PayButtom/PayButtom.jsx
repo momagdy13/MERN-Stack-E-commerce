@@ -80,39 +80,38 @@ const PayButtom = ({ cartItem }) => {
       setOpen(false);
     }, 8000);
   };
-  ;
   const { all_product } = useContext(ShopContext);
-  const [item, setItem] = useState({});
+  const handleData = () => {
+    const items = all_product.filter((item) => cartItem[item.id] > 0);
+    const itemsWithQuant = items.map((item) => ({
+      ...item,
+      quant: cartItem[item.id],
+    }));
+
+    if (itemsWithQuant.length === 0) {
+      console.log("No items to checkout");
+      return;
+    }
+    return itemsWithQuant;
+  };
+  const items = handleData();
 
   const handleCheckout = () => {
-    all_product.map((item) => {
-      if (cartItem[item.id] > 0) {
-        const items = all_product.filter((item) => cartItem[item.id] > 0);
-        const itemsWithQuant = items.map((item) => ({
-          ...item,
-          quant: cartItem[item.id],
-        }));
-        setItem(itemsWithQuant);
-      }
-    });
-
-    axios
-      .post(
-        `${url}/stripe/create-checkout-session`,
-        { items: item },
-        {
-          headers: { "auth-token": `${localStorage.getItem("token")}` },
-        }
-      )
-      .then((response) => {
-        if (response.data.url) {
-          window.location.href = response.data.url;
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-        handleShowAlert(err.response.data.errors);
-      });
+    try {
+      axios
+        .post(
+          `${url}/stripe/create-checkout-session`,
+          { items: items },
+          {
+            headers: { "auth-token": localStorage.getItem("token") },
+          }
+        )
+        .then((response) => {
+          if (response.data.url) window.location.href = response.data.url;
+        });
+    } catch (err) {
+      handleShowAlert(err.response?.data?.errors);
+    }
   };
 
   return (
@@ -121,7 +120,6 @@ const PayButtom = ({ cartItem }) => {
         onClick={() => {
           handleCheckout();
         }}
-        disabled={disableButton}
       >
         Check Out
       </Button>

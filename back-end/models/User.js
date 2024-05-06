@@ -13,6 +13,7 @@ const Users = mongoose.Schema({
   favourite: { type: Object, ref: "product" },
   doneOrder: { type: Array, ref: "product" },
   date: { type: Date, default: Date.now },
+  verified: { type: Boolean, default: false },
 });
- 
+
 module.exports = mongoose.model("users", Users);

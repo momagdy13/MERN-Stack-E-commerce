@@ -26,9 +26,14 @@ function App() {
           <Route path="/fav" element={<Favourite />} />
           <Route path="/product-details" element={<Product />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/success" element={<CheckoutSuccess />} />
           <Route element={<Protected />}>
-            <Route path="/success" element={<CheckoutSuccess />} />
             <Route path="/login" element={<Signup />} />
+            <Route
+              path="/login/verify/:token/:userId/:uniqueString"
+              element={<Signup />}
+            />{" "}
+            <Route path="/:token" element={<Shop />} />{" "}
           </Route>
           <Route path="/" element={<Shop />} />
           <Route path="/result" element={<Result />} />
