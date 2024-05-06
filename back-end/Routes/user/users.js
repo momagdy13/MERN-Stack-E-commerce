@@ -10,24 +10,7 @@ const nodemailer = require("nodemailer");
 const { v4: uuidv4 } = require("uuid");
 const moment = require("moment-timezone");
 
-app.use(cors());
-app.get("/", (req, res) => {
-  // Set CORS headers
-  res.setHeader("Access-Control-Allow-Origin", "https://moshop24.netlify.app/");
-  res.setHeader(
-    "Access-Control-Allow-Methods",
-    "GET",
-    "POST",
-    "PUT",
-    "PATCH",
-    "DELETE",
-    "OPTIONS"
-  );
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
-
-  // Your route logic
-  res.send("Hello, world!");
-});
+app.use(cors({ origin: "https://moshop24.netlify.app" }));
 
 const transporter = nodemailer.createTransport({
   service: "gmail",

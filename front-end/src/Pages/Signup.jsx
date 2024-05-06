@@ -74,6 +74,7 @@ function LoginForm() {
         }
       })
       .catch((e) => {
+        console.log(e);
         if (e.response.data.username) {
           handleShowAlert(e.response.data.username.message);
         } else if (e.response.data.email) {
