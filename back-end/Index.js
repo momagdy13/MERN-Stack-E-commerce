@@ -7,10 +7,10 @@ const passportStrategy = require("./googlAuth/passport");
 const router = require("./Controll/Controll");
 require("./Config/dbConnect");
 const app = express();
+app.use(cors());
 app.use(
   cors({
-    origin: "https://moshop24.netlify.app",
-    credentials: true,
+    origin: "https://mern-stack-e-commerce-1.onrender.com",
   })
 );
 app.use(
