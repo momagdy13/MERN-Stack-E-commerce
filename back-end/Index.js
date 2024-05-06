@@ -8,8 +8,19 @@ const { createProxyMiddleware } = require("http-proxy-middleware");
 const router = require("./Controll/Controll");
 require("./Config/dbConnect");
 const app = express();
-app.use(cors({ origin: "https://moshop24.netlify.app" }));
-
+function corsMiddleware(req, res, next) {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "GET, POST, PUT, DELETE, OPTIONS"
+  );
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "Accept,authorization,Authorization, Content-Type"
+  );
+  next();
+}
+app.use(corsMiddleware);
 app.use(
   cookieSession({
     maxAge: 30 * 24 * 60 * 60 * 1000,
