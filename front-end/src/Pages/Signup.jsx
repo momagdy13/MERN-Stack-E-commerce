@@ -43,10 +43,12 @@ function LoginForm() {
   const login = async () => {
     try {
       await axios.post(`${url}/auth/login`, formData).then((res) => {
-        handleShowAlert(res.data);
         if (res.data.success) {
           window.location.replace("/");
           localStorage.setItem("token", res.data.token);
+        } else {
+          console.log(res);
+          window.location.href = res.data;
         }
       });
     } catch (e) {
@@ -69,8 +71,7 @@ function LoginForm() {
       .post(`${url}/auth/signup`, formData)
       .then((response) => {
         if (response.data.success) {
-          window.location.replace("https://moshop24.netlify.app/");
-          localStorage.setItem("token", response.data.token);
+          window.location.replace("/login");
         }
       })
       .catch((e) => {
@@ -88,12 +89,12 @@ function LoginForm() {
       });
   };
 
-  const { token, userId, uniqueString } = useParams();
+  const { userId, uniqueString } = useParams();
 
   useEffect(async () => {
-    if (token || userId || uniqueString) {
+    if (userId || uniqueString) {
       await axios
-        .get(`${url}/auth/verify/${token}/${userId}/${uniqueString}`)
+        .get(`${url}/auth/verify/${userId}/${uniqueString}`)
         .then((res) => {
           console.log(res.data);
           localStorage.removeItem("token");
@@ -102,8 +103,10 @@ function LoginForm() {
         .catch((error) => {
           console.error(error);
         });
+    } else if (localStorage.setItem("token")) {
+      localStorage.removeItem("token");
     }
-  }, [token, userId, uniqueString]);
+  }, [userId, uniqueString]);
 
   return (
     <section className="sec">

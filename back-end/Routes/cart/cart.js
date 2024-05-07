@@ -6,32 +6,59 @@ const fetchUser = require("../../Middleware/auth.js");
 
 // Creating EndPoint For Add to cart//
 router.post("/addtocart", fetchUser, async (req, res) => {
-  let userData = await Users.findOne({ _id: req.user });
-  userData.cartData[req.body.itemId] += 1;
-  await Users.findOneAndUpdate(
-    { _id: req.user },
-    { cartData: userData.cartData }
-  );
-  res.send("Added");
+  try {
+    const user = await Users.findById(req.user);
+
+    if (!user) {
+      return res.status(404).send("User not found");
+    }
+
+    const { itemId } = req.body;
+    const updatedCartData = {
+      ...user.cartData,
+      [itemId]: (user.cartData[itemId] || 0) + 1,
+    };
+
+    await Users.findByIdAndUpdate(req.user, { cartData: updatedCartData });
+
+    res.send("Added");
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Internal Server Error");
+  }
 });
+
 // Creating EndPoint For Add to cart//
 
 // Creating EndPoint For delet from cart//
 
 router.post("/deletefromcart", fetchUser, async (req, res) => {
-  let userData = await Users.findOne({ _id: req.user });
+  try {
+    const user = await Users.findById(req.user);
 
-  if ((await userData.cartData[req.body.itemId]) > 0) {
-    userData.cartData[req.body.itemId] -= 1;
-    await Users.findOneAndUpdate(
-      { _id: req.user },
-      { cartData: userData.cartData }
-    );
-    res.send("Deleted");
-  } else {
-    res.json("err cart is empty");
+    if (!user) {
+      return res.status(404).send("User not found");
+    }
+
+    const { itemId } = req.body;
+    const currentQuantity = user.cartData[itemId] || 0;
+
+    if (currentQuantity > 0) {
+      const updatedCartData = {
+        ...user.cartData,
+        [itemId]: currentQuantity - 1,
+      };
+      await Users.findByIdAndUpdate(req.user, { cartData: updatedCartData });
+      res.send("Deleted");
+    } else {
+      res.status(400).send("Item not found in cart");
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Internal Server Error");
   }
 });
+
 router.delete("/deleteallfromcart", fetchUser, async (req, res) => {
   let userData = await Users.findOne({ _id: req.user });
   let cart = {};

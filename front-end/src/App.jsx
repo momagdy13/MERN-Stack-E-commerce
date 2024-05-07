@@ -13,6 +13,7 @@ import Signup from "./Pages/Signup";
 import Product from "./Components/ProductDetails/Product";
 import Result from "./Components/Result/Result";
 import Protected from "./Protected";
+import EmailVerificationTemplate from "./Components/NonVerify/NonVerify";
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -32,10 +33,11 @@ function App() {
             <Route path="/:token" element={<Shop />} />{" "}
           </Route>
           <Route
-            path="/login/verify/:token/:userId/:uniqueString"
+            path="/login/verify/:userId/:uniqueString"
             element={<Signup />}
           />
           <Route path="/" element={<Shop />} />
+          <Route path="/nanverify" element={<EmailVerificationTemplate />} />
           <Route path="/result" element={<Result />} />
           <Route path="/*" element={<ERR />} />
         </Routes>
