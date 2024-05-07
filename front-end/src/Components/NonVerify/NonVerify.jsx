@@ -21,6 +21,9 @@ const EmailVerificationTemplate = () => {
       await axios.post(`${url}/auth/resent`, { email }).then((res) => {
         if (res.data.success) {
           setResendSuccess(true);
+          setTimeout(() => {
+            window.location.href = "https://moshop24.netlify.app";
+          }, 2000);
         }
       });
     } catch (error) {

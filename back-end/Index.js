@@ -19,7 +19,7 @@ function corsMiddleware(req, res, next) {
   res.setHeader(
     "Access-Control-Allow-Headers",
     "Accept, authorization, Authorization, Content-Type, auth-token"
-  ); 
+  );
 
   next();
 }
@@ -47,6 +47,8 @@ app.use(function (request, response, next) {
 app.use("/", router);
 app.use(passport.initialize());
 app.use(passport.session());
-
+app.get("/", (req, res) => {
+  res.send("Hello World");
+});
 const port = 4000;
 app.listen(port, () => console.log(`Listenting on port ${port}...`));

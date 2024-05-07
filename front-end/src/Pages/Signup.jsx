@@ -72,6 +72,9 @@ function LoginForm() {
       .then((response) => {
         if (response.data.success) {
           window.location.replace("/login");
+          handleShowAlert(
+            "Check Your Inbox to Verify Your Email And To Enjoy With Our Store!"
+          );
         }
       })
       .catch((e) => {
