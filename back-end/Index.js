@@ -4,10 +4,12 @@ const cors = require("cors");
 const passport = require("passport");
 const cookieSession = require("cookie-session");
 const passportStrategy = require("./googlAuth/passport");
+const app = express();
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 const router = require("./Controll/Controll");
 require("./Config/dbConnect");
-const app = express();
-app.use("/", router);
 function corsMiddleware(req, res, next) {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader(
@@ -41,6 +43,7 @@ app.use(function (request, response, next) {
   }
   next();
 });
+app.use("/", router);
 app.use(passport.initialize());
 app.use(passport.session());
 

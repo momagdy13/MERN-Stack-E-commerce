@@ -2,16 +2,11 @@ const express = require("express");
 const router = express.Router();
 const jwt = require("jsonwebtoken");
 const Users = require("../../models/User");
-const app = express();
-const cors = require("cors");
 require("dotenv").config();
 const UsersVerfication = require("../../models/UserVerification");
 const nodemailer = require("nodemailer");
 const { v4: uuidv4 } = require("uuid");
 const moment = require("moment-timezone");
-
-app.use(cors({ origin: "https://moshop24.netlify.app" }));
-
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {

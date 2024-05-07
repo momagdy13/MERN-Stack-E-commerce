@@ -6,7 +6,6 @@ const fav = require("../Routes/fav/fav.js");
 const stripe = require("../Routes/payment/payment.js");
 const product = require("../Routes/Products/product.js");
 const upload = require("../Middleware/upload.js");
-
 const gauth = require("../Routes/googleRoute/googleAuth.js");
 router.use("/product", product);
 router.use("/auth", user);
