@@ -18,8 +18,9 @@ function corsMiddleware(req, res, next) {
   );
   res.setHeader(
     "Access-Control-Allow-Headers",
-    "Accept,authorization,Authorization, Content-Type"
-  );
+    "Accept, authorization, Authorization, Content-Type, auth-token"
+  ); 
+
   next();
 }
 app.use(corsMiddleware);

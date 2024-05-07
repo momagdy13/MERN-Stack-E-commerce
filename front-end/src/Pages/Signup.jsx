@@ -69,8 +69,8 @@ function LoginForm() {
       .post(`${url}/auth/signup`, formData)
       .then((response) => {
         if (response.data.success) {
-          localStorage.setItem("token", res.data.token);
-          window.location.replace("/");
+          window.location.replace("https://moshop24.netlify.app/");
+          localStorage.setItem("token", response.data.token);
         }
       })
       .catch((e) => {
@@ -96,6 +96,7 @@ function LoginForm() {
         .get(`${url}/auth/verify/${token}/${userId}/${uniqueString}`)
         .then((res) => {
           console.log(res.data);
+          localStorage.removeItem("token");
           handleShowAlert(res.data);
         })
         .catch((error) => {
