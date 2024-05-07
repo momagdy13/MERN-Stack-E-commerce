@@ -175,7 +175,7 @@ const ShopContextProvider = (props) => {
 
           axios
             .post(
-              `${import.meta}/fav/getfav`,
+              `${url}/fav/getfav`,
               {},
               {
                 headers: { "auth-token": `${localStorage.getItem("token")}` },
