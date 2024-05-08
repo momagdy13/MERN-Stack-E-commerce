@@ -4,7 +4,7 @@ import { ColorModeContext, useMode } from "./Them";
 import Fotter from "./Components/Fotter/Fotter";
 import Cart from "./Pages/Cart";
 import Shop from "./Pages/Shop";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, Navigate } from "react-router-dom";
 import Favourite from "./Pages/Favourite";
 import Profile from "./Pages/Profile";
 import CheckoutSuccess from "./Pages/CheckoutSuccess";
@@ -17,6 +17,9 @@ import EmailVerificationTemplate from "./Components/NonVerify/NonVerify";
 
 function App() {
   const [theme, colorMode] = useMode();
+  const uuidPattern =
+    /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+
   return (
     <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>
@@ -27,7 +30,18 @@ function App() {
           <Route path="/fav" element={<Favourite />} />
           <Route path="/product-details" element={<Product />} />
           <Route path="/profile" element={<Profile />} />
-          <Route path="/success" element={<CheckoutSuccess />} />
+          <Route
+            path="/:hash/suc"
+            element={<CheckoutSuccess />}
+            match={({ match }) => {
+              const { token } = match.params;
+              return uuidPattern.test(token) ? (
+                <CheckoutSuccess />
+              ) : (
+                <Navigate to="/404" />
+              );
+            }}
+          />
           <Route element={<Protected />}>
             <Route path="/login" element={<Signup />} />
             <Route path="/:token" element={<Shop />} />{" "}
@@ -37,7 +51,18 @@ function App() {
             element={<Signup />}
           />
           <Route path="/" element={<Shop />} />
-          <Route path="/nanverify" element={<EmailVerificationTemplate />} />
+          <Route
+            path="/:nanverify/nan"
+            element={<EmailVerificationTemplate />}
+            match={({ match }) => {
+              const { token } = match.params;
+              return uuidPattern.test(token) ? (
+                <EmailVerificationTemplate />
+              ) : (
+                <Navigate to="/404" />
+              );
+            }}
+          />
           <Route path="/result" element={<Result />} />
           <Route path="/*" element={<ERR />} />
         </Routes>

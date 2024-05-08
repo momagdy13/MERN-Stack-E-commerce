@@ -7,6 +7,13 @@ require("dotenv").config();
 const nodemailer = require("nodemailer");
 const { v4: uuidv4 } = require("uuid");
 const moment = require("moment-timezone");
+const v4options = {
+  random: [
+    0x10, 0x91, 0x56, 0xbe, 0xc4, 0xfb, 0xc1, 0xea, 0x71, 0xb4, 0xef, 0xe1,
+    0x67, 0x1c, 0x58, 0x36,
+  ],
+};
+const hash = uuidv4(v4options);
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
@@ -43,7 +50,7 @@ router.get(
 
     if (existUser) {
       if (!existUser.isVerified) {
-        res.redirect(`${process.env.CLINT_SITE_URL}/nanverify`); // TO DO
+        res.redirect(`${process.env.CLINT_SITE_URL}/${hash}/nan`); // TO DO
         res.json("Email has not verified. please check your inbox");
       } else {
         const data = {
@@ -73,7 +80,7 @@ router.get(
         user: user._id,
       };
       const token = jwt.sign(data, "seceret_ecom");
-      await sendVerificationEmail({ user,  res });
+      await sendVerificationEmail({ user, res });
       res.redirect(`${process.env.CLINT_SITE_URL}/${token}`);
     }
   }

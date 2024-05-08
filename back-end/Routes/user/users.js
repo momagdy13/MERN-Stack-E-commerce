@@ -7,6 +7,14 @@ const UsersVerfication = require("../../models/UserVerification");
 const nodemailer = require("nodemailer");
 const { v4: uuidv4 } = require("uuid");
 const moment = require("moment-timezone");
+const v4options = {
+  random: [
+    0x10, 0x91, 0x56, 0xbe, 0xc4, 0xfb, 0xc1, 0xea, 0x71, 0xb4, 0xef, 0xe1,
+    0x67, 0x1c, 0x58, 0x36,
+  ],
+};
+
+const hash = uuidv4(v4options);
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
@@ -86,10 +94,10 @@ router.post("/signup", async (req, res) => {
   }
 });
 // Creating EndPoint For Registering the user //
-const sendVerificationEmail = async ({ user, token, res }) => {
+const sendVerificationEmail = async ({ user }) => {
   const currentUrl = `${process.env.CLINT_SITE_URL}/login`;
   const uniqueString = uuidv4() + user._id;
-  const verificationLink = `${currentUrl}/verify/${token}/${user._id}/${uniqueString}`;
+  const verificationLink = `${currentUrl}/verify/${user._id}/${uniqueString}`;
 
   const mailOptions = {
     from: process.env.AUTH_EMAIL,
@@ -205,7 +213,7 @@ router.post("/login", async (req, res) => {
 
     if (user) {
       if (!user.isVerified) {
-        res.send(`${process.env.CLINT_SITE_URL}/nanverify`);
+        res.send(`${process.env.CLINT_SITE_URL}/${hash}/nan`);
       } else {
         if (password == user.password) {
           const data = {

@@ -93,10 +93,9 @@ function LoginForm() {
   };
 
   const { userId, uniqueString } = useParams();
-
-  useEffect(async () => {
+  useEffect(() => {
     if (userId || uniqueString) {
-      await axios
+      axios
         .get(`${url}/auth/verify/${userId}/${uniqueString}`)
         .then((res) => {
           console.log(res.data);
@@ -106,7 +105,7 @@ function LoginForm() {
         .catch((error) => {
           console.error(error);
         });
-    } else if (localStorage.setItem("token")) {
+    } else if (localStorage.getItem("token")) {
       localStorage.removeItem("token");
     }
   }, [userId, uniqueString]);
