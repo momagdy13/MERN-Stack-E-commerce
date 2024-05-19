@@ -28,6 +28,7 @@ const EmailVerificationTemplate = () => {
 
     try {
       await axios.post(`${url}/auth/resent`, { email }).then((res) => {
+        console.log(res)
         if (res.data.success) {
           setResendSuccess(true);
           setTimeout(() => {
@@ -38,6 +39,7 @@ const EmailVerificationTemplate = () => {
         }
       });
     } catch (error) {
+      console.log(error)
       setResendError("Failed to resend verification email.");
     }
 

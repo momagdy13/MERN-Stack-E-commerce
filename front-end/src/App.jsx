@@ -44,12 +44,14 @@ function App() {
           />
           <Route element={<Protected />}>
             <Route path="/login" element={<Signup />} />
-            <Route path="/:token" element={<Shop />} />{" "}
+            <Route path="/:token" element={<Shop />} />
           </Route>
+
           <Route
             path="/login/verify/:userId/:uniqueString"
             element={<Signup />}
           />
+
           <Route path="/" element={<Shop />} />
 
           <Route

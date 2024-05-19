@@ -25,6 +25,11 @@ function corsMiddleware(req, res, next) {
 }
 app.use(corsMiddleware);
 app.use(
+  cors({
+    origin: "https://moshop24.netlify.app",
+  })
+);
+app.use(
   cookieSession({
     maxAge: 30 * 24 * 60 * 60 * 1000,
     keys: ["mo2468"],
