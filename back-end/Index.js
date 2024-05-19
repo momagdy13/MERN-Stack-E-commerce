@@ -10,7 +10,20 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 const router = require("./Controll/Controll");
 require("./Config/dbConnect");
+function corsMiddleware(req, res, next) {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "GET, POST, PUT, DELETE, OPTIONS"
+  );
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "Accept, authorization, Authorization, Content-Type, auth-token"
+  );
 
+  next();
+}
+app.use(corsMiddleware);
 app.use(
   cors({
     origin: "https://moshop24.netlify.app",

@@ -35,10 +35,6 @@ function LoginForm() {
   const handleShowAlert = (message) => {
     setMessage(message);
     setOpen(true);
-
-    setTimeout(() => {
-      setOpen(false);
-    }, 8000);
   };
   const login = async () => {
     try {
@@ -71,7 +67,6 @@ function LoginForm() {
       .post(`${url}/auth/signup`, formData)
       .then((response) => {
         if (response.data.success) {
-          window.location.replace("/login");
           handleShowAlert(
             "Check Your Inbox to Verify Your Email And To Enjoy With Our Store!"
           );
