@@ -23,11 +23,26 @@
   background: #888;
 }
 
-/* for Firefox */
 html {
   scrollbar-color: #9e4673 #3d4a59;
 }
 
 html {
   scroll-behavior: smooth;
+}
+
+@media (max-width: 800px) {
+  #navText{
+    visibility: hidden;
+    width: 0px;
+  }
+  .translate {
+    visibility: hidden;
+    width: 0px;
+  }
+ 
+  #toggle{
+    width: 50%;
+    flex-direction: column-reverse;
+  }
 }

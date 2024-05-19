@@ -1,7 +1,7 @@
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const passport = require("passport");
 
-// TO DO ${process.env.CLINT_BACK_URL}
+
 passport.use(
   new GoogleStrategy(
     {

@@ -52,7 +52,7 @@ export default function ShopCatg() {
 
   return (
     <Container sx={{ mt: 9 }}>
-      <Stack direction={"row"} justifyContent={"space-between"}>
+      <Stack direction={'column-reverse'} justifyContent={"space-between"}>
         {/* Text Product */}
         <Stack id="select-product">
           <Box>
@@ -66,7 +66,7 @@ export default function ShopCatg() {
 
         {/* Select Bottom */}
         <Box flexGrow={1} />
-        <Stack direction={"row"} id={"toggle"}>
+        <Stack  id={"toggle"}>
           <ToggleButtonGroup
             color="error"
             value={alignment}

@@ -1,62 +1,69 @@
+import React, { useState } from "react";
 import {
-  Button,
   Container,
   IconButton,
   TextField,
-  useTheme,
+  InputAdornment,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const Header2 = () => {
   const [name, setName] = useState("");
   const navigate = useNavigate();
+
   const productName = (name) => {
-    if (name == "") {
+    if (name === "") {
       navigate("/");
     } else {
-      navigate("/result", { state: name });
+      navigate("/result", { state: { name } });
     }
   };
 
   return (
-    <Container sx={{ my: 3, display: "flex" }}>
+    <Container
+      sx={{
+        my: 3,
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
       <TextField
-        onChange={(e) => {
-          setName(e.target.value);
-        }}
+        onChange={(e) => setName(e.target.value)}
         sx={{
-          "& .MuiOutlinedInput-notchedOutline": {
-            borderColor: "inherit",
-          },
-          "& .MuiInputBase-root.MuiOutlinedInput-root ::placeholder": {
-            color: "inherit",
-          },
-          "& .MuiFormLabel-root.MuiInputLabel-root": {
-            color: "inherit",
+          "& .MuiOutlinedInput-root": {
+            borderRadius: "25px",
+            width: "100%",
           },
           "& .MuiOutlinedInput-notchedOutline": {
             borderColor: "unset !important",
-            borderRadius: "25px",
-            width: "556px",
           },
-          "& .MuiInputBase-input.MuiOutlinedInput-input": { width: "490px" },
           width: "500px",
-          ml: "250px",
+          maxWidth: "90%",
+          "@media (max-width:800px)": {
+            ml: 0,
+            width: "100%",
+          },
         }}
         name="search"
-        label="Search....."
+        label="Search..."
+        variant="outlined"
         required
-      />
-
-      <IconButton
-        onClick={() => {
-          productName(name);
+        InputProps={{
+          endAdornment: (
+            <InputAdornment position="end">
+              <IconButton
+                onClick={() => productName(name)}
+                edge="end"
+                sx={{ p: 1 }}
+              >
+                <SearchIcon sx={{ fontSize: { xs: 30, sm: 40 } }} />
+              </IconButton>
+            </InputAdornment>
+          ),
         }}
-      >
-        <SearchIcon style={{ fontSize: "40px" }} />
-      </IconButton>
+      />
     </Container>
   );
 };

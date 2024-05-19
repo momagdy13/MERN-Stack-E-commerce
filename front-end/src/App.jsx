@@ -51,6 +51,7 @@ function App() {
             element={<Signup />}
           />
           <Route path="/" element={<Shop />} />
+
           <Route
             path="/:nanverify/nan"
             element={<EmailVerificationTemplate />}
@@ -64,7 +65,7 @@ function App() {
             }}
           />
           <Route path="/result" element={<Result />} />
-          <Route path="/*" element={<ERR />} />
+          <Route path="/404" element={<ERR />} />
         </Routes>
         <Fotter />
       </ThemeProvider>

@@ -169,7 +169,7 @@ const sendVerificationEmail = async ({ user }) => {
       console.log("Verification email sent successfully.");
     }
   });
-}; // TO DO
+};
 
 // Endpoint for verifying the user's email
 router.get("/verify/:userId/:uniqueString", async (req, res) => {
@@ -182,14 +182,12 @@ router.get("/verify/:userId/:uniqueString", async (req, res) => {
     });
 
     if (!verificationRecord) {
-      return res
-        .status(404)
-        .json({ message: "Verification record not found." });
+      return res.json("Verification record not found.");
     }
 
     // Check if the verification link has expired
     if (verificationRecord.expiresAt < Date.now()) {
-      return res.json({ message: "Verification link has expired." });
+      return res.json("Verification link has expired.");
     }
 
     // Mark the user as verified
@@ -261,15 +259,16 @@ router.post("/login", async (req, res) => {
 // resent verify Email //
 router.post("/resent", async (req, res) => {
   const user = await Users.findOne({ email: req.body.email });
-  const currentUrl = `${process.env.CLINT_SITE_URL}/login`;
-  const uniqueString = uuidv4() + user._id;
-  const verificationLink = `${currentUrl}/verify/${user._id}/${uniqueString}`;
+  if (user) {
+    const currentUrl = `${process.env.CLINT_SITE_URL}/login`;
+    const uniqueString = uuidv4() + user._id;
+    const verificationLink = `${currentUrl}/verify/${user._id}/${uniqueString}`;
 
-  const mailOptions = {
-    from: process.env.AUTH_EMAIL,
-    to: req.body.email,
-    subject: "Verify Your Email",
-    html: `
+    const mailOptions = {
+      from: process.env.AUTH_EMAIL,
+      to: req.body.email,
+      subject: "Verify Your Email",
+      html: `
       <!DOCTYPE html>
       <html>
       <head>
@@ -317,24 +316,30 @@ router.post("/resent", async (req, res) => {
       </body>
       </html>
     `,
-  };
+    };
+    let currentDate = new Date();
+    let expiresAt = new Date(currentDate.getTime() + 5 * 60000);
 
-  const newVerification = new UsersVerfication({
-    userId: user._id,
-    uniqueString,
-    createdAt: Date.now(),
-    expiresAt: moment().add(50, "minutes").valueOf(),
-  });
+    const newVerification = new UsersVerfication({
+      userId: user._id,
+      uniqueString,
+      createdAt: Date.now(),
+      expiresAt: expiresAt,
+    });
 
-  await newVerification.save();
-  res.json({ success: true });
-  transporter.sendMail(mailOptions, (err) => {
-    if (err) {
-      console.error(err);
-    } else {
-      console.log("Verification email sent successfully.");
-    }
-  });
+    await newVerification.save();
+    res.json({ success: true });
+    transporter.sendMail(mailOptions, (err) => {
+      if (err) {
+        console.error(err);
+      } else {
+        console.log("Verification email sent successfully.");
+      }
+    });
+  } else {
+    res.json("This Email Is not Exist !");
+  }
+
   // TO DO
 });
 // resent verify Email //

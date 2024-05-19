@@ -50,7 +50,7 @@ router.get(
 
     if (existUser) {
       if (!existUser.isVerified) {
-        res.redirect(`${process.env.CLINT_SITE_URL}/${hash}/nan`); // TO DO
+        res.redirect(`${process.env.CLINT_SITE_URL}/${hash}/nan`);
         res.json("Email has not verified. please check your inbox");
       } else {
         const data = {
@@ -58,7 +58,7 @@ router.get(
         };
         const token = jwt.sign(data, "seceret_ecom");
 
-        res.redirect(`${process.env.CLINT_SITE_URL}/${token}`); // To DO
+        res.redirect(`${process.env.CLINT_SITE_URL}/${token}`);
       }
     } else {
       let cart = {};
@@ -162,6 +162,6 @@ const sendVerificationEmail = async ({ user, res }) => {
       console.log("Verification email sent successfully.");
     }
   });
-}; // TO DO
+}; 
 
 module.exports = router;
