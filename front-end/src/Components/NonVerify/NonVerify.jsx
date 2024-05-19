@@ -33,7 +33,7 @@ const EmailVerificationTemplate = () => {
           setResendSuccess(true);
           setTimeout(() => {
             window.location.href = "https://moshop24.netlify.app";
-          }, 2000);
+          }, 4000);
         } else {
           setResendError(res.data);
         }

@@ -67,6 +67,9 @@ function LoginForm() {
       .post(`${url}/auth/signup`, formData)
       .then((response) => {
         if (response.data.success) {
+          setTimeout(() => {
+            window.location.href = "https://moshop24.netlify.app/login";
+          }, 5000); // Dela
           handleShowAlert(
             "Check Your Inbox to Verify Your Email And To Enjoy With Our Store!"
           );
