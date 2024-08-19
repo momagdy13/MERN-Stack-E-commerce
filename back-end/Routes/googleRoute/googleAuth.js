@@ -58,7 +58,7 @@ router.get(
         process.env.JWT_SECRET || "default_secret"
       );
       const cart = new Cart({ userId: user._id, details: [] });
-      await user.save();
+      await cart.save();
       res.redirect(`${process.env.CLINT_SITE_URL}/${token}`);
     } else {
       const user = new Users({
@@ -74,7 +74,10 @@ router.get(
       const data = {
         user: user._id,
       };
-      const token = jwt.sign(data, "seceret_ecom");
+      const token = jwt.sign(
+        { data },
+        process.env.JWT_SECRET || "default_secret"
+      );
       await sendVerificationEmail({ user, res });
       res.redirect(`${process.env.CLINT_SITE_URL}/${token}`);
     }
