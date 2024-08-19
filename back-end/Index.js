@@ -11,13 +11,12 @@ const router = require("./Controll/Controll");
 require("./Config/dbConnect");
 const multer = require("multer");
 const path = require("path");
-const fs = require("fs"); 
-
+const fs = require("fs");
 
 const uploadDir = path.join(__dirname, "../upload/images");
 
 // Ensure the upload directory exists
-if (!fs.existsSync(uploadDir)) { 
+if (!fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir, { recursive: true });
 }
 
@@ -57,10 +56,8 @@ app.post("/upload", upload.single("product"), (req, res) => {
   });
 });
 
-
-
 app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "http://localhost:5173");
+  res.setHeader("Access-Control-Allow-Origin", " https://moshop24.netlify.app");
   res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
   next();
@@ -68,15 +65,9 @@ app.use((req, res, next) => {
 
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: " https://moshop24.netlify.app",
   })
 );
-
-
-
-
-
-
 
 // function corsMiddleware(req, res, next) {
 //   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -97,7 +88,6 @@ app.use(
 //     origin: "https://moshop24.netlify.app",
 //   })
 // );
-
 
 app.use(
   cookieSession({
