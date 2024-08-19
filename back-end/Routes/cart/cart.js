@@ -122,9 +122,7 @@ router.post("/updatequantity", fetchUser, async (req, res) => {
 // Creating EndPoint to get cart//
 
 router.post("/getcart", fetchUser, async (req, res) => {
-  let cart = await Cart.findOne({ userId: req });
-  console.log(cart)
-  return
+  let cart = await Cart.findOne({ userId: req.user });
   if (cart) {
     let Qnt = 0;
     for (const qunt of cart.items) {

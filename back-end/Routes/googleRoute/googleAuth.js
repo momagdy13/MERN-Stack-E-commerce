@@ -54,7 +54,7 @@ router.get(
         user: existUser._id,
       };
       const token = jwt.sign({ data }, "default_secret");
-      const cart = new Cart({ userId: data.user, details: [] });
+      const cart = new Cart({ userId: data, details: [] });
       await cart.save();
       res.redirect(`${process.env.CLINT_SITE_URL}/${token}`);
     } else {
