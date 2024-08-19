@@ -53,7 +53,10 @@ router.get(
       const data = {
         user: existUser._id,
       };
-      const token = jwt.sign(data, "seceret_ecom");
+      const token = jwt.sign(
+        { user: user._id },
+        process.env.JWT_SECRET || "default_secret"
+      );
       res.redirect(`${process.env.CLINT_SITE_URL}/${token}`);
     } else {
       const user = new Users({
