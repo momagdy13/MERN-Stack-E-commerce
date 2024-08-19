@@ -42,12 +42,8 @@ function App() {
           <Route path="/profile" element={<Profile />} />
           <Route element={<Protected />}>
             <Route path="/login" element={<Signup />} />
-            <Route path="/:token" element={<Shop />} />
           </Route>
-          <Route
-            path="/login/verify/:userId/:uniqueString"
-            element={<Signup />}
-          />
+          <Route path="/:token" element={<Shop />} />
           <Route path="/success" element={<PaymentSuccessPage />} />
           <Route
             path="/:nanverify/nan"

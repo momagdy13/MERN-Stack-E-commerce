@@ -3,8 +3,21 @@ import { ShopContext } from "../../Contexs/ShopContext";
 import PayButtom from "../PayButtom/PayButtom";
 import list from "../Assest/list.png";
 import axios from "axios";
+import item1 from "../Assest/4a91a6b4f09c7df99a6352db06f7a701.jpg";
+import item2 from "../Assest/tomato.jpeg";
+import item3 from "../Assest/Apple-iPhone-15-Pro-lineup-hero-230912_Full-Bleed-Image.jpg.large.jpg";
+import item4 from "../Assest/apple.jpeg";
+import item5 from "../Assest/shosee.jpeg";
 
 const CartPage = () => {
+  const productImage = {
+    5: item1,
+    6: item4,
+    7: item3,
+    8: item5,
+    9: item2,
+  };
+
   const {
     cart,
     all_product,
@@ -89,7 +102,7 @@ const CartPage = () => {
               <div className="item-details">
                 <div>
                   <img
-                    src={item.product.image}
+                    src={productImage[item.id]}
                     alt={item.product ? item.product.name : "Product"}
                     className="item-image"
                   />

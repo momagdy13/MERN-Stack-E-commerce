@@ -7,6 +7,11 @@ import { Rating } from "@mui/material";
 import fastion from "../Assest/77823e67a83e9846c7002085847bb64b.jpg";
 import offer from "../Assest/R.jpeg";
 import emptyCart from "../Assest/empty-cart-2130356-1800917.webp";
+import item1 from "../Assest/4a91a6b4f09c7df99a6352db06f7a701.jpg";
+import item2 from "../Assest/tomato.jpeg";
+import item3 from "../Assest/Apple-iPhone-15-Pro-lineup-hero-230912_Full-Bleed-Image.jpg.large.jpg";
+import item4 from "../Assest/apple.jpeg";
+import item5 from "../Assest/shosee.jpeg";
 
 const CategoryResults = () => {
   const { all_product } = useContext(ShopContext);
@@ -19,6 +24,14 @@ const CategoryResults = () => {
     navigate(`/product-details`, { state: { product } });
   };
   const searchName = location.state;
+    const productImage = {
+      5: item1,
+      6: item4,
+      7: item3,
+      8: item5,
+      9: item2,
+    };
+
 
 
   useEffect(() => {
@@ -76,7 +89,7 @@ const CategoryResults = () => {
                   }}
                 >
                   <div className="product-image">
-                    <img src={product.image} alt="Product Image" />
+                    <img src={productImage[product.id]} alt="Product Image" />
                     <div className="product-overlay">
                       <h3 className="product-title">{product.name}</h3>
                       <p className="product-description">{product.descripe}</p>

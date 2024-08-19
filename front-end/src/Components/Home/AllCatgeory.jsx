@@ -1,11 +1,8 @@
 import { Container, Rating } from "@mui/material";
 import { useState, useEffect, useContext } from "react";
-import Slider from "react-slick";
 import axios from "axios";
 import { ShopContext } from "../../Contexs/ShopContext";
 import { useNavigate } from "react-router-dom";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
 
 // Import your images
 import fastion from "../Assest/77823e67a83e9846c7002085847bb64b.jpg";
@@ -86,15 +83,7 @@ export default function ShopCatg() {
     navigate(`/product-details`, { state: { product } });
   };
 
-  const settings = {
-    dots: true,
-    infinite: true,
-    slidesToShow: 3,
-    slidesToScroll: 1,
-    autoplay: true,
-    autoplaySpeed: 2000,
-    rtl: false,
-  };
+
 
   return (
     <>
@@ -113,7 +102,6 @@ export default function ShopCatg() {
               </span>
             </div>
             <div className="slider-container">
-              <Slider {...settings}>
                 {popular.map((item) => (
                   <div className="products-display grid" key={item.id}>
                     <div
@@ -172,7 +160,6 @@ export default function ShopCatg() {
                     </div>
                   </div>
                 ))}
-              </Slider>
             </div>
             <div>
               {/* New Product */}
@@ -180,7 +167,6 @@ export default function ShopCatg() {
               <span>New products with updated stocks.</span>
             </div>
             <div className="slider-container">
-              <Slider {...settings}>
                 {new_product.map((item) => (
                   <div className="products-display grid" key={item.id}>
                     <div
@@ -238,7 +224,6 @@ export default function ShopCatg() {
                     </div>
                   </div>
                 ))}
-              </Slider>
             </div>
           </div>
         </div>

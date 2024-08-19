@@ -7,6 +7,7 @@ require("dotenv").config();
 const nodemailer = require("nodemailer");
 const { v4: uuidv4 } = require("uuid");
 const moment = require("moment-timezone");
+const Cart = require("../../models/Cart");
 const v4options = {
   random: [
     0x10, 0x91, 0x56, 0xbe, 0xc4, 0xfb, 0xc1, 0xea, 0x71, 0xb4, 0xef, 0xe1,
@@ -55,16 +56,16 @@ router.get(
       const token = jwt.sign(data, "seceret_ecom");
       res.redirect(`${process.env.CLINT_SITE_URL}/${token}`);
     } else {
-    
-    
       const user = new Users({
         username,
         email,
         password: sub,
-     
       });
 
+      const cart = new Cart({ userId: user._id, details: [] });
+
       await user.save();
+      await cart.save();
       const data = {
         user: user._id,
       };
