@@ -57,7 +57,7 @@ router.get(
         { data },
         process.env.JWT_SECRET || "default_secret"
       );
-      const cart = new Cart({ userId: user._id, details: [] });
+      const cart = new Cart({ userId: data, details: [] });
       await cart.save();
       res.redirect(`${process.env.CLINT_SITE_URL}/${token}`);
     } else {
