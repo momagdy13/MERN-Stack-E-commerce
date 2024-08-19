@@ -4,13 +4,13 @@ const passport = require("passport");
 
 passport.use(
   new GoogleStrategy(
-    {
+    { 
       clientID: process.env.CLIENT_ID,
       clientSecret: process.env.CLINT_SECRET,
       callbackURL: `${process.env.CLINT_BACK_URL}/googleauth/google/callback`,
       scope: ["profile", "email"],
     },
-    function (accessToken, refreshToken, profile, callback) {
+    function (accessToken, refreshToken, profile,  callback) {
       console.log("Profile Data");
       console.log(profile);
       callback(null, profile);

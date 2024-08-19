@@ -40,17 +40,32 @@ router.delete("/deleteproduct", async (req, res) => {
 router.get("/allproduct", async (req, res) => {
   let product = await Product.find({});
   res.json(product);
-});
+}); 
 // Creating EndPoint to get all_product//
+
+// Creating EndPoint to get new_product//
+router.get("/newcollection", async (req, res) => {
+  let product = await Product.find({});
+  let newCollection = product.slice(1).slice(-4);
+  console.log("newCollection");
+  res.send(newCollection);
+});
+// Creating EndPoint For new_product//
+
+// Creating EndPoint For Popular in Women//
+router.get("/popular", async (req, res) => {
+  let product = await Product.find({});
+  let popular = product.slice(0, 4).slice(-4);
+  res.send(popular);
+});
+// Creating EndPoint For Popular in Women//
 
 // Creating EndPoint For Catg//
 router.get("/:catg", async (req, res) => {
   let params = req.params.catg;
-
   let product = await Product.find({ category: params });
   res.json(product);
 });
 // Creating EndPoint For Catg//
-
 
 module.exports = router;

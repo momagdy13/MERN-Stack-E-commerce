@@ -7,6 +7,119 @@ const UsersVerfication = require("../../models/UserVerification");
 const nodemailer = require("nodemailer");
 const { v4: uuidv4 } = require("uuid");
 const moment = require("moment-timezone");
+const fetchUser = require("../../Middleware/auth");
+const Cart = require("../../models/Cart");
+
+// Creating EndPoint For Registering the user //
+router.post("/signup", async (req, res) => {
+  const { username, email, password } = req.body;
+
+  try {
+    const existingUser = await Users.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({ message: "Email already exists" });
+    }
+
+    // Create new user
+    const user = new Users({ username, email, password });
+
+    // Create an empty cart for the user
+    const cart = new Cart({ userId: user._id, details: [] });
+
+    // Save user and cart to the database
+    await user.save();
+    await cart.save();
+
+    // Generate a token
+    const token = jwt.sign(
+      { user: user._id },
+      process.env.JWT_SECRET || "default_secret"
+    );
+
+    // Send verification email
+    sendVerificationEmail({ user, res });
+
+    // Respond with success
+    res.json({ success: true, token });
+  } catch (e) {
+    console.error("Error during signup:", e);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+// Creating EndPoint For Registering the user //
+
+// Creating EndPoint For User Login//
+router.post("/login", async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    // Find user by email
+    const user = await Users.findOne({ email }).exec();
+
+    if (!user) {
+      return res.status(401).json({ message: "User not found." });
+    }
+
+    // Check if the user is verified
+    if (!user.isVerified) {
+      return res
+        .status(401)
+        .send(`${process.env.CLIENT_SITE_URL}/${user._id}/verify`);
+    }
+
+    // Check if the passwords match
+    // WARNING: This is insecure as it compares plain text passwords
+    if (password === user.password) {
+      const data = { user: user._id };
+      const token = jwt.sign(data, process.env.JWT_SECRET || "default_secret");
+      res.json({ success: true, token });
+    } else {
+      return res.status(401).json({ message: "Incorrect password." });
+    }
+  } catch (e) {
+    console.error("Login error:", e);
+    return res.status(500).json({ message: "Internal server error." });
+  }
+});
+// Creating EndPoint For User Login//
+
+router.post("/getaccount", fetchUser, async (req, res) => {
+  const check = await Users.findById({ _id: req.user });
+  if (check) {
+    res.json(check);
+  }
+});
+
+// Update User Data
+router.put("/update", fetchUser, async (req, res) => {
+  try {
+    const userId = req.user;
+    const { username, email, password } = req.body;
+
+    if (password.length >= 6) {
+      const updatedUser = await Users.findByIdAndUpdate(
+        userId,
+        { username, email, password },
+        { new: true }
+      );
+
+      if (!updatedUser) {
+        return res.status(404).json({ message: "User not found" });
+      }
+
+      res.json({ success: true, user: updatedUser });
+    } else {
+      res.json({ message: "Password must be at least 6 charcaters" });
+    }
+  } catch (error) {
+    console.error("Error updating user:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+// Update User Data
+
 const v4options = {
   random: [
     0x10, 0x91, 0x56, 0xbe, 0xc4, 0xfb, 0xc1, 0xea, 0x71, 0xb4, 0xef, 0xe1,
@@ -32,68 +145,6 @@ transporter.verify((err, success) => {
   }
 });
 
-// Creating EndPoint For Registering the user //
-router.post("/signup", async (req, res) => {
-  const { username, email, password } = req.body;
-  try {
-    const user = await Users.findOne({ email }).exec();
-    if (user) {
-      return res.status(401).json({
-        name: "ValidatorError",
-        message: "Mail Is Exist!",
-        properties: {
-          message: "Mail Is Exist!",
-          type: "Dublicate",
-          path: "email",
-          value: `${email}`,
-        },
-        kind: "Dublicate",
-        path: "email",
-        value: `${email}`,
-      });
-    } else if (password.length < 8) {
-      return res.status(401).json({
-        name: "ValidatorError",
-        message: "Pass Too Short  It Should be 8 Characters At Least !",
-        properties: {
-          message: "Pass Too Short  It Should be 8 Characters At Least !",
-          type: "passErr",
-          path: "password",
-          value: `${password}`,
-        },
-        kind: "passErr",
-        path: "password",
-        value: `${password}`,
-      });
-    } else {
-      let cart = {};
-      let Favourite = {};
-      for (let index = 0; index < 300; index++) {
-        cart[index] = 0;
-        Favourite[index] = 0;
-      }
-
-      const user = new Users({
-        username,
-        email,
-        password,
-        cartData: cart,
-        favourite: Favourite,
-      });
-
-      await user.save();
-      const data = {
-        user: user._id,
-      };
-      const token = jwt.sign(data, "seceret_ecom");
-      sendVerificationEmail({ user, res });
-      res.json({ success: true, token });
-    }
-  } catch (e) {
-    res.status(401).json(e.errors);
-  }
-});
-// Creating EndPoint For Registering the user //
 const sendVerificationEmail = async ({ user }) => {
   const currentUrl = `${process.env.CLINT_SITE_URL}/login`;
   const uniqueString = uuidv4() + user._id;
@@ -203,59 +254,6 @@ router.get("/verify/:userId/:uniqueString", async (req, res) => {
   }
 });
 
-// Creating EndPoint For User Login//
-router.post("/login", async (req, res) => {
-  try {
-    const { email, password } = req.body;
-    const user = await Users.findOne({ email: email }).exec();
-
-    if (user) {
-      if (!user.isVerified) {
-        res.send(`${process.env.CLINT_SITE_URL}/${hash}/nan`);
-      } else {
-        if (password == user.password) {
-          const data = {
-            user: user._id,
-          };
-          const token = jwt.sign(data, "seceret_ecom");
-          res.json({ success: true, token });
-        } else {
-          res.status(401).json({
-            name: "ValidatorError",
-            message: "Wrong password!",
-            properties: {
-              message: "Wrong password!",
-              type: "Wrong",
-              path: "password",
-              value: `passwordd`,
-            },
-            kind: "wrong",
-            path: "password",
-            value: `password`,
-          });
-        }
-      }
-    } else {
-      res.status(401).json({
-        name: "ValidatorError",
-        message: "This Email Isn't Exist",
-        properties: {
-          message: "This Email Isn't Exist",
-          type: "Wrong",
-          path: "email",
-          value: `${email}`,
-        },
-        kind: "Wrong",
-        path: "email",
-        value: `${email}`,
-      });
-    }
-  } catch (e) {
-    res.status(401).json(e.errors);
-  }
-});
-// Creating EndPoint For User Login//
-
 // resent verify Email //
 router.post("/resent", async (req, res) => {
   const user = await Users.findOne({ email: req.body.email });
@@ -317,8 +315,8 @@ router.post("/resent", async (req, res) => {
       </html>
     `,
     };
-    let currentDate = new Date();
-    let expiresAt = new Date(currentDate.getTime() + 5 * 60000);
+    const currentDate = new Date();
+    const expiresAt = new Date(currentDate.getTime() + 5 * 60000);
 
     const newVerification = new UsersVerfication({
       userId: user._id,

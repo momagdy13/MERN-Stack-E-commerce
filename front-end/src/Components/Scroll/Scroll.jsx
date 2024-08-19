@@ -11,7 +11,7 @@ const ScrollToTop = () => {
         variant="extended"
         size="small"
         sx={{ position: "fixed", bottom: 33, right: 33 }}
-        color="primary"
+        color="inherit"
         aria-label="add"
       >
         <KeyboardArrowUp fontSize="medium" />

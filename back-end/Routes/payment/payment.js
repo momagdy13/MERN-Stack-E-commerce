@@ -3,6 +3,7 @@ const router = express.Router();
 const fetchUser = require("../../Middleware/auth");
 require("dotenv").config();
 const { v4: uuidv4 } = require("uuid");
+const Product = require("../../models/Products");
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 const v4options = {
   random: [
@@ -28,20 +29,21 @@ router.post("/create-checkout-session", fetchUser, async (req, res) => {
       price_data: {
         currency: "usd",
         product_data: {
-          name: item.name,
-          description: item.descripe,
+          name: item.product.name,
+          description: item.product.descripe,
         },
-        unit_amount: Math.round(item.price) * 100,
+
+        unit_amount: Math.round(item.product.price) * 100,
       },
-      quantity: item.quant,
+      quantity: item.quantity,
     };
   });
 
   try {
     const session = await stripe.checkout.sessions.create({
       line_items,
-      mode: "payment",
-      success_url: `${process.env.CLINT_SITE_URL}/${hash}/suc`,
+      mode: "payment", 
+      success_url: `${process.env.CLINT_SITE_URL}success`,  
       cancel_url: `${process.env.CLINT_SITE_URL}/cart`,
     });
 

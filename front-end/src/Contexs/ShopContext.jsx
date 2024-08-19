@@ -2,210 +2,144 @@ import React, { createContext, useState, useEffect } from "react";
 import axios from "axios";
 export const ShopContext = createContext(null);
 
-const getDefultCart = () => {
-  let cart = {};
-  for (let index = 0; index < 300; index++) {
-    cart[index] = 0;
-  }
-  return cart;
-};
-const getDefultFav = () => {
-  let cart = {};
-  for (let index = 0; index < 300; index++) {
-    cart[index] = 0;
-  }
-  return cart;
-};
-
 const ShopContextProvider = (props) => {
-  const [cartItems, setCartItems] = useState(getDefultCart());
   const [all_product, setAllProduct] = useState([]);
-  const [favItems, setFavItem] = useState(getDefultFav());
-  const url = "https://mern-stack-e-commerce-50uh.onrender.com";
+  const [new_product, setNewProduct] = useState([]);
+  const [cart, setCart] = useState({ quantity: 0, details: {} });
+  const [popular, setPopular] = useState([]);
+  // const url = "https://mern-stack-e-commerce-50uh.onrender.com";  TO DO
+  const url = "http://localhost:4000";
 
-  const addToCart = (itemId) => {
-    setCartItems((prev) => ({ ...prev, [itemId]: prev[itemId] + 1 }));
+  const addToCart = async (productId, quantity = 1) => {
     if (localStorage.getItem("token")) {
-      axios
-        .post(
-          `${url}/cart/addtocart`,
-          { itemId: itemId },
+      try {
+        const response = await axios.post(
+          `${url}/cart/add`,
+          { cartId: cart.cartId, productId, quantity },
           {
             headers: { "auth-token": `${localStorage.getItem("token")}` },
           }
-        )
-        .then((response) => {
-          console.log(response);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    }
-  };
-  const removeFromCart = (itemId) => {
-    setCartItems((prev) => ({ ...prev, [itemId]: prev[itemId] - 1 }));
-    if (localStorage.getItem("token")) {
-      axios
-        .post(
-          `${url}/cart/deletefromcart`,
-          { itemId: itemId },
-          {
-            headers: { "auth-token": `${localStorage.getItem("token")}` },
-          }
-        )
-        .then((response) => {
-          console.log(response);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    }
-  };
-  const addToFav = async (itemId) => {
-    if (localStorage.getItem("token")) {
-      await axios
-        .post(
-          `${url}/fav/addtofav`,
-          { itemId: itemId },
-          {
-            headers: { "auth-token": `${localStorage.getItem("token")}` },
-          }
-        )
-        .then((response) => {
-          if (response.data.success) {
-            setFavItem((prev) => ({ ...prev, [itemId]: prev[itemId] + 1 }));
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    }
-  };
-  const removeFromFav = async (itemId) => {
-    setFavItem((prev) => ({ ...prev, [itemId]: prev[itemId] - 1 }));
-
-    if (localStorage.getItem("token")) {
-      await axios
-        .post(
-          `${url}/fav/removefromfav`,
-          { itemId: itemId },
-          {
-            headers: { "auth-token": `${localStorage.getItem("token")}` },
-          }
-        )
-        .then((response) => {
-          console.log(response);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    }
-  };
-
-  const FavNumber = () => {
-    let totalItem = 0;
-    for (const item in favItems) {
-      if (favItems[item] > 0) {
-        totalItem += favItems[item];
-      }
-    }
-    return totalItem;
-  };
-  const removeAllFromCart = () => {
-    if (localStorage.getItem("token")) {
-      axios
-        .delete(
-          `${url}/cart/deleteallfromcart`,
-
-          {
-            headers: { "auth-token": `${localStorage.getItem("token")}` },
-          }
-        )
-        .then((response) => {
-          console.log(response);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    }
-  };
-
-  const getTotalCartItems = () => {
-    let totalItem = 0;
-    for (const item in cartItems) {
-      if (cartItems[item] > 0) {
-        totalItem += cartItems[item];
-      }
-    }
-    return totalItem;
-  };
-
-  const getTotalCartAmount = () => {
-    let totalAmount = 0;
-    for (const item in cartItems) {
-      if (cartItems[item] > 0) {
-        let itemInfo = all_product.find(
-          (product) => product.id === Number(item)
         );
-        totalAmount += cartItems[item] * itemInfo.price;
+        setCart(response.data);
+      } catch (error) {
+        console.error(error);
       }
     }
-    return totalAmount;
   };
-  useEffect(async () => {
-    await axios
-      .get(`${url}/product/allproduct`)
-      .then((response) => {
-        setAllProduct(response.data);
-        if (localStorage.getItem("token")) {
-          axios
-            .post(
-              `${url}/cart/getcart`,
-              {},
-              {
-                headers: { "auth-token": `${localStorage.getItem("token")}` },
-              }
-            )
-            .then((response) => {
-              setCartItems(response.data);
-            })
-            .catch((error) => {
-              console.log(error);
-            });
 
-          axios
-            .post(
-              `${url}/fav/getfav`,
-              {},
-              {
-                headers: { "auth-token": `${localStorage.getItem("token")}` },
-              }
-            )
-            .then((response) => {
-              setFavItem(response.data);
-            })
-            .catch((error) => {
-              console.log(error);
-            });
+  const updateCartQuantity = async (productId, quantity) => {
+    try {
+      if (quantity > 0) {
+        const response = await axios.post(
+          `${url}/cart/updatequantity`,
+          { cartId: cart.cartId, productId, quantity },
+          {
+            headers: { "auth-token": `${localStorage.getItem("token")}` },
+          }
+        );
+        setCart(response.data);
+      } else {
+        console.log("Item not found");
+        setCart((prevCart) => {
+          const updatedDetails = prevCart.details.filter(
+            (item) => item.productId !== productId
+          );
+          return { ...prevCart, details: updatedDetails };
+        });
+      }
+    } catch (error) {
+      console.error("Error updating item quantity in cart:", error);
+    }
+  };
+
+  const removeFromCart = async (productId) => {
+    try {
+      const response = await axios.post(
+        `${url}/cart/delete`,
+        {
+          cartId: cart.cartId,
+          productId,
+        },
+        {
+          headers: { "auth-token": `${localStorage.getItem("token")}` },
         }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
+      );
+
+      if (response.status === 200) {
+        console.log("Item successfully removed from cart on the server.");
+      }
+    } catch (error) {
+      console.error("Error removing item from cart:", error);
+    }
+  };
+
+  const removeAllFromCart = async () => {
+    if (localStorage.getItem("token")) {
+      try {
+        const response = await axios.post(
+          `${url}/cart/deleteallfromcart`,
+          {},
+          {
+            headers: { "auth-token": `${localStorage.getItem("token")}` },
+          }
+        );
+        setCart({ quantity: 0, details: [] });
+        console.log(response);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  };
+
+  useEffect(() => {
+    const fetchAllData = async () => {
+      try {
+        const allProductResponse = await axios.get(`${url}/product/allproduct`);
+        setAllProduct(allProductResponse.data);
+
+        const newCollectionResponse = await axios.get(
+          `${url}/product/newcollection`
+        );
+        setNewProduct(newCollectionResponse.data);
+
+        const popularResponse = await axios.get(`${url}/product/popular`);
+        setPopular(popularResponse.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    const fetchCartData = async () => {
+      if (localStorage.getItem("token")) {
+        try {
+          const response = await axios.post(
+            `${url}/cart/getcart`,
+            {},
+            {
+              headers: { "auth-token": localStorage.getItem("token") },
+            }
+          );
+          setCart(response.data);
+        } catch (error) {
+          console.error(error);
+        }
+      }
+    };
+
+    fetchAllData();
+    fetchCartData();
+  }, []); // Only run once on mount
 
   const contxtValue = {
     all_product,
-    cartItems,
-    favItems,
-    FavNumber,
-    addToFav,
-    removeFromFav,
+    cart,
+    new_product,
+    popular,
+    setCart,
+    updateCartQuantity,
     addToCart,
     removeFromCart,
     removeAllFromCart,
-    getTotalCartItems,
-    getTotalCartAmount,
   };
 
   return (
@@ -214,4 +148,5 @@ const ShopContextProvider = (props) => {
     </ShopContext.Provider>
   );
 };
+
 export default ShopContextProvider;

@@ -1,127 +1,109 @@
-import React, { useContext } from "react";
-import Header2 from "../Headers/Header";
-import {
-  Box,
-  Card,
-  CardActions,
-  CardMedia,
-  Container,
-  Divider,
-  Grid,
-  Rating,
-  Stack,
-  Typography,
-} from "@mui/material";
-import { useLocation, useNavigate } from "react-router-dom";
+import React, { useState, useEffect, useContext } from "react";
 import { ShopContext } from "../../Contexs/ShopContext";
-import productNan from "../Assest/productNan.jpg";
+import Spinner from "./Spinner";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { FiHeart } from "react-icons/fi";
+import { Rating } from "@mui/material";
+import fastion from "../Assest/77823e67a83e9846c7002085847bb64b.jpg";
+import offer from "../Assest/R.jpeg";
+import emptyCart from "../Assest/empty-cart-2130356-1800917.webp";
 
-export default function Result() {
+const CategoryResults = () => {
   const { all_product } = useContext(ShopContext);
-  const productName = useLocation();
+  const [filteredProducts, setFilteredProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const { catg } = useParams();
+  const location = useLocation();
   const navigate = useNavigate();
-  const productDetails = (item) => {
-    navigate("/product-details", { state: item });
+  const handleProductClick = (product) => {
+    navigate(`/product-details`, { state: { product } });
   };
+  const searchName = location.state;
 
-  const searchKeyword = productName.state.toLowerCase();
 
-  const filteredProducts = all_product.filter((item) => {
-    const itemName = item.name.toLowerCase();
-    return itemName.includes(searchKeyword);
-  });
+  useEffect(() => {
+    setTimeout(() => {
+      const filtered = all_product.filter(
+        (product) => product.category === catg
+      );
+      setFilteredProducts(filtered);
+
+      if (searchName != null && searchName.item === "string") {
+        const filteredProduct = all_product.filter((product) =>
+          product.name.toLowerCase().includes(searchName.item.toLowerCase())
+        );
+
+        setFilteredProducts(filteredProduct);
+      } else {
+        console.warn("searchName.item is not a string");
+      }
+
+      setLoading(false);
+    }, 1000);
+  }, [catg, all_product]);
+
+  if (loading) {
+    return <Spinner />;
+  }
 
   return (
-    <>
-      <Header2 />
-      <Container sx={{ display: "flex" }}>
-        <Typography variant="h3">Result :</Typography>
-        {filteredProducts.length || null > 0 ? (
-          filteredProducts.map((item) => (
-            <Grid
-              container
-              item
-              key={item.id}
-              spacing={2}
-              md={4}
-              sx={{ mt: "70px" }}
-            >
-              <Card
-                variant="outlined"
-                sx={{
-                  width: "350px",
-                  my: 6,
-                  "&:hover .MuiCardMedia-root": {
-                    transition: "2s",
-                    transform: "scale(1.1)",
-                  },
-                  borderRadius: "10px",
-                  boxShadow: "rgb(38, 57, 77) 0px 10px 20px -10px",
-                }}
-              >
-                <CardMedia
-                  sx={{ height: 300, cursor: "pointer" }}
-                  image={item.image}
+    <div className="category-results-page">
+      <h1>{catg} Products</h1>
+
+      {filteredProducts.length === 0 ? (
+        <>
+          <h4 style={{ marginTop: "30px" }}>
+            No products found in this category.
+          </h4>
+          <img src={emptyCart} alt="" />
+        </>
+      ) : (
+        <div className="home">
+          <div className="left-home">
+            <img src={fastion} />
+            <img src={offer} />
+          </div>
+
+          <div className={`products-display grid`}>
+            {filteredProducts.map((product, index) => (
+              <div>
+                <div
+                  className="product-card"
+                  key={index}
+                  style={{ cursor: "pointer" }}
                   onClick={() => {
-                    productDetails(item);
+                    handleProductClick(product);
                   }}
-                />
-                <Box sx={{ p: 3 }}>
-                  <Stack
-                    direction="row"
-                    justifyContent="space-between"
-                    alignItems="center"
-                  >
-                    <Typography gutterBottom variant="h5" component="div">
-                      {item.name}
-                    </Typography>
-                    <Typography gutterBottom variant="h6" component="div">
-                      ${item.price}
-                    </Typography>
-                  </Stack>
-                  <Typography color="text.secondary" variant="body2">
-                    {item.descripe}
-                  </Typography>
-                </Box>
-                <Divider />
-                <Box sx={{ p: 2 }}>
-                  <CardActions>
-                    <Rating
-                      name="half-rating-read"
-                      value={item.rate}
-                      precision={0.5}
-                      readOnly
-                    />
-                  </CardActions>
-                </Box>
-              </Card>
-            </Grid>
-          ))
-        ) : (
-          <Grid item sx={{ margin: "auto", width: "100%", mt: "60px" }}>
-            <Card
-              variant="outlined"
-              sx={{
-                width: "1000px",
-                my: 6,
-                borderRadius: "15px",
-                boxShadow: "rgb(38, 57, 77) 0px 10px 20px -10px",
-              }}
-            >
-              <CardMedia
-                sx={{ height: 400 }}
-                image={productNan}
-                onClick={() => {
-                  productDetails(item);
-                }}
-              />
-              <Box sx={{ p: 3 }}>
-                <Typography variant="h3">لا يوجد منتجات مطابقة.</Typography>
-              </Box>
-            </Card>
-          </Grid>
-        )}
-      </Container>
-    </>
+                >
+                  <div className="product-image">
+                    <img src={product.image} alt="Product Image" />
+                    <div className="product-overlay">
+                      <h3 className="product-title">{product.name}</h3>
+                      <p className="product-description">{product.descripe}</p>
+                      <div className="product-details">
+                        <span className="product-price">{product.price}$</span>
+                        <button className="add-to-favorites">
+                          <FiHeart size={"40"} />
+                        </button>
+                      </div>
+                      <Rating
+                        name="half-rating-read"
+                        defaultValue={product.rate}
+                        precision={0.5}
+                        readOnly
+                        size="large"
+                      />
+                      <button className="add-to-cart">Product Details</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
   );
-}
+};
+
+export default CategoryResults;

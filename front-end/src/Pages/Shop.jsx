@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
-import Header from "../Components/Headers/Header";
+import Header from "../Components/Navbar/Header";
 import Hero from "../Components/Hero/Hero";
-import IconSection from "../Components/IconSection/IconSection";
-import ShopCatg from "../Components/ShopCatg/ShopCatg";
+import ShopCatg from "../Components/Home/AllCatgeory";
 import ScrollToTop from "../Components/Scroll/Scroll";
 import { useParams } from "react-router-dom";
+import CategoryIcon from "../Components/Home/CategoryIcon";
 
 export default function Shop() {
   const { token } = useParams();
@@ -17,9 +17,8 @@ export default function Shop() {
   }, [token]);
   return (
     <div>
-      <Header />
       <Hero />
-      <IconSection />
+      <CategoryIcon/>
       <ShopCatg />
       <ScrollToTop />
     </div>

@@ -1,19 +1,34 @@
 const mongoose = require("mongoose");
-const Users = mongoose.Schema({
-  username: { type: String, required: [true, "UserName Is Required!"] },
+const User = new mongoose.Schema({
+  username: {
+    type: String,
+    required: [true, "Username is required"],
+    trim: true,
+    minlength: [3, "Username must be at least 3 characters long"],
+    maxlength: [50, "Username cannot exceed 50 characters"],
+  },
   email: {
     type: String,
-    required: [true, "Email Is Required!"],
-    unique: [true, "Email Should Be Unique!"],
-    match:
-      /^[a-z0-9][a-z0-9-_\.]+@([a-z]|[a-z0-9]?[a-z0-9-]+[a-z0-9])\.[a-z0-9]{2,10}(?:\.[a-z]{2,10})?$/,
+    required: [true, "Email is required"],
+    unique: [true, "Email must be unique"],
+    match: [
+      /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+      "Please provide a valid email address",
+    ],
   },
-  password: { type: String, required: [true, "Pass Is Required!"] },
-  cartData: { type: Object, ref: "product" },
-  favourite: { type: Object, ref: "product" },
-  doneOrder: { type: Array, ref: "product" },
-  date: { type: Date, default: Date.now },
-  isVerified: { type: Boolean, default: false },
+  password: {
+    type: String,
+    required: [true, "Password is required"],
+    minlength: [6, "Password must be at least 6 characters long"],
+  },
+  date: {
+    type: Date,
+    default: Date.now,
+  },
+  isVerified: {
+    type: Boolean,
+    default: false,
+  },
 });
 
-module.exports = mongoose.model("users", Users);
+module.exports = mongoose.model("users", User);
