@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import Header from "../Components/Navbar/Header";
 import Hero from "../Components/Hero/Hero";
 import ShopCatg from "../Components/Home/AllCatgeory";
 import ScrollToTop from "../Components/Scroll/Scroll";
@@ -12,13 +11,13 @@ export default function Shop() {
     if (token) {
       console.log("Token:", token);
       localStorage.setItem("token", token);
-      window.location.reload();
+      window.location.replace('/');
     }
   }, [token]);
   return (
     <div>
       <Hero />
-      <CategoryIcon/>
+      <CategoryIcon />
       <ShopCatg />
       <ScrollToTop />
     </div>

@@ -25,7 +25,7 @@ const Product = () => {
   const getItemQuantity = (productId) => {
     if (!localStorage.getItem("token")) {
       return 0;
-    } else if (!cart || !cart.details) {
+    } else if (!cart && !cart.details) {
       return 0;
     } else {
       const item = cart.details.find((item) => item.productId === productId);
