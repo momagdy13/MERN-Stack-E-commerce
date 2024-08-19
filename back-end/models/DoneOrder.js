@@ -7,4 +7,4 @@ const orderSchema = new mongodb.Schema({
 });
 const doneOrder = mongodb.model("doneorder", orderSchema);
 
-module.exports = doneOrder;
+module.exports = doneOrder

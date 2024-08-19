@@ -186,7 +186,7 @@ router.post("/deleteall", fetchUser, async (req, res) => {
 
 // Creating EndPoint to get done order//
 router.get("/getdone", fetchUser, async (req, res) => {
-  const user = await doneOrder.find({ user_id: req.user });
+  const user = await doneOrder.find({ user_id: req.user })
   res.json(user)
 });
 // Creating EndPoint to get done order//

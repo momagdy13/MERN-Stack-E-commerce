@@ -15,6 +15,6 @@ const Product = mongoose.model("product", {
     type: Boolean,
     default: true,
   },
-});
+})
 
 module.exports = Product;

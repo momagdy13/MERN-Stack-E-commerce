@@ -6,5 +6,5 @@ const UsersVer = mongoose.Schema({
   expiresAt: Date,
 });
 
-const UserVerFunction = mongoose.model("usersverficate", UsersVer);
+const UserVerFunction = mongoose.model("usersverficate", UsersVer)
 module.exports = UserVerFunction;

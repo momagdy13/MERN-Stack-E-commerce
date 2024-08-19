@@ -13,7 +13,7 @@ passport.use(
     function (accessToken, refreshToken, profile,  callback) {
       console.log("Profile Data");
       console.log(profile);
-      callback(null, profile);
+      callback(null, profile)
     }
   )
 );

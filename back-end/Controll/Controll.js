@@ -1,4 +1,4 @@
-const express = require("express");
+const express = require("express")
 const router = express.Router();
 const user = require("../Routes/user/users.js");
 const cart = require("../Routes/cart/cart.js");
@@ -13,6 +13,5 @@ router.use("/fav", fav);
 router.use("/stripe", stripe);
 router.use("/googleauth", gauth);
 
- 
 module.exports = router;
  

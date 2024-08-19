@@ -7,4 +7,4 @@ const favSchema = new mongodb.Schema({
 });
 const favList = mongodb.model("favList", favSchema);
 
-module.exports = favList;
+module.exports = favList
