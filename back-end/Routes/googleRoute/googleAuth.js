@@ -53,8 +53,8 @@ router.get(
       const data = {
         user: existUser._id,
       };
-      const token = jwt.sign({ data }, "default_secret");
-      const cart = new Cart({ userId: data, details: [] });
+      const token = jwt.sign({ user: data.user }, "default_secret");
+      const cart = new Cart({ userId: data.user, details: [] });
       await cart.save();
       res.redirect(`${process.env.CLINT_SITE_URL}/${token}`);
     } else {
@@ -72,7 +72,7 @@ router.get(
         user: user._id,
       };
       const token = jwt.sign(
-        { data },
+        { user : data.user },
         process.env.JWT_SECRET || "default_secret"
       );
       await sendVerificationEmail({ user, res });
