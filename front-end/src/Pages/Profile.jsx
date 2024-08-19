@@ -6,8 +6,7 @@ import { Box } from "@mui/system";
 
 export default function Profile() {
   const [userData, setUserData] = useState("");
-  // const url = "https://mern-stack-e-commerce-50uh.onrender.com"; TO DO
-  const url = "http://localhost:4000";
+  const url = "https://mern-stack-e-commerce-50uh.onrender.com"; 
 
   const handleChange = (evt) => {
     evt.preventDefault();

@@ -22,7 +22,7 @@ export default function ShopCatg() {
   const navigate = useNavigate();
   const [favList, setFavList] = useState([]); 
 
-  const url = "http://localhost:4000";
+  const url = "https://mern-stack-e-commerce-50uh.onrender.com";
   const productImage = {
     5: item1,
     6: item4,

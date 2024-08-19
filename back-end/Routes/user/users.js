@@ -60,16 +60,6 @@ router.post("/login", async (req, res) => {
     if (!user) {
       return res.status(401).json({ message: "User not found." });
     }
-
-    // Check if the user is verified
-    if (!user.isVerified) {
-      return res
-        .status(401)
-        .send(`${process.env.CLIENT_SITE_URL}/${user._id}/verify`);
-    }
-
-    // Check if the passwords match
-    // WARNING: This is insecure as it compares plain text passwords
     if (password === user.password) {
       const data = { user: user._id };
       const token = jwt.sign(data, process.env.JWT_SECRET || "default_secret");

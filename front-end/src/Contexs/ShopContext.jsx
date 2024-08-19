@@ -7,8 +7,7 @@ const ShopContextProvider = (props) => {
   const [new_product, setNewProduct] = useState([]);
   const [cart, setCart] = useState({ quantity: 0, details: {} });
   const [popular, setPopular] = useState([]);
-  // const url = "https://mern-stack-e-commerce-50uh.onrender.com";  TO DO
-  const url = "http://localhost:4000";
+  const url = "https://mern-stack-e-commerce-50uh.onrender.com";  
 
   const addToCart = async (productId, quantity = 1) => {
     if (localStorage.getItem("token")) {

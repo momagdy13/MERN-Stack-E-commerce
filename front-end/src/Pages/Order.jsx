@@ -21,7 +21,7 @@ const columns = [
 ];
 
 export default function Order() {
-  const url = "http://localhost:4000";
+  const url = "https://mern-stack-e-commerce-50uh.onrender.com";
   const { all_product } = useContext(ShopContext);
   const [doneOrder, setDoneOrder] = useState([]);
   const [page, setPage] = useState(0);

@@ -49,30 +49,19 @@ router.get(
     const existUser = await Users.findOne({ email: email }).exec();
 
     if (existUser) {
-      if (!existUser.isVerified) {
-        res.redirect(`${process.env.CLINT_SITE_URL}/${hash}/nan`);
-        res.json("Email has not verified. please check your inbox");
-      } else {
-        const data = {
-          user: existUser._id,
-        };
-        const token = jwt.sign(data, "seceret_ecom");
-
-        res.redirect(`${process.env.CLINT_SITE_URL}/${token}`);
-      }
+      const data = {
+        user: existUser._id,
+      };
+      const token = jwt.sign(data, "seceret_ecom");
+      res.redirect(`${process.env.CLINT_SITE_URL}/${token}`);
     } else {
-      let cart = {};
-      let Favourite = {};
-      for (let index = 0; index < 300; index++) {
-        cart[index] = 0;
-        Favourite[index] = 0;
-      }
+    
+    
       const user = new Users({
         username,
         email,
         password: sub,
-        cartData: cart,
-        favourite: Favourite,
+     
       });
 
       await user.save();
@@ -162,6 +151,6 @@ const sendVerificationEmail = async ({ user, res }) => {
       console.log("Verification email sent successfully.");
     }
   });
-}; 
+};
 
 module.exports = router;

@@ -3,8 +3,7 @@ import google from "../../Components/Assest/search.png";
 import { Link } from "react-router-dom";
 import axios from "axios";
 function SignInForm() {
-  const url = "http://localhost:4000";
-  //   const url = "https://mern-stack-e-commerce-50uh.onrender.com";  TO DO
+  const url = "https://mern-stack-e-commerce-50uh.onrender.com";
   const [state, setState] = React.useState({
     email: "",
     password: "",

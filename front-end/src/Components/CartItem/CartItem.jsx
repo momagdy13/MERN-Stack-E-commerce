@@ -13,7 +13,7 @@ const CartPage = () => {
     removeFromCart,
     setCart,
   } = useContext(ShopContext);
-  const url = "http://localhost:4000";
+  const url = "https://mern-stack-e-commerce-50uh.onrender.com";
   const [cartItems, setCartItems] = useState([]);
   useEffect(() => {
     const fetchCartItems = async () => {

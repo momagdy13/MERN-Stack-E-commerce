@@ -1,8 +1,7 @@
 import axios from "axios";
 
 const PayButtom = ({ cart }) => {
-  // const url = "https://mern-stack-e-commerce-50uh.onrender.com";  TO DO
-  const url = "http://localhost:4000";
+  const url = "https://mern-stack-e-commerce-50uh.onrender.com";  
 
   const handleCheckout = () => {
     try {
@@ -18,7 +17,7 @@ const PayButtom = ({ cart }) => {
           if (response.data.url) {
             await axios
               .post(
-                "http://localhost:4000/cart/doneorder",
+                "https://mern-stack-e-commerce-50uh.onrender.com/cart/doneorder",
                 { cart },
                 {
                   headers: { "auth-token": localStorage.getItem("token") },
@@ -29,7 +28,7 @@ const PayButtom = ({ cart }) => {
               });
             await axios
               .post(
-                "http://localhost:4000/cart/deleteall",
+                "https://mern-stack-e-commerce-50uh.onrender.com/cart/deleteall",
                 {},
                 {
                   headers: { "auth-token": localStorage.getItem("token") },

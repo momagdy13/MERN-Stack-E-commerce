@@ -22,7 +22,7 @@ export default function Favourite() {
     9: item2,
   };
 
-  const url = "http://localhost:4000";
+  const url = "https://mern-stack-e-commerce-50uh.onrender.com";
   useEffect(() => {
     const fetchFavouriteList = async () => {
       try {

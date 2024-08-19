@@ -3,8 +3,7 @@ import google from "../../Components/Assest/search.png";
 import axios from "axios";
 import { Link } from "react-router-dom";
 function SignUpForm() {
-  // const url = "https://mern-stack-e-commerce-50uh.onrender.com"; TO DO
-  const url = "http://localhost:4000";
+  const url = "https://mern-stack-e-commerce-50uh.onrender.com";
   const [state, setState] = React.useState({
     username: "",
     email: "",
@@ -25,8 +24,8 @@ function SignUpForm() {
       .then((response) => {
         if (response.data.success) {
           setTimeout(() => {
-            window.location.href = "http://localhost:5173/";
-            // window.location.href = "https://moshop24.netlify.app/login"; TO DO
+            // window.location.href = "http://localhost:5173/";
+            window.location.href = "https://moshop24.netlify.app/login"; 
           }, 5000);
         }
       })
